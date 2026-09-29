@@ -1,243 +1,718 @@
-/* Kitty Brew Cat Café — site scripts */
+/* ====================================
+   Kitty Brew Cat Café — site scripts
+   ====================================
 
-// ---------------------------------------------------------------------------
-// HOURS — edit here and the footer, "open today" bar, and status all update.
-// Use 24-hour times. null = closed that day. Day 0 is Sunday.
-// ---------------------------------------------------------------------------
+   This one file runs on every page of the site. It handles:
+
+     1. Hours          — the "Open now / Closed now" bar under the header and
+                         the hours lists in the footer
+     2. Header         — shrinking the header when you scroll, and the mobile
+                         (hamburger) menu
+     3. Scroll reveal  — sections that fade in as you scroll down
+     4. Carousel       — the customer testimonials slider (homepage only)
+     5. Kitty Cam      — the live video player (Kitty Cam page only)
+
+   HOW THE PIECES CONNECT
+   Each feature is a function (a named, reusable block of code). Nothing runs
+   until the very bottom of this file, where we wait for the page to finish
+   loading and then call each function in turn.
+
+   Every feature first looks for the HTML element it needs. If that element
+   isn't on the current page (for example, there's no video player on the
+   Menu page), the function simply stops. That's what lets one script work
+   safely on every page.
+
+   A FEW JAVASCRIPT BASICS YOU'LL SEE A LOT
+   - const / let      Create a variable (a named box that holds a value).
+                      `const` can't be reassigned later; `let` can.
+   - (x) => { ... }   An "arrow function": a short way to write a function.
+                      `(x) => x * 2` means "take x, give back x times 2".
+   - `text ${value}`  A "template literal" (note the backticks). Whatever is
+                      inside ${ } is inserted into the text.
+   - document.querySelector("...")
+                      Finds the first HTML element matching a CSS selector,
+                      e.g. ".site-header" finds class="site-header".
+   - element.classList.add / remove / toggle("name")
+                      Adds or removes a CSS class on an element. Most visual
+                      changes work this way: JavaScript flips a class and the
+                      CSS in styles.css decides what that class looks like.
+   ==================================== */
+
+
+/* ====================================
+   1. HOURS
+   ==================================== */
+
+// ------------------------------------
+// THE HOURS THEMSELVES — this is the part to edit when your hours change.
+// The footer lists and the "Open now" bar are both built from this, so you
+// only ever have to change the hours in this one place.
+//
+// KB_HOURS is an "object": a set of named values inside { }. It has two
+// names, `cafe` and `lounge`, and each holds an "array" (a list inside [ ]).
+//
+// Each list has exactly 7 entries, one per day, in this order:
+// Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday.
+// (JavaScript counts from 0, so Sunday is entry 0 and Saturday is entry 6.
+//  We start on Sunday because that's how JavaScript numbers weekdays.)
+//
+// Each day is either:
+//   ["opening time", "closing time"]  in 24-hour format ("17:30" = 5:30 pm)
+//   null                              meaning closed all day
+// ------------------------------------
 const KB_HOURS = {
   cafe: [
     ["10:00", "16:30"], // Sunday
     ["8:30", "17:30"],  // Monday
-    null,               // Tuesday
+    null,               // Tuesday (closed)
     ["8:30", "17:30"],  // Wednesday
     ["8:30", "17:30"],  // Thursday
     ["8:30", "18:30"],  // Friday
     ["9:00", "18:30"]   // Saturday
   ],
   lounge: [
-    ["10:00", "17:00"],
-    ["11:00", "18:00"],
-    null,
-    ["11:00", "18:00"],
-    ["11:00", "18:00"],
-    ["11:00", "19:00"],
-    ["10:00", "19:00"]
+    ["10:00", "17:00"], // Sunday
+    ["11:00", "18:00"], // Monday
+    null,               // Tuesday (closed)
+    ["11:00", "18:00"], // Wednesday
+    ["11:00", "18:00"], // Thursday
+    ["11:00", "19:00"], // Friday
+    ["10:00", "19:00"]  // Saturday
   ]
 };
 
+// Day names, in the same Sunday-first order as the hours above.
+// DAY_NAMES[1] is "Mondays", DAY_SHORT[1] is "Mon", and so on.
+// DAY_NAMES is used in the footer lists; DAY_SHORT is used when reading the
+// current day and in messages like "Opens Wed at 8:30".
 const DAY_NAMES = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"];
 const DAY_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const toMinutes = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+// ------------------------------------
+// toMinutes("17:30") → 1050
+//
+// Turns a time like "17:30" into "minutes since midnight" (17 × 60 + 30).
+// Comparing plain numbers is much easier than comparing text: is 1050
+// bigger than 510? Yes, so 5:30 pm is later than 8:30 am.
+// ------------------------------------
+const toMinutes = (t) => {
+  // "17:30".split(":") cuts the text at the colon → ["17", "30"] (still text).
+  // .map(Number) runs Number() on each piece to turn it into a real number
+  // → [17, 30].
+  // `const [h, m] = ...` is "destructuring": it unpacks the two-item list
+  // into two variables at once, so h = 17 and m = 30.
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+};
+
+// ------------------------------------
+// fmt("17:30") → "5:30"
+//
+// Formats a 24-hour time for display in 12-hour style. (We leave off
+// am/pm, matching how the original site listed hours.)
+// ------------------------------------
 const fmt = (t) => {
   let [h, m] = t.split(":").map(Number);
+
+  // `%` is "remainder after dividing": 17 % 12 = 5, 12 % 12 = 0, 8 % 12 = 8.
+  // `|| 12` means "if the left side is 0 (or empty), use 12 instead", so
+  // noon shows as 12 rather than 0.
   h = h % 12 || 12;
+
+  // padStart(2, "0") makes sure minutes always have two digits:
+  // 0 → "00", 5 → "05", 30 stays "30".
   return `${h}:${String(m).padStart(2, "0")}`;
 };
 
-// Current day/time in the café's time zone, regardless of where the visitor is.
+// ------------------------------------
+// cafeNow() → { day: 1, minutes: 630 }   (e.g. Monday at 10:30 am)
+//
+// Works out the current day and time *in Ohio*, even if the visitor is in
+// another time zone. Someone browsing from California at 9 am should still
+// see "Open now" if it's noon at the café.
+// ------------------------------------
 function cafeNow() {
+  // Intl.DateTimeFormat is JavaScript's built-in tool for formatting dates.
+  // We ask for the current moment (new Date()) as it would read in the
+  // America/New_York time zone (Eastern Time, which includes Ohio).
+  // hourCycle: "h23" gives 24-hour hours (0–23) so the math stays simple.
+  //
+  // formatToParts gives the answer back as labeled pieces instead of one
+  // string, something like:
+  //   [ {type: "weekday", value: "Mon"}, {type: "hour", value: "10"}, ... ]
   const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23"
+    timeZone: "America/New_York",
+    weekday: "short",
+    hour: "numeric",
+    minute: "numeric",
+    hourCycle: "h23"
   }).formatToParts(new Date());
+
+  // A small helper: find the piece with a given label and return its value.
+  // e.g. get("weekday") → "Mon"
   const get = (type) => parts.find((p) => p.type === type).value;
-  return { day: DAY_SHORT.indexOf(get("weekday")), minutes: Number(get("hour")) * 60 + Number(get("minute")) };
+
+  return {
+    // indexOf finds where "Mon" sits in DAY_SHORT → 1. That number lines up
+    // with the day positions in KB_HOURS.
+    day: DAY_SHORT.indexOf(get("weekday")),
+    minutes: Number(get("hour")) * 60 + Number(get("minute"))
+  };
 }
 
+// ------------------------------------
+// nextOpening(KB_HOURS.cafe, 2, 600) → "tomorrow at 8:30"
+//
+// When we're closed, figures out when we open next so the bar can say
+// "Closed now · Opens tomorrow at 8:30".
+//
+//   schedule — one of the hour lists (KB_HOURS.cafe or KB_HOURS.lounge)
+//   day      — today's day number (0 = Sunday)
+//   minutes  — the current time in minutes since midnight
+// ------------------------------------
 function nextOpening(schedule, day, minutes) {
+  // A `for` loop repeats a block of code. Here `i` counts 0, 1, 2 … 7,
+  // meaning "today", "1 day from now", "2 days from now", and so on.
+  // We check 8 days (not 7) so that if we're past closing today, the loop
+  // can wrap all the way around to the same weekday next week.
   for (let i = 0; i < 8; i++) {
+    // Which weekday is `i` days from today? `% 7` wraps around the week:
+    // Saturday (6) + 1 day = 7, and 7 % 7 = 0, which is Sunday.
     const d = (day + i) % 7;
     const hrs = schedule[d];
+
+    // We've found the next opening if that day isn't closed (hrs is not
+    // null) AND either it's a future day (i > 0), or it's today but opening
+    // time hasn't arrived yet.
     if (hrs && (i > 0 || minutes < toMinutes(hrs[0]))) {
+      // The `? :` below is a "ternary", a compact if/else:
+      //   condition ? valueIfTrue : valueIfFalse
+      // Chained together, it reads: if i is 0 say "today", otherwise if
+      // i is 1 say "tomorrow", otherwise use the short day name ("Wed").
       const when = i === 0 ? "today" : i === 1 ? "tomorrow" : DAY_SHORT[d];
+
+      // `return` hands back the answer and stops the function (and the loop)
+      // right here.
       return `${when} at ${fmt(hrs[0])}`;
     }
   }
+
+  // Only reached if every single day is closed, which shouldn't happen.
   return "";
 }
 
+// ------------------------------------
+// renderTodayBar()
+//
+// Fills in the dark strip under the header with the live status, e.g.
+//   ● Open now · Café until 5:30 · Cat lounge until 6:00
+//   ● Closed now · Opens tomorrow at 8:30
+//
+// In the HTML, the spot to fill looks like:
+//   <span data-today-status>...</span>
+// ------------------------------------
 function renderTodayBar() {
+  // Square brackets in a selector match an attribute, so this finds the
+  // element that has the data-today-status attribute.
   const el = document.querySelector("[data-today-status]");
+
+  // If this page doesn't have the bar, stop here. `return` with nothing
+  // after it just exits the function.
   if (!el) return;
+
+  // Destructuring again: pull `day` and `minutes` out of the object that
+  // cafeNow() returns.
   const { day, minutes } = cafeNow();
+
+  // Today's hours for each side of the business: either ["8:30", "17:30"]
+  // or null if closed today.
   const cafe = KB_HOURS.cafe[day];
   const lounge = KB_HOURS.lounge[day];
+
+  // Is each side open right now? It is if it's open today (not null) AND
+  // it's after opening time AND before closing time.
+  // `&&` means "and": every part has to be true. If `cafe` is null, the
+  // check stops at the first part, which avoids an error from trying to
+  // read cafe[0] when there's nothing there.
   const cafeOpen = cafe && minutes >= toMinutes(cafe[0]) && minutes < toMinutes(cafe[1]);
   const loungeOpen = lounge && minutes >= toMinutes(lounge[0]) && minutes < toMinutes(lounge[1]);
 
+  // We'll build the bar's contents as a string of HTML, then insert it.
   let html;
+
+  // `||` means "or": true if either side is open.
   if (cafeOpen || loungeOpen) {
+    // `bits` collects the pieces of the message, which get joined with
+    // " · " separators at the end.
     const bits = [];
+
+    // .push adds an item to the end of a list.
     bits.push(cafeOpen ? `Café until <strong>${fmt(cafe[1])}</strong>` : "Café closed");
-    if (loungeOpen) bits.push(`Cat lounge until <strong>${fmt(lounge[1])}</strong>`);
-    else if (lounge && minutes < toMinutes(lounge[0])) bits.push(`Cat lounge opens <strong>${fmt(lounge[0])}</strong>`);
+
+    if (loungeOpen) {
+      bits.push(`Cat lounge until <strong>${fmt(lounge[1])}</strong>`);
+    } else if (lounge && minutes < toMinutes(lounge[0])) {
+      // The café opens before the lounge, so in the morning we say when
+      // the lounge will open.
+      bits.push(`Cat lounge opens <strong>${fmt(lounge[0])}</strong>`);
+    }
+
+    // The green dot is a <span> styled in styles.css (.status-dot.is-open).
+    // .join(...) glues the list items into one string, putting the
+    // separator between each pair.
     html = `<span class="status-dot is-open"></span><strong>Open now</strong> <span class="today-bar__sep">·</span> ${bits.join(' <span class="today-bar__sep">·</span> ')}`;
   } else {
+    // Closed: grey dot plus when the café opens next.
     html = `<span class="status-dot"></span><strong>Closed now</strong> <span class="today-bar__sep">·</span> Opens ${nextOpening(KB_HOURS.cafe, day, minutes)}`;
   }
+
+  // innerHTML replaces everything inside the element with our new HTML.
+  // (This is safe here because all the text comes from this file, not from
+  // anything a visitor typed.)
   el.innerHTML = html;
 }
 
+// ------------------------------------
+// renderHoursLists()
+//
+// Builds the "Café Hours" and "Cat Lounge Hours" lists in the footer, and
+// highlights today's row in red.
+//
+// In the HTML, each list is an empty <ul> that says which schedule it wants:
+//   <ul class="hours" data-hours="cafe"></ul>
+//   <ul class="hours" data-hours="lounge"></ul>
+// ------------------------------------
 function renderHoursLists() {
+  // We only need today's day number here, not the time.
   const { day } = cafeNow();
+
+  // querySelectorAll finds EVERY matching element (querySelector only finds
+  // the first). .forEach then runs the code once for each one found.
   document.querySelectorAll("[data-hours]").forEach((list) => {
+    // list.dataset.hours reads the data-hours attribute: "cafe" or "lounge".
+    // KB_HOURS["cafe"] is the same as KB_HOURS.cafe; square brackets let
+    // us use a name that's stored in a variable.
     const schedule = KB_HOURS[list.dataset.hours];
-    // Start the week on Monday, like the original site.
+
+    // KB_HOURS is stored Sunday-first, but the footer lists Monday first
+    // (like the original site), so this is the order to display the days in.
     const order = [1, 2, 3, 4, 5, 6, 0];
+
+    // .map turns each day number into a line of HTML, giving a new list of
+    // seven <li> strings. .join("") glues them together with nothing in
+    // between.
     list.innerHTML = order.map((d) => {
       const hrs = schedule[d];
       const text = hrs ? `${fmt(hrs[0])} – ${fmt(hrs[1])}` : "Closed";
+
+      // If this row is today, add class="is-today" so the CSS colors it red.
       return `<li${d === day ? ' class="is-today"' : ""}><b>${DAY_NAMES[d]}</b> ${text}</li>`;
     }).join("");
   });
 }
 
-// ---------------------------------------------------------------------------
-// Header: shrink on scroll + mobile menu
-// ---------------------------------------------------------------------------
+
+/* ====================================
+   2. HEADER — shrink on scroll + mobile menu
+  ==================================== */
+
 function initHeader() {
   const header = document.querySelector(".site-header");
   if (!header) return;
-  // Shrink once the page has scrolled past the height the header gives up,
-  // so the smaller header lines up with the content with no gap.
+
+  // ---- Shrinking header ------------------------------------
+  //
+  // When you scroll down, we add the class "is-scrolled" to the header. The
+  // CSS then swaps the big logo for the small "Kitty Brew" wordmark and
+  // makes the header shorter. Scroll back to the top and the class comes
+  // off again.
+  //
+  // `threshold` is how many pixels you have to scroll before it switches.
+  // It equals the height the header gives up when it shrinks (the full
+  // height minus the small height), so the small header lines up exactly
+  // with the page content and no gap appears.
   let threshold = 0;
+
+  // Reads the two header heights from the CSS variables in styles.css
+  // (--header-h and --header-h-small) and works out the threshold.
+  // Reading them from the CSS means that if we ever change the header
+  // sizes there, this keeps working without editing any JavaScript.
   const measure = () => {
+    // getComputedStyle gives the styles the browser is actually using right
+    // now. Our variables are defined on :root, which is the <html> element
+    // (document.documentElement).
     const css = getComputedStyle(document.documentElement);
+
+    // The values come back as text like "140px". parseFloat reads the number
+    // at the start of the text and ignores the "px" → 140.
     threshold = parseFloat(css.getPropertyValue("--header-h")) - parseFloat(css.getPropertyValue("--header-h-small"));
   };
+
+  // classList.toggle(name, condition) adds the class when the condition is
+  // true and removes it when false. window.scrollY is how far down the page
+  // has been scrolled, in pixels.
   const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > threshold);
+
+  // Run both once right away, in case the page loads already scrolled down
+  // (for example, after pressing the back button).
   measure();
   onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", () => { measure(); onScroll(); });
 
-  const toggle = document.querySelector(".nav-toggle");
-  const list = document.querySelector(".nav__list");
+  // addEventListener("event", function) says "whenever this happens, run
+  // this function". Here, run onScroll every time the page scrolls.
+  // { passive: true } promises the browser we won't block scrolling, which
+  // keeps scrolling smooth on phones.
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // The header heights are different on phones (set in styles.css), so if
+  // the window is resized, measure again.
+  window.addEventListener("resize", () => {
+    measure();
+    onScroll();
+  });
+
+  // ---- Mobile (hamburger) menu ------------------------------------
+  //
+  // On small screens the menu links are hidden and the ☰ button shows
+  // instead. Tapping it adds the class "is-open" to the list, and the CSS
+  // slides the menu into view.
+  const toggle = document.querySelector(".nav-toggle"); // the ☰ button
+  const list = document.querySelector(".nav__list");    // the menu links
   if (!toggle || !list) return;
+
+  // setOpen(true) opens the menu; setOpen(false) closes it.
   const setOpen = (open) => {
     list.classList.toggle("is-open", open);
+
+    // aria-expanded tells screen readers (software that reads the page
+    // aloud for blind visitors) whether the menu is currently open.
+    // setAttribute needs text, so String(true) turns it into "true".
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.innerHTML = open ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>' : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+
+    // Swap the icon: an ✕ when open, ☰ when closed. These are Font Awesome
+    // icons, which are drawn by giving an <i> tag the right class names.
+    toggle.innerHTML = open
+      ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>'
+      : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
   };
+
+  // Tapping the button flips the menu: if it's open, close it, and if it's
+  // closed, open it. `!` means "not", so this passes the opposite of the
+  // menu's current state.
   toggle.addEventListener("click", () => setOpen(!list.classList.contains("is-open")));
-  list.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+
+  // Close the menu after a link inside it is tapped.
+  // `e` is the "event" object the browser hands us, describing the click.
+  // e.target is the exact element that was clicked, and .closest("a")
+  // checks whether it is (or is inside) a link.
+  list.addEventListener("click", (e) => {
+    if (e.target.closest("a")) setOpen(false);
+  });
+
+  // Pressing the Escape key closes the menu too, for keyboard users.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
 }
 
-// ---------------------------------------------------------------------------
-// Fade sections in as they scroll into view
-// ---------------------------------------------------------------------------
+
+/* ====================================
+   3. SCROLL REVEAL — sections fade in as they come into view
+   ====================================
+   Any element with class="reveal" starts invisible and slightly lower
+   (see .reveal in styles.css). When it scrolls onto the screen we add
+   "is-visible", and the CSS animates it into place.
+   ==================================== */
+
 function initReveal() {
   const items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-visible")); return; }
+
+  // IntersectionObserver is a built-in browser tool that tells us when an
+  // element enters or leaves the screen. Very old browsers don't have it; in
+  // that case just show everything immediately so nothing stays invisible.
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+
+  // Create the observer. The function we give it runs whenever any watched
+  // element crosses into or out of view. `entries` is a list describing
+  // each element that changed.
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) { entry.target.classList.add("is-visible"); io.unobserve(entry.target); }
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+
+        // Once it has faded in, stop watching it, so it doesn't fade out and
+        // back in every time you scroll past.
+        io.unobserve(entry.target);
+      }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.12 }); // trigger when 12% of the element is on screen
+
+  // Start watching each .reveal element.
   items.forEach((el) => io.observe(el));
 }
 
-// ---------------------------------------------------------------------------
-// Testimonials carousel
-// ---------------------------------------------------------------------------
+
+/* ====================================
+   4. TESTIMONIALS CAROUSEL (homepage)
+   ====================================
+   The reviews sit side by side in a row that scrolls sideways
+   (.carousel__track). The CSS handles the swiping and makes each card snap
+   into the center. This code adds:
+     - the row of dots underneath, one per review
+     - highlighting the card in the middle (white, instead of see-through)
+     - auto-advancing every 6 seconds, pausing while someone is interacting
+   ==================================== */
+
 function initCarousel() {
   const track = document.querySelector(".carousel__track");
-  if (!track) return;
+  if (!track) return; // not on the homepage
+
+  // track.children are the review cards. They come back as an HTML
+  // collection rather than a true list; `[...something]` (the "spread"
+  // syntax) copies them into a real array so we can use forEach on them.
   const slides = [...track.children];
   const dots = document.querySelector(".carousel__dots");
-  let current = 0;
-  let timer;
 
+  let current = 0; // which review is highlighted (0 = the first one)
+  let timer;       // holds the auto-advance timer so we can stop it later
+
+  // Create one dot button per review.
+  // forEach passes each item and its position. We don't need the item
+  // itself, so it's named `_`, a common way of saying "unused".
   slides.forEach((_, i) => {
-    const b = document.createElement("button");
+    const b = document.createElement("button"); // make a new <button>
     b.type = "button";
-    b.setAttribute("aria-label", `Show review ${i + 1}`);
-    b.addEventListener("click", () => { goTo(i); restart(); });
-    dots.appendChild(b);
+    b.setAttribute("aria-label", `Show review ${i + 1}`); // for screen readers
+
+    // Clicking a dot jumps to that review and restarts the 6-second timer.
+    b.addEventListener("click", () => {
+      goTo(i);
+      restart();
+    });
+
+    dots.appendChild(b); // add the new button to the page
   });
 
+  // mark(i): highlight review number i and its matching dot.
+  // (This only changes the styling; goTo below does the actual scrolling.)
   function mark(i) {
     current = i;
+
+    // Give "is-active" to the chosen card and remove it from all the others.
     slides.forEach((s, j) => s.classList.toggle("is-active", j === i));
+
+    // Same for the dots. aria-current="true" marks the active dot, and the
+    // CSS styles it solid white.
     [...dots.children].forEach((d, j) => d.setAttribute("aria-current", String(j === i)));
   }
 
+  // goTo(i): scroll the row so review i sits in the center, then highlight it.
   function goTo(i) {
     const s = slides[i];
+
+    // offsetLeft is how far the card sits from the left edge of the row.
+    // Subtracting half of the leftover space (row width minus card width)
+    // centers the card rather than pinning it to the left edge.
     track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.clientWidth) / 2 });
     mark(i);
   }
 
-  // Keep the highlighted card in sync when people swipe.
+  // ---- Keep the highlight in sync when someone swipes ---------
+  //
+  // When a visitor swipes the row themselves, find whichever card is now
+  // closest to the center and highlight it.
+  //
+  // Scroll events fire many times per second. requestAnimationFrame waits
+  // until the browser is about to draw the next frame, and
+  // cancelAnimationFrame throws away any check that was already waiting.
+  // Together they mean we do this work at most once per frame, which keeps
+  // swiping smooth.
   let raf;
   track.addEventListener("scroll", () => {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
+      // The horizontal position of the center of the visible area.
       const mid = track.scrollLeft + track.clientWidth / 2;
-      let best = 0, bestDist = Infinity;
+
+      // Find the card whose center is nearest to `mid`. Start with
+      // "infinitely far away", then keep whichever card beats the best so far.
+      let best = 0;
+      let bestDist = Infinity;
       slides.forEach((s, j) => {
+        // Math.abs removes any minus sign, so a card 50px to the left and a
+        // card 50px to the right both count as 50px away.
         const d = Math.abs(s.offsetLeft + s.clientWidth / 2 - mid);
-        if (d < bestDist) { bestDist = d; best = j; }
+        if (d < bestDist) {
+          bestDist = d;
+          best = j;
+        }
       });
+
+      // Only update if the highlighted card actually changed.
       if (best !== current) mark(best);
     });
   }, { passive: true });
 
+  // ---- Auto-advance -----------------
+  //
+  // Some people turn on "Reduce motion" in their device settings because
+  // movement on screen makes them uncomfortable. matchMedia checks for that
+  // setting, and if it's on, we never auto-scroll.
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // restart(): stop any existing timer and start a fresh 6-second one.
   function restart() {
+    // clearInterval stops a repeating timer.
     clearInterval(timer);
+
+    // setInterval runs a function over and over, every N milliseconds
+    // (6000 ms = 6 seconds). Each time, move to the next review.
+    // `% slides.length` wraps from the last review back to the first.
     if (!reduce) timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
   }
+
+  // Pause while someone is touching, clicking or hovering over the reviews,
+  // so a card doesn't slide away while they're reading it. Moving the mouse
+  // away starts the timer again.
   track.addEventListener("pointerdown", () => clearInterval(timer));
   track.addEventListener("mouseenter", () => clearInterval(timer));
   track.addEventListener("mouseleave", restart);
 
+  // Start with the first review highlighted and centered.
+  // goTo waits one frame (requestAnimationFrame) so the browser has finished
+  // laying out the cards before we measure their positions.
   mark(0);
   requestAnimationFrame(() => goTo(0));
   restart();
 }
 
-// ---------------------------------------------------------------------------
-// Live Kitty Cam (only on the Kitty Cam page)
-// ---------------------------------------------------------------------------
+
+/* ====================================
+   5. LIVE KITTY CAM (Kitty Cam page)
+   ====================================
+   The camera in the lounge streams video in a format called HLS
+   ("HTTP Live Streaming"). The address below points to the stream's
+   playlist (the .m3u8 file), which lists small chunks of video that the
+   player downloads one after another.
+
+   Safari and iPhones can play HLS on their own. Most other browsers (Chrome,
+   Firefox, Edge) can't, so the Kitty Cam page also loads a free library
+   called hls.js (see the <script> tag near the bottom of live/index.html),
+   which teaches those browsers how to play it.
+  ==================================== */
+
+// The stream address, stored in one place so it's easy to update if the
+// camera setup ever changes.
 const CAM_STREAM = "https://kittybrew.lorexddns.net:8888/stream3/index.m3u8";
 
 function initCam() {
+  // `wrap` is the box around the video. Adding "is-offline" to it makes the
+  // CSS show the "The Kitty Cam is napping" message over the player.
   const wrap = document.querySelector("[data-cam]");
-  const video = document.getElementById("kittyCam");
-  if (!wrap || !video) return;
 
+  // getElementById finds the element with id="kittyCam", the <video> tag.
+  const video = document.getElementById("kittyCam");
+
+  if (!wrap || !video) return; // not on the Kitty Cam page
+
+  // Tracks whether video is actually playing, so we don't show the
+  // "napping" message over a working stream.
   let playing = false;
-  const offline = () => { if (!playing) wrap.classList.add("is-offline"); };
-  video.addEventListener("playing", () => { playing = true; wrap.classList.remove("is-offline"); });
-  // If the stream hasn't started after 15 seconds, show the "napping" message.
+
+  // Show the offline message, but only if the video never started.
+  const offline = () => {
+    if (!playing) wrap.classList.add("is-offline");
+  };
+
+  // The <video> element fires a "playing" event once video is really
+  // moving. When that happens, remember it and hide any offline message.
+  video.addEventListener("playing", () => {
+    playing = true;
+    wrap.classList.remove("is-offline");
+  });
+
+  // Safety net: if nothing has started after 15 seconds (15,000 ms), assume
+  // the camera is down and show the message. setTimeout runs a function
+  // once after a delay (setInterval, used in the carousel, runs repeatedly).
   setTimeout(offline, 15000);
 
+  // Now pick how to play the stream, trying the options in order:
+
+  // Option 1: hls.js loaded and this browser supports it (Chrome, Firefox,
+  // Edge). `window.Hls` only exists if the hls.js <script> tag loaded, so
+  // we check that first to avoid an error if it didn't.
   if (window.Hls && window.Hls.isSupported()) {
-    const hls = new window.Hls();
-    hls.loadSource(CAM_STREAM);
-    hls.attachMedia(video);
+    const hls = new window.Hls();   // create a player
+    hls.loadSource(CAM_STREAM);     // tell it where the stream is
+    hls.attachMedia(video);         // tell it which <video> to play in
+
+    // hls.on(event, function) works like addEventListener, for hls.js's own
+    // events. MANIFEST_PARSED means "I've read the playlist and I'm ready",
+    // so start playing.
+    //
+    // video.play() returns a "Promise": a value that finishes later, and
+    // might fail. Browsers can refuse to autoplay; .catch(() => {}) quietly
+    // ignores that refusal instead of logging an error, and the visitor can
+    // still press play themselves.
     hls.on(window.Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
-    hls.on(window.Hls.Events.ERROR, (_, data) => { if (data.fatal) { playing = false; wrap.classList.add("is-offline"); } });
+
+    // If hls.js hits an error it can't recover from (data.fatal), the stream
+    // is down, so show the offline message.
+    hls.on(window.Hls.Events.ERROR, (_, data) => {
+      if (data.fatal) {
+        playing = false;
+        wrap.classList.add("is-offline");
+      }
+    });
+
+  // Option 2: the browser can play HLS by itself (Safari, iPhone, iPad).
+  // canPlayType returns "maybe" or "probably" if it can, or "" if it can't.
   } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-    // Safari and iPhones play the stream natively.
     video.src = CAM_STREAM;
+
+    // loadedmetadata fires once the browser knows the video's size and
+    // format, which is our cue to start playing.
     video.addEventListener("loadedmetadata", () => video.play().catch(() => {}));
+
+    // If the stream can't be loaded at all, show the offline message.
     video.addEventListener("error", offline);
+
+  // Option 3: no way to play the stream in this browser.
   } else {
     offline();
   }
 }
 
+
+/* ====================================
+   START EVERYTHING
+   ====================================
+   "DOMContentLoaded" fires once the browser has read all of the page's HTML.
+   (The DOM, or "Document Object Model", is the browser's version of the
+   page that JavaScript can read and change.) We wait for it so every
+   element we look for with querySelector actually exists by the time we
+   look.
+   ==================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
-  renderTodayBar();
-  renderHoursLists();
+  renderTodayBar();   // "Open now / Closed now" bar
+  renderHoursLists(); // footer hours
+
+  // Refresh the "Open now" bar every minute (60 × 1000 milliseconds), so
+  // someone who leaves the page open sees it change at opening or closing
+  // time without reloading.
   setInterval(renderTodayBar, 60 * 1000);
-  initHeader();
-  initReveal();
-  initCarousel();
-  initCam();
+
+  initHeader();   // shrinking header + mobile menu
+  initReveal();   // fade-in sections
+  initCarousel(); // testimonials (only does anything on the homepage)
+  initCam();      // live video (only does anything on the Kitty Cam page)
+
+  // Keep the copyright year in the footer current:
+  // <span data-year>2026</span> becomes this year automatically.
   const y = document.querySelector("[data-year]");
   if (y) y.textContent = new Date().getFullYear();
 });
