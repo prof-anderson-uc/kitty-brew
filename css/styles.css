@@ -35,6 +35,9 @@ html {
   scroll-padding-top: var(--header-h-small);
 }
 
+/* Font sizes use rem so text respects the visitor's browser text-size setting.
+   1rem = the browser's base size (16px by default), so to convert a pixel size
+   divide by 16: 24px = 1.5rem, 14px = 0.875rem. */
 body {
   margin: 0;
   background: var(--cream);
