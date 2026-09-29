@@ -464,11 +464,11 @@ p {
   line-height: 1;
   margin-bottom: 0.875rem;
   display: inline-block;
-  transition: transform .3s;
+  transition: transform .5s;
 }
 
 .how__item:hover .how__icon {
-  animation: bounce-in .6s;
+  animation: bounce-in .74s;
 }
 
 .how h3 {
@@ -514,12 +514,13 @@ p {
   padding: 0;
   counter-reset: step;
   text-align: left;
+  line-height: 1.15;
 }
 
 .first-visit li {
   position: relative;
   padding: 1.125rem 1.25rem 1.125rem 1.25rem;
-  border-top: 1px solid var(--black);
+  /* border-top: 1px solid var(--black); */
   counter-increment: step;
 }
 
