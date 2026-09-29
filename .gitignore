@@ -1,0 +1,8 @@
+# Mac system files
+.DS_Store
+
+# Downloaded copies of the site
+*.zip
+
+# Local preview settings for Claude
+.claude/
