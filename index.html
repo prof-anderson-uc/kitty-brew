@@ -22,6 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;700&family=Montserrat+Alternates:wght@600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
   <link rel="preload" as="image" href="images/hero.jpg">
 
   <!-- Business details Google can show in search and Maps -->
@@ -196,15 +197,48 @@
       <h2 class="testimonials__title" id="testimonials-title"><small>Customer</small><span>Testimonials</span></h2>
       <div class="carousel">
         <div class="carousel__track">
-          <figure class="quote"><blockquote>If you like cats and want to play with them, this is your place! If you're looking to adopt, you can find pretty much any temperament here and see how they like you. Such a calming and cat-egorically fun place 😺</blockquote><figcaption>Lexington S</figcaption></figure>
-          <figure class="quote"><blockquote>This is a wonderful place to go to interact with and adopt cats. It is also great for a family outing or date night to just play with cats even if adopting is not an option for you. The staff is friendly and creates a fun environment for visitors while prioritizing the safety and wellbeing of the cats.</blockquote><figcaption>Ashley R</figcaption></figure>
-          <figure class="quote"><blockquote>I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. You just have to get a time slot ahead of time. Staff is always so nice. I love getting my kitten fix and watching them play. It's my happy place.</blockquote><figcaption>Laura B</figcaption></figure>
-          <figure class="quote"><blockquote>This is probably the best cat cafe I've ever been to! Out of about a dozen cats only 1 was standoffish, which is especially crazy since several were recently spayed/neutered. Lots of playful kittens, toys, and seating. The drinks were good too.</blockquote><figcaption>David S</figcaption></figure>
-          <figure class="quote"><blockquote>I went here to get a cat and they were so nice and helpful. It's really easy to find one because they're all just playing in one room and you can see how each of them act. It was such a good experience.</blockquote><figcaption>Audrey S</figcaption></figure>
-          <figure class="quote"><blockquote>Highly recommend if you are looking to adopt or just need a pick me up. The coffee is good as well as the treats. Cat cafe was clean and staff was amazing. Be careful if you don't want to take a furry friend home because we almost left with a new kitty.</blockquote><figcaption>Linz W</figcaption></figure>
-          <figure class="quote"><blockquote>Really lovely café with wonderful staff. They were very warm and receptive as soon as we walked through the door and answered any questions we had. Delicious selection of drinks and treats on their menu and adorable array of gifts/merch in the gift shop area!</blockquote><figcaption>Jessica M</figcaption></figure>
-          <figure class="quote"><blockquote>Our whole family spent some quality time together and with kitties last night at Kitty Brew! Great Friday night family outing. Delicious beverages and cute, playful felines. 10/10</blockquote><figcaption>Brian K</figcaption></figure>
+
+          <figure class="quote">
+            <blockquote>If you like cats and want to play with them, this is your place! If you're looking to adopt, you can find pretty much any temperament here and see how they like you. Such a calming and cat-egorically fun place 😺</blockquote>
+            <figcaption>Lexington S</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>This is a wonderful place to go to interact with and adopt cats. It is also great for a family outing or date night to just play with cats even if adopting is not an option for you. The staff is friendly and creates a fun environment for visitors while prioritizing the safety and wellbeing of the cats.</blockquote>
+            <figcaption>Ashley R</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. You just have to get a time slot ahead of time. Staff is always so nice. I love getting my kitten fix and watching them play. It's my happy place.</blockquote>
+            <figcaption>Laura B</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>This is probably the best cat cafe I've ever been to! Out of about a dozen cats only 1 was standoffish, which is especially crazy since several were recently spayed/neutered. Lots of playful kittens, toys, and seating. The drinks were good too.</blockquote>
+            <figcaption>David S</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>I went here to get a cat and they were so nice and helpful. It's really easy to find one because they're all just playing in one room and you can see how each of them act. It was such a good experience.</blockquote>
+            <figcaption>Audrey S</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>Highly recommend if you are looking to adopt or just need a pick me up. The coffee is good as well as the treats. Cat cafe was clean and staff was amazing. Be careful if you don't want to take a furry friend home because we almost left with a new kitty.</blockquote>
+            <figcaption>Linz W</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>Really lovely café with wonderful staff. They were very warm and receptive as soon as we walked through the door and answered any questions we had. Delicious selection of drinks and treats on their menu and adorable array of gifts/merch in the gift shop area!</blockquote>
+            <figcaption>Jessica M</figcaption>
+          </figure>
+
+          <figure class="quote">
+            <blockquote>Our whole family spent some quality time together and with kitties last night at Kitty Brew! Great Friday night family outing. Delicious beverages and cute, playful felines. 10/10</blockquote>
+            <figcaption>Brian K</figcaption>
+          </figure>
         </div>
+
         <div class="carousel__dots"></div>
       </div>
     </section>
@@ -219,11 +253,14 @@
             721 Reading Road<br>
             Mason, OH 45040
           </address>
+
           <p class="location__note">At the corner of Tylersville &amp; Reading Road.<br>Across from the WLW tower.</p>
+
           <a class="btn btn--small" href="https://maps.google.com/?q=Kitty+Brew+Cat+Cafe+721+Reading+Road+Mason+OH"><i class="fa-solid fa-diamond-turn-right" aria-hidden="true"></i><span>Get directions</span></a>
+
         </div>
-        <iframe class="location__map" title="Map showing Kitty Brew Cat Café" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=Kitty%20Brew%20Cat%20Cafe&amp;t=m&amp;z=14&amp;output=embed&amp;iwloc=near"></iframe>
+
+        <iframe class="location__map" title="Map showing Kitty Brew Cat Café" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Kitty%20Brew%20Cat%20Cafe&amp;t=m&amp;z=14&amp;output=embed&amp;iwloc=near"></iframe>
       </div>
     </section>
   </main>
@@ -236,10 +273,12 @@
           <h2>Café Hours</h2>
           <ul class="hours" data-hours="cafe"></ul>
         </div>
+
         <div>
           <h2>Cat Lounge Hours</h2>
           <ul class="hours" data-hours="lounge"></ul>
         </div>
+
         <div class="footer__contact">
           <h2>Contact Us</h2>
           <ul class="contact-list">
@@ -254,6 +293,7 @@
             <a href="https://www.yelp.com/biz/kitty-brew-cat-cafe-mason" aria-label="Yelp"><i class="fa-brands fa-yelp" aria-hidden="true"></i></a>
           </div>
         </div>
+
       </div>
       <div class="footer__legal">© <span data-year>2026</span> Kitty Brew Cat Café · 721 Reading Road, Mason, OH 45040</div>
     </div>
@@ -263,9 +303,9 @@
   <nav class="action-bar" aria-label="Quick actions">
     <a href="tel:+15137019001"><i class="fa-solid fa-phone" aria-hidden="true"></i>Call</a>
     <a href="https://maps.google.com/?q=Kitty+Brew+Cat+Cafe+721+Reading+Road+Mason+OH"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Directions</a>
-    <a class="action-bar__book" href="visit/index.html#book">Book a Visit or Event</a>
+    <a class="action-bar__book" href="visit/index.html#book">Book a Visit</a>
   </nav>
 
-  <script src="js/main.js"></script>
+
 </body>
 </html>

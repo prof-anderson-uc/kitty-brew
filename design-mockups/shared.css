@@ -1,0 +1,50 @@
+/* Shared pieces for the design mockups (not part of the live site) */
+
+:root {
+  /* Palette sampled from the lounge photos, brightened to match the paint */
+  --wall: #e6eeee;        /* pale mint-grey walls */
+  --wall-deep: #d6e2e2;
+  --lavender: #c9c8f0;    /* big soft leaf shapes */
+  --periwinkle: #7372cc;  /* the darker flower splashes */
+  --periwinkle-deep: #3f3d86;
+  --mustard: #d8a93b;     /* yellow flowers */
+  --sage: #6f9b75;        /* green flower behind the stretching cat */
+  --teal: #2b8c84;        /* plant leaves */
+  --terracotta: #e04e1b;  /* orange flower behind the tortie, rugs */
+  --tangerine: #e7783f;   /* orange tabby cats */
+  --box: #d89b5c;         /* cardboard box */
+  --birch: #ecd3a4;       /* the plywood cat tree and pegboards */
+  --birch-edge: #c9a56b;
+  --ink: #1d1a18;         /* black linework */
+  --cream: #fffaf1;
+
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-hand: "Patrick Hand SC", "Comic Sans MS", cursive;   /* like the mural lettering */
+  --font-body: "Roboto", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--font-body); color: var(--ink); line-height: 1.7; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: .5px; line-height: 1.05; margin: 0 0 .35em; }
+p { margin: 0 0 1em; }
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5em;
+  font-family: var(--font-display); font-size: 1.15rem; letter-spacing: 1.5px; line-height: 1;
+  padding: .8rem 1.4rem; border-radius: 999px; text-decoration: none;
+  background: var(--terracotta); color: #fff; border: 2px solid var(--terracotta);
+}
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.hand { font-family: var(--font-hand); }
+
+/* The banner at the top of each mockup explaining what it is */
+.mock-banner {
+  position: sticky; top: 0; z-index: 1000;
+  background: #111; color: #eee; font: 500 13px/1.4 system-ui, sans-serif;
+  padding: 8px 16px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+.mock-banner a { color: #fff; }
+.mock-banner b { color: #ffd76a; }
