@@ -1,144 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lounge Design Mockups | Kitty Brew</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
-<style>
-  body { background: var(--wall); }
-  header { padding: 50px 0 20px; }
-  h1 { font-size: 3.6rem; }
-  .lead { max-width: 46rem; font-size: 1.1rem; }
-  h2 { font-size: 2.2rem; margin-top: 40px; }
-  .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
-  .chip { background: #fff; border-radius: 16px; overflow: hidden; font-size: .85rem; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
-  .chip div { height: 80px; }
-  .chip p { margin: 0; padding: 8px 12px; line-height: 1.35; }
-  .chip code { color: #666; font-size: .8rem; }
-  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-  .note { background: #fff; border-radius: 18px; padding: 20px 24px; }
-  .note h3 { font-size: 1.5rem; }
-  .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-bottom: 60px; }
-  .opt { background: #fff; border-radius: 22px; overflow: hidden; text-decoration: none; box-shadow: 0 8px 24px rgba(0,0,0,.07); display: flex; flex-direction: column; }
-  .opt .thumb { height: 190px; position: relative; overflow: hidden; }
-  .opt .body { padding: 18px 22px 24px; }
-  .opt h3 { font-size: 1.9rem; }
-  .opt p { margin: 0 0 .6em; font-size: .95rem; }
-  .opt .fit { font-family: var(--font-hand); font-size: 1.15rem; color: var(--periwinkle-deep); }
-  @media (max-width: 860px) { .options, .notes { grid-template-columns: 1fr; } }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lounge Design Mockups | Kitty Brew</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    body {
+      background: var(--wall);
+    }
+
+    header {
+      padding: 50px 0 20px;
+    }
+
+    h1 {
+      font-size: 3.6rem;
+    }
+
+    .lead {
+      max-width: 46rem;
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      margin-top: 40px;
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+    }
+
+    .chip {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: .85rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
+    }
+
+    .chip div {
+      height: 80px;
+    }
+
+    .chip p {
+      margin: 0;
+      padding: 8px 12px;
+      line-height: 1.35;
+    }
+
+    .chip code {
+      color: #666;
+      font-size: .8rem;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .note {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px 24px;
+    }
+
+    .note h3 {
+      font-size: 1.5rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      margin-bottom: 60px;
+    }
+
+    .opt {
+      background: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .07);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opt .thumb {
+      height: 190px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opt .body {
+      padding: 18px 22px 24px;
+    }
+
+    .opt h3 {
+      font-size: 1.9rem;
+    }
+
+    .opt p {
+      margin: 0 0 .6em;
+      font-size: .95rem;
+    }
+
+    .opt .fit {
+      font-family: var(--font-hand);
+      font-size: 1.15rem;
+      color: var(--periwinkle-deep);
+    }
+
+    @media (max-width: 860px) {
+
+      .options,
+      .notes {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <!-- long soft leaf, like the big lavender shapes on the walls -->
-    <symbol id="leaf" viewBox="0 0 200 90">
-      <path d="M4 66 C38 14 118 -4 196 22 C152 50 84 84 4 66Z"/>
-    </symbol>
-    <!-- chunky leaf with a notch, like the pale shapes behind the cats -->
-    <symbol id="leaf2" viewBox="0 0 160 160">
-      <path d="M18 142 C10 86 40 28 112 10 C120 40 116 70 98 92 C126 88 146 96 152 108 C120 136 70 156 18 142Z"/>
-    </symbol>
-    <!-- round-petal yellow flower -->
-    <symbol id="flower" viewBox="-100 -100 200 200">
-      <g>
-        <ellipse rx="25" ry="46" cy="-50"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(45)"/>
-        <ellipse rx="25" ry="46" cy="-50" transform="rotate(90)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(135)"/>
-        <ellipse rx="25" ry="46" cy="-50" transform="rotate(180)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(225)"/>
-        <ellipse rx="25" ry="46" cy="-50" transform="rotate(270)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(315)"/>
-        <circle r="34"/>
-      </g>
-    </symbol>
-    <!-- blunt 6-petal splash, like the periwinkle/orange shapes behind cats -->
-    <symbol id="splat" viewBox="-100 -100 200 200">
-      <g>
-        <rect x="-24" y="-96" width="48" height="96" rx="24"/>
-        <rect x="-22" y="-88" width="44" height="88" rx="22" transform="rotate(58)"/>
-        <rect x="-25" y="-94" width="50" height="94" rx="25" transform="rotate(122)"/>
-        <rect x="-22" y="-84" width="44" height="84" rx="22" transform="rotate(178)"/>
-        <rect x="-24" y="-92" width="48" height="92" rx="24" transform="rotate(238)"/>
-        <rect x="-21" y="-86" width="42" height="86" rx="21" transform="rotate(300)"/>
-        <circle r="40"/>
-      </g>
-    </symbol>
-    <!-- narrow-petal flower, like the sage one -->
-    <symbol id="star" viewBox="-100 -100 200 200">
-      <g>
-        <ellipse rx="17" ry="48" cy="-48"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(60)"/>
-        <ellipse rx="17" ry="48" cy="-48" transform="rotate(120)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(180)"/>
-        <ellipse rx="17" ry="48" cy="-48" transform="rotate(240)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(300)"/>
-        <circle r="24"/>
-      </g>
-    </symbol>
-    <!-- organic blob used as a photo mask -->
-    <clipPath id="blobMask" clipPathUnits="objectBoundingBox">
-      <path d="M.52 .02 C.74 .0 .95 .12 .98 .36 C1 .56 .93 .8 .74 .93 C.56 1.04 .3 .99 .14 .84 C-.02 .69 -.02 .42 .1 .24 C.2 .09 .36 .03 .52 .02Z"/>
-    </clipPath>
-  </defs>
-</svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- long soft leaf, like the big lavender shapes on the walls -->
+      <symbol id="leaf" viewBox="0 0 200 90">
+        <path d="M4 66 C38 14 118 -4 196 22 C152 50 84 84 4 66Z" />
+      </symbol>
+      <!-- chunky leaf with a notch, like the pale shapes behind the cats -->
+      <symbol id="leaf2" viewBox="0 0 160 160">
+        <path d="M18 142 C10 86 40 28 112 10 C120 40 116 70 98 92 C126 88 146 96 152 108 C120 136 70 156 18 142Z" />
+      </symbol>
+      <!-- round-petal yellow flower -->
+      <symbol id="flower" viewBox="-100 -100 200 200">
+        <g>
+          <ellipse rx="25" ry="46" cy="-50" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(45)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(90)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(135)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(180)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(225)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(270)" />
+          <ellipse rx="25" ry="46" cy="-50" transform="rotate(315)" />
+          <circle r="34" />
+        </g>
+      </symbol>
+      <!-- blunt 6-petal splash, like the periwinkle/orange shapes behind cats -->
+      <symbol id="splat" viewBox="-100 -100 200 200">
+        <g>
+          <rect x="-24" y="-96" width="48" height="96" rx="24" />
+          <rect x="-22" y="-88" width="44" height="88" rx="22" transform="rotate(58)" />
+          <rect x="-25" y="-94" width="50" height="94" rx="25" transform="rotate(122)" />
+          <rect x="-22" y="-84" width="44" height="84" rx="22" transform="rotate(178)" />
+          <rect x="-24" y="-92" width="48" height="92" rx="24" transform="rotate(238)" />
+          <rect x="-21" y="-86" width="42" height="86" rx="21" transform="rotate(300)" />
+          <circle r="40" />
+        </g>
+      </symbol>
+      <!-- narrow-petal flower, like the sage one -->
+      <symbol id="star" viewBox="-100 -100 200 200">
+        <g>
+          <ellipse rx="17" ry="48" cy="-48" />
+          <ellipse rx="17" ry="48" cy="-48" transform="rotate(60)" />
+          <ellipse rx="17" ry="48" cy="-48" transform="rotate(120)" />
+          <ellipse rx="17" ry="48" cy="-48" transform="rotate(180)" />
+          <ellipse rx="17" ry="48" cy="-48" transform="rotate(240)" />
+          <ellipse rx="17" ry="48" cy="-48" transform="rotate(300)" />
+          <circle r="24" />
+        </g>
+      </symbol>
+      <!-- organic blob used as a photo mask -->
+      <clipPath id="blobMask" clipPathUnits="objectBoundingBox">
+        <path d="M.52 .02 C.74 .0 .95 .12 .98 .36 C1 .56 .93 .8 .74 .93 C.56 1.04 .3 .99 .14 .84 C-.02 .69 -.02 .42 .1 .24 C.2 .09 .36 .03 .52 .02Z" />
+      </clipPath>
+    </defs>
+  </svg>
 
-<div class="wrap">
-  <header>
-    <h1>Bringing the lounge onto the website</h1>
-    <p class="lead">Three directions for the homepage, based on the photos of the lounge. These are mockups only. They don't change the real site, and all content is the same as now. The painted cats and the mural band are the artist's original files, so they stay crisp at any size.</p>
-  </header>
+  <div class="wrap">
+    <header>
+      <h1>Bringing the lounge onto the website</h1>
+      <p class="lead">Four directions for the homepage, based on the photos of the lounge and Brightwall's mural. These are mockups only. They don't change the real site, and all content is the same as of now.</p>
+    </header>
 
-  <h2>What the lounge looks like</h2>
-  <div class="notes">
-    <div class="note"><h3>Light and airy</h3><p>Pale mint-grey walls, lots of daylight. The current site is mostly black and cream with torn-paper edges, which reads more "dark coffee house" than the lounge does.</p></div>
-    <div class="note"><h3>Flat, painted shapes</h3><p>Big soft lavender leaves and bold cutout flowers in mustard, periwinkle, sage and orange, with each cat sitting on its own colored shape. Very Matisse-like.</p></div>
-    <div class="note"><h3>Playful hand lettering</h3><p>"Will Feral" and "Deliver to: Kitty Brew Cat Café" are painted in a casual hand-drawn style. A handwritten accent font captures that.</p></div>
-    <div class="note"><h3>Warm birch wood</h3><p>The big plywood cat tree, pegboard shelves and rounded cutouts add a warm, natural counterpoint to the cool walls.</p></div>
+    <h2>What the lounge looks like</h2>
+    <div class="notes">
+      <div class="note">
+        <h3>Light and airy</h3>
+        <p>Pale mint-grey walls, lots of daylight. The current site is mostly black and cream with torn-paper edges, which reads more "dark coffee house" than the lounge does.</p>
+      </div>
+      <div class="note">
+        <h3>Flat, painted shapes</h3>
+        <p>Big soft lavender leaves and bold cutout flowers in mustard, periwinkle, sage and orange, with each cat sitting on its own colored shape. Very Matisse-like.</p>
+      </div>
+      <div class="note">
+        <h3>Playful hand lettering</h3>
+        <p>"Will Feral" and "Deliver to: Kitty Brew Cat Café" are painted in a casual hand-drawn style. A handwritten accent font captures that.</p>
+      </div>
+      <div class="note">
+        <h3>Warm birch wood</h3>
+        <p>The big plywood cat tree, pegboard shelves and rounded cutouts add a warm, natural counterpoint to the cool walls.</p>
+      </div>
+    </div>
+
+    <h2>Palette from the Brightwall's original files</h2>
+    <div class="palette">
+      <div class="chip">
+        <div style="background:var(--wall)"></div>
+        <p>Wall mint<br><code>#e6eeee</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--lavender)"></div>
+        <p>Leaf lavender<br><code>#bac6e4</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--periwinkle)"></div>
+        <p>Periwinkle<br><code>#8484c0</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--mustard)"></div>
+        <p>Mustard flower<br><code>#d2ae2a</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--sage)"></div>
+        <p>Sage<br><code>#72907e</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--teal)"></div>
+        <p>Plant teal<br><code>#2a7e84</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--orange)"></div>
+        <p>Mural orange<br><code>#d27230</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--terracotta)"></div>
+        <p>Button orange<br><code>#b45a2a</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--birch)"></div>
+        <p>Birch plywood<br><code>#ecd3a4</code></p>
+      </div>
+      <div class="chip">
+        <div style="background:var(--ink)"></div>
+        <p>Linework ink<br><code>#1d1a18</code></p>
+      </div>
+    </div>
+
+    <h2>Four directions - Click to see mockups</h2>
+    <div class="options">
+      <a class="opt" href="a.html">
+        <div class="thumb" style="background:var(--wall)">
+          <svg style="position:absolute;left:-30px;top:10px;width:200px;fill:var(--lavender);transform:rotate(-20deg)">
+            <use href="#leaf" />
+          </svg>
+          <svg style="position:absolute;right:20px;top:20px;width:110px;fill:var(--mustard)">
+            <use href="#flower" />
+          </svg>
+          <img src="img/art/tuxedo-deliver-box.webp" alt="" style="position:absolute;left:28%;bottom:-6px;width:150px">
+        </div>
+        <div class="body">
+          <h3>A · Mural Wall</h3>
+          <p>The site feels painted on the lounge walls: mint background, scattered leaves and flowers, colorful headings, rounded buttons, and photos in organic shapes.</p>
+          <p class="fit">Biggest change · most "you are there"</p>
+        </div>
+      </a>
+      <a class="opt" href="b.html">
+        <div class="thumb" style="background:var(--birch);background-image:radial-gradient(circle, rgba(120,80,30,.28) 0 9px, transparent 10px);background-size:46px 46px">
+          <img src="img/art/calico-fish-box.webp" alt="" style="position:absolute;right:16px;bottom:-4px;width:140px">
+        </div>
+        <div class="body">
+          <h3>B · Birch &amp; Blooms</h3>
+          <p>Warm and woody like the cat tree and gift shop: cream background, plywood-style panels, arched photo windows, a pegboard photo wall, and teal accents.</p>
+          <p class="fit">Cozy · photo-forward</p>
+        </div>
+      </a>
+      <a class="opt" href="c.html">
+        <div class="thumb" style="background:linear-gradient(90deg,#2b2a55 50%,var(--wall) 50%)">
+          <svg style="position:absolute;left:10px;bottom:-30px;width:180px;fill:#3d3c7a;transform:rotate(-30deg)">
+            <use href="#leaf" />
+          </svg>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:90px;background:url(img/art/mural-panorama.webp) center bottom/auto 100% repeat-x"></div>
+        </div>
+        <div class="body">
+          <h3>C · Fresh Coat</h3>
+          <p>Today's layout, repainted: indigo instead of black, mint instead of cream, mural orange buttons, and wavy lavender edges instead of torn paper.</p>
+          <p class="fit">Smallest change · easiest to apply</p>
+        </div>
+      </a>
+      <a class="opt" href="d.html">
+        <div class="thumb" style="background:linear-gradient(90deg,#2b2a55 50%,var(--wall) 50%)">
+          <img src="img/art/tuxedo-deliver-box.webp" alt="" style="position:absolute;left:36%;bottom:-6px;width:150px">
+          <img src="img/art/black-fish-pillow.webp" alt="" style="position:absolute;right:20px;top:12px;width:110px">
+          <svg style="position:absolute;left:10px;bottom:-30px;width:170px;fill:#3d3c7a;transform:rotate(-30deg)">
+            <use href="#leaf" />
+          </svg>
+        </div>
+        <div class="body">
+          <h3>D · Painted Fresh Coat</h3>
+          <p>C's familiar layout (split hero, indigo blocks, wavy edge) with A's personality: painted cats crossing the photos, a colorful headline, hand lettering, rounded buttons and the mural band.</p>
+          <p class="fit">Best of both · recognizable but new</p>
+        </div>
+      </a>
+    </div>
   </div>
 
-  <h2>Palette from the artist's original files</h2>
-  <div class="palette">
-    <div class="chip"><div style="background:var(--wall)"></div><p>Wall mint<br><code>#e6eeee</code></p></div>
-    <div class="chip"><div style="background:var(--lavender)"></div><p>Leaf lavender<br><code>#bac6e4</code></p></div>
-    <div class="chip"><div style="background:var(--periwinkle)"></div><p>Periwinkle<br><code>#8484c0</code></p></div>
-    <div class="chip"><div style="background:var(--mustard)"></div><p>Mustard flower<br><code>#d2ae2a</code></p></div>
-    <div class="chip"><div style="background:var(--sage)"></div><p>Sage<br><code>#72907e</code></p></div>
-    <div class="chip"><div style="background:var(--teal)"></div><p>Plant teal<br><code>#2a7e84</code></p></div>
-    <div class="chip"><div style="background:var(--orange)"></div><p>Mural orange<br><code>#d27230</code></p></div>
-    <div class="chip"><div style="background:var(--terracotta)"></div><p>Button orange<br><code>#b45a2a</code></p></div>
-    <div class="chip"><div style="background:var(--birch)"></div><p>Birch plywood<br><code>#ecd3a4</code></p></div>
-    <div class="chip"><div style="background:var(--ink)"></div><p>Linework ink<br><code>#1d1a18</code></p></div>
-  </div>
-
-  <h2>Four directions</h2>
-  <div class="options">
-    <a class="opt" href="a.html">
-      <div class="thumb" style="background:var(--wall)">
-        <svg style="position:absolute;left:-30px;top:10px;width:200px;fill:var(--lavender);transform:rotate(-20deg)"><use href="#leaf"/></svg>
-        <svg style="position:absolute;right:20px;top:20px;width:110px;fill:var(--mustard)"><use href="#flower"/></svg>
-        <img src="img/art/tuxedo-deliver-box.webp" alt="" style="position:absolute;left:28%;bottom:-6px;width:150px">
-      </div>
-      <div class="body"><h3>A · Mural Wall</h3><p>The site feels painted on the lounge walls: mint background, scattered leaves and flowers, colorful headings, rounded buttons, and photos in organic shapes.</p><p class="fit">Biggest change · most "you are there"</p></div>
-    </a>
-    <a class="opt" href="b.html">
-      <div class="thumb" style="background:var(--birch);background-image:radial-gradient(circle, rgba(120,80,30,.28) 0 9px, transparent 10px);background-size:46px 46px">
-        <img src="img/art/calico-fish-box.webp" alt="" style="position:absolute;right:16px;bottom:-4px;width:140px">
-      </div>
-      <div class="body"><h3>B · Birch &amp; Blooms</h3><p>Warm and woody like the cat tree and gift shop: cream background, plywood-style panels, arched photo windows, a pegboard photo wall, and teal accents.</p><p class="fit">Cozy · photo-forward</p></div>
-    </a>
-    <a class="opt" href="c.html">
-      <div class="thumb" style="background:linear-gradient(90deg,#2b2a55 50%,var(--wall) 50%)">
-        <svg style="position:absolute;left:10px;bottom:-30px;width:180px;fill:#3d3c7a;transform:rotate(-30deg)"><use href="#leaf"/></svg>
-        <div style="position:absolute;left:0;right:0;bottom:0;height:90px;background:url(img/art/mural-panorama.webp) center bottom/auto 100% repeat-x"></div>
-      </div>
-      <div class="body"><h3>C · Fresh Coat</h3><p>Today's layout, repainted: indigo instead of black, mint instead of cream, mural orange buttons, and wavy lavender edges instead of torn paper.</p><p class="fit">Smallest change · easiest to apply</p></div>
-    </a>
-    <a class="opt" href="d.html">
-      <div class="thumb" style="background:linear-gradient(90deg,#2b2a55 50%,var(--wall) 50%)">
-        <img src="img/art/tuxedo-deliver-box.webp" alt="" style="position:absolute;left:36%;bottom:-6px;width:150px">
-        <img src="img/art/black-fish-pillow.webp" alt="" style="position:absolute;right:20px;top:12px;width:110px">
-        <svg style="position:absolute;left:10px;bottom:-30px;width:170px;fill:#3d3c7a;transform:rotate(-30deg)"><use href="#leaf"/></svg>
-      </div>
-      <div class="body"><h3>D · Painted Fresh Coat</h3><p>C's familiar layout (split hero, indigo blocks, wavy edge) with A's personality: painted cats crossing the photos, a colorful headline, hand lettering, rounded buttons and the mural band.</p><p class="fit">Best of both · recognizable but new</p></div>
-    </a>
-  </div>
-</div>
 </body>
 </html>

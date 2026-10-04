@@ -50,3 +50,9 @@ p { margin: 0 0 1em; }
 }
 .mock-banner a { color: #fff; }
 .mock-banner b { color: #ffd76a; }
+
+
+
+.options a:hover {
+  outline: 2px solid black;
+}
