@@ -59,4 +59,7 @@ p { margin: 0 0 1em; }
 
 .brightwall {
   text-align: center;
+  border-top: 1px solid rgba(192, 192, 192, 0.39);
+  padding: 1rem;
+  font-size: .9rem;
 }
