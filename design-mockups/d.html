@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup D: Painted Fresh Coat | Kitty Brew</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* D = C's layout (split hero, indigo blocks, wavy edge) + A's personality (painted cats, colorful type, hand lettering) */
+  body { background: var(--wall); }
+  :root { --night: #2b2a55; }
+  section { position: relative; }
+  .shape { position: absolute; pointer-events: none; z-index: 0; }
+  .art { position: absolute; z-index: 3; pointer-events: none; filter: drop-shadow(0 10px 16px rgba(20,20,60,.18)); }
+  .hand { font-family: var(--font-hand); }
+
+  /* Header: C's big logo, A's pill button */
+  .hdr { background: var(--wall); }
+  .hdr .wrap { display: flex; align-items: center; justify-content: space-between; height: 116px; }
+  .hdr img { height: 96px; }
+  .hdr nav { display: flex; gap: 28px; align-items: center; }
+  .hdr nav a { font-family: var(--font-display); font-size: 1.45rem; text-decoration: none; }
+  .hdr nav a.on { color: var(--terracotta); }
+  .today { background: var(--periwinkle); color: #fff; font-size: .85rem; text-align: center; padding: 7px 16px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#7ff0a6; margin-right:6px; }
+
+  /* HERO: C's split, A's colorful headline + painted cats crossing the seam */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #fff; min-height: 620px; overflow: hidden; }
+  .hero .txt { padding: 70px 60px 80px max(24px, calc((100vw - 1140px)/2 + 24px)); display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+  .hero h1 { font-size: clamp(3.2rem, 6vw, 5.4rem); }
+  .hero h1 span { display: block; }
+  .hero h1 .c1 { color: var(--tangerine); } .hero h1 .c2 { color: var(--lavender); } .hero h1 .c3 { color: var(--mustard); }
+  .hero .lead { color: #dcdbf6; max-width: 28rem; font-size: 1.08rem; }
+  .hero .note { font-family: var(--font-hand); font-size: 1.45rem; color: #fff; margin: 4px 0 20px; transform: rotate(-2deg); display: inline-block; }
+  .hero .note span { color: var(--mustard); }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero .btn--ghost { color: #fff; border-color: #fff; }
+  .hero .pic { position: relative; background: url(img/cat-tree.jpg) center 30% / cover; }
+  .hero .pic .art.box { width: 42%; left: -3%; bottom: -3%; }
+  .hero .pic .art.pillow { width: 34%; right: 4%; top: 4%; }
+
+  .wave { display: block; width: 100%; height: 70px; margin-top: -1px; }
+
+  /* HOW IT WORKS: A's painted cats, C's simple centered layout */
+  .how { text-align: center; padding: 10px 0 80px; overflow: hidden; }
+  .how h2 { font-size: 3rem; color: var(--ink); margin-bottom: 0; }
+  .how .sub { font-family: var(--font-hand); font-size: 1.45rem; color: var(--periwinkle-deep); margin-bottom: 34px; }
+  .how .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; position: relative; z-index: 1; }
+  .step-art { height: 200px; margin: 0 auto 14px; }
+  .step-art img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
+  .step:hover .step-art img { transform: rotate(-3deg) scale(1.04); }
+  .how h3 { font-size: 2.1rem; }
+  .how h3.o { color: var(--terracotta); } .how h3.p { color: var(--periwinkle-deep); } .how h3.t { color: var(--teal); }
+  .how p { max-width: 19rem; margin: 0 auto; }
+
+  /* IMPACT: C's split with photo, A's big number + price card + leaping cat */
+  .impact { display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #fff; }
+  .impact .pic { background: url(img/lounge-corner.jpg) center / cover; min-height: 540px; position: relative; }
+  .impact .pic .art { width: 44%; right: -14%; top: -10%; }
+  .impact .txt { padding: 70px max(24px, calc((100vw - 1140px)/2 + 24px)) 70px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .impact .num { font-family: var(--font-display); font-size: 6.5rem; line-height: .9; color: var(--mustard); }
+  .impact .num small { display: block; font-size: 1.5rem; color: var(--lavender); letter-spacing: 1px; }
+  .impact h2 { font-size: 2.6rem; margin-top: 14px; }
+  .impact p { color: #dcdbf6; }
+  .impact .price { background: rgba(255,255,255,.09); border-radius: 18px; padding: 14px 18px; margin: 6px 0 22px; }
+  .impact .price b { color: #fff; }
+
+  /* GALLERY (from A) */
+  .gallery-sec { padding: 90px 0 70px; overflow: hidden; }
+  .gallery-sec h2 { font-size: 3rem; text-align: center; margin: 0; }
+  .gallery-sec .sub { text-align: center; font-family: var(--font-hand); font-size: 1.35rem; color: var(--periwinkle-deep); margin-bottom: 30px; }
+  .gallery { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-auto-rows: 220px; gap: 16px; position: relative; z-index: 1; }
+  .gallery figure { margin: 0; border-radius: 22px; overflow: hidden; position: relative; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery .tall { grid-row: span 2; }
+  .gallery .illo { background: #fff; }
+  .gallery .illo img { object-fit: contain; padding: 12px; }
+  .gallery figcaption { position: absolute; left: 12px; bottom: 12px; background: #fff; border-radius: 99px; padding: 3px 12px; font-family: var(--font-hand); font-size: 1.05rem; }
+
+  /* REVIEWS (from A, simplified) */
+  .reviews { padding: 10px 0 70px; overflow: hidden; }
+  .reviews h2 { font-size: 3rem; text-align: center; margin-bottom: 26px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; z-index: 1; }
+  .card { background: #fff; border-radius: 22px; padding: 26px; box-shadow: 0 8px 24px rgba(40,40,90,.08); }
+  .card b { display: block; font-family: var(--font-display); font-size: 1.35rem; margin-top: 10px; color: var(--periwinkle-deep); }
+  .reviews .art { z-index: 0; }
+
+  /* Mural band + indigo footer (from C) */
+  .mural-band { height: 200px; background: url(img/art/mural-panorama.webp) center bottom / auto 100% repeat-x; margin-bottom: -6px; }
+  footer { background: var(--night); color: #ddd; padding: 50px 0 30px; }
+  footer .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  footer h3 { color: var(--mustard); font-size: 1.8rem; }
+  footer ul { list-style: none; padding: 0; margin: 0; font-size: .95rem; }
+
+  @media (max-width: 860px) {
+    .hdr nav a:not(.btn) { display: none; }
+    .hdr img { height: 72px; } .hdr .wrap { height: 92px; }
+    .hero, .impact { grid-template-columns: 1fr; }
+    .hero .pic { min-height: 320px; order: -1; }
+    .hero .pic .art.box { width: 40%; left: 2%; bottom: -8%; }
+    .hero .txt { padding: 50px 24px 60px; }
+    .impact .pic { min-height: 320px; }
+    .impact .pic .art { width: 34%; right: 4%; top: auto; bottom: -12%; }
+    .impact .txt { padding: 60px 24px; }
+    .how .grid, .cards { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; }
+    .reviews .art { display: none; }
+    .mural-band { height: 120px; }
+    footer .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- long soft leaf, like the big lavender shapes on the walls -->
+    <symbol id="leaf" viewBox="0 0 200 90">
+      <path d="M4 66 C38 14 118 -4 196 22 C152 50 84 84 4 66Z"/>
+    </symbol>
+    <!-- chunky leaf with a notch, like the pale shapes behind the cats -->
+    <symbol id="leaf2" viewBox="0 0 160 160">
+      <path d="M18 142 C10 86 40 28 112 10 C120 40 116 70 98 92 C126 88 146 96 152 108 C120 136 70 156 18 142Z"/>
+    </symbol>
+    <!-- round-petal yellow flower -->
+    <symbol id="flower" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="25" ry="46" cy="-50"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(45)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(90)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(135)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(180)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(225)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(270)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(315)"/>
+        <circle r="34"/>
+      </g>
+    </symbol>
+    <!-- blunt 6-petal splash, like the periwinkle/orange shapes behind cats -->
+    <symbol id="splat" viewBox="-100 -100 200 200">
+      <g>
+        <rect x="-24" y="-96" width="48" height="96" rx="24"/>
+        <rect x="-22" y="-88" width="44" height="88" rx="22" transform="rotate(58)"/>
+        <rect x="-25" y="-94" width="50" height="94" rx="25" transform="rotate(122)"/>
+        <rect x="-22" y="-84" width="44" height="84" rx="22" transform="rotate(178)"/>
+        <rect x="-24" y="-92" width="48" height="92" rx="24" transform="rotate(238)"/>
+        <rect x="-21" y="-86" width="42" height="86" rx="21" transform="rotate(300)"/>
+        <circle r="40"/>
+      </g>
+    </symbol>
+    <!-- narrow-petal flower, like the sage one -->
+    <symbol id="star" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="17" ry="48" cy="-48"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(60)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(120)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(180)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(240)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(300)"/>
+        <circle r="24"/>
+      </g>
+    </symbol>
+    <!-- organic blob used as a photo mask -->
+    <clipPath id="blobMask" clipPathUnits="objectBoundingBox">
+      <path d="M.52 .02 C.74 .0 .95 .12 .98 .36 C1 .56 .93 .8 .74 .93 C.56 1.04 .3 .99 .14 .84 C-.02 .69 -.02 .42 .1 .24 C.2 .09 .36 .03 .52 .02Z"/>
+    </clipPath>
+  </defs>
+</svg>
+<div class="mock-banner"><span><b>Mockup D: Painted Fresh Coat</b> · C's familiar layout with A's painted cats and personality</span><span><a href="c.html">← C</a> · <a href="index.html">All options</a></span></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <img src="../images/logo.png" alt="Kitty Brew Cat Café">
+    <nav>
+      <a class="on" href="#">Home</a><a href="#">Visit Us</a><a href="#">Menu</a><a href="#">Kitty Cam</a><a href="#">FAQ</a>
+      <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+    </nav>
+  </div>
+</header>
+<div class="today"><span class="dot"></span><b>Open now</b> · Café until <b>5:30</b> · Cat lounge until <b>6:00</b> · 721 Reading Rd, Mason</div>
+
+<section class="hero">
+  <svg class="shape" style="left:-90px;bottom:-70px;width:340px;fill:#3d3c7a;transform:rotate(-30deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:38%;top:36px;width:110px;fill:#3d3c7a"><use href="#splat"/></svg>
+  <div class="txt">
+    <h1><span class="c1">Great coffee.</span><span class="c2">Happy cats.</span><span class="c3">Cozy space.</span></h1>
+    <p class="lead">Kitty Brew Cat Café is where coffee lovers and cat lovers come together. Enjoy a handcrafted drink while relaxing with 20–25 adoptable cats from local rescues.</p>
+    <p class="note"><span>Reservations recommended</span> · walk-ins welcome!</p>
+    <div class="actions">
+      <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+      <a class="btn btn--ghost" href="#"><i class="fa-solid fa-video"></i>Watch the Kitty Cam</a>
+    </div>
+  </div>
+  <div class="pic" role="img" aria-label="Cats on the big wooden cat tree in the lounge">
+    <img class="art pillow" src="img/art/black-fish-pillow.webp" alt="">
+    <img class="art box" src="img/art/tuxedo-deliver-box.webp" alt="">
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 0 H1440 V22 C1240 70 1080 10 900 38 C720 66 560 14 380 40 C220 62 100 30 0 46Z" fill="#2b2a55"/>
+  <path d="M0 46 C100 30 220 62 380 40 C560 14 720 66 900 38 C1080 10 1240 70 1440 22 V34 C1250 76 1080 24 900 50 C720 76 560 28 380 52 C220 72 100 44 0 58Z" fill="#bac6e4"/>
+</svg>
+
+<section class="how">
+  <svg class="shape" style="right:-50px;top:0;width:270px;fill:var(--lavender);transform:rotate(25deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:-40px;bottom:10px;width:200px;fill:var(--lavender);transform:rotate(-150deg)"><use href="#leaf2"/></svg>
+  <div class="wrap">
+    <h2>Never been to a cat café?</h2>
+    <p class="sub">Here's how it works ~</p>
+    <div class="grid">
+      <div class="step"><div class="step-art"><img src="img/art/kitten-mug.webp" alt="Illustrated kitten batting at a coffee mug"></div><h3 class="o">The Café</h3><p>Coffees, teas, frozen treats and snacks. Free to enter and always open to the public.</p></div>
+      <div class="step"><div class="step-art"><img src="img/art/orange-pillow-roll.webp" alt="Illustrated fluffy orange cat rolling on a pillow"></div><h3 class="p">The Lounge</h3><p>Spend 50 minutes playing, relaxing, or just enjoying the cats' company. $13 per person.</p></div>
+      <div class="step"><div class="step-art"><img src="img/art/tabby-box.webp" alt="Illustrated tabby cat in a moving box"></div><h3 class="t">Adoptions</h3><p>Fall in love? Our partner rescues can help you take a furry friend home.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="pic" role="img" aria-label="The cozy corner of the cat lounge">
+    <img class="art" src="img/art/grey-leap-flower.webp" alt="">
+  </div>
+  <div class="txt">
+    <svg class="shape" style="right:-60px;top:-50px;width:260px;fill:#3d3c7a"><use href="#flower"/></svg>
+    <div class="num">4,300+<small>cats adopted into loving homes</small></div>
+    <h2>Making a difference, one cat at a time</h2>
+    <p>Every visit, whether it's a latte to go or an hour in the lounge, directly supports our rescue partners and helps more cats find homes.</p>
+    <div class="price"><b>Cat lounge: $13 for 50 minutes.</b> Kids 15 and under are $7 on Wednesdays.</div>
+    <div><a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a></div>
+  </div>
+</section>
+
+<section class="gallery-sec">
+  <svg class="shape" style="right:-60px;top:60px;width:300px;fill:var(--lavender);transform:rotate(-30deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:16%;top:40px;width:90px;fill:var(--orange)"><use href="#splat"/></svg>
+  <div class="wrap">
+    <h2>Step inside the lounge</h2>
+    <p class="sub">murals by [artist name] · cat tree, couches &amp; plenty of sunbeams</p>
+    <div class="gallery">
+      <figure class="tall"><img src="img/lounge-wide.jpg" alt=""><figcaption>The big cat tree</figcaption></figure>
+      <figure class="illo"><img src="img/art/tortie-orange-splat.webp" alt=""><figcaption>Painted residents</figcaption></figure>
+      <figure><img src="img/white-cat-chair.jpg" alt=""><figcaption>Nap champion</figcaption></figure>
+      <figure><img src="img/gift-shop.jpg" alt=""><figcaption>The gift shop</figcaption></figure>
+      <figure><img src="img/cat-drinks.jpg" alt=""><figcaption>Frappés &amp; friends</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <img class="art" src="img/art/will-feral.webp" alt="" style="left:-24px;bottom:0;width:220px">
+  <img class="art" src="img/art/orange-stretch.webp" alt="" style="right:-10px;top:-20px;width:170px">
+  <div class="wrap">
+    <h2>What visitors say</h2>
+    <div class="cards">
+      <div class="card">If you like cats and want to play with them, this is your place! Such a calming and cat-egorically fun place 😺<b>Lexington S</b></div>
+      <div class="card">I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. It's my happy place.<b>Laura B</b></div>
+      <div class="card">Our whole family spent some quality time together and with kitties last night. Great Friday night family outing. 10/10<b>Brian K</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="mural-band" role="img" aria-label="The Kitty Brew lounge mural"></div>
+<footer>
+  <div class="wrap">
+    <div><h3>Café Hours</h3><ul><li><b>Mon</b> 8:30–5:30</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 8:30–5:30</li><li><b>Fri</b> 8:30–6:30</li><li><b>Sat</b> 9:00–6:30</li><li><b>Sun</b> 10:00–4:30</li></ul></div>
+    <div><h3>Cat Lounge Hours</h3><ul><li><b>Mon</b> 11–6</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 11–6</li><li><b>Fri</b> 11–7</li><li><b>Sat</b> 10–7</li><li><b>Sun</b> 10–5</li></ul></div>
+    <div><h3>Find Us</h3><p>721 Reading Road<br>Mason, OH 45040<br>(513) 701-9001</p></div>
+  </div>
+</footer>
+</body>
+</html>

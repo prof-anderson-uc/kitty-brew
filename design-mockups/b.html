@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup B: Birch &amp; Blooms | Kitty Brew</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { background: var(--cream); }
+
+  /* plywood: warm birch face with the striped layered edge you see on the cat tree */
+  .ply {
+    background: var(--birch);
+    border-radius: 28px;
+    box-shadow:
+      inset 0 -10px 0 0 var(--birch-edge),
+      0 14px 30px rgba(120, 80, 30, .12);
+  }
+  .ply-edge {
+    height: 12px; border-radius: 0 0 14px 14px;
+    background: repeating-linear-gradient(180deg, #e2c48d 0 2px, #c99e5d 2px 4px);
+  }
+  /* pegboard dots, like the gift shop walls */
+  .peg {
+    background-color: var(--birch);
+    background-image: radial-gradient(circle, rgba(120,80,30,.28) 0 9px, transparent 10px);
+    background-size: 56px 56px;
+  }
+
+  .hdr .wrap { display: flex; align-items: center; justify-content: space-between; height: 96px; }
+  .hdr img { height: 76px; }
+  .hdr nav { display: flex; gap: 26px; align-items: center; }
+  .hdr nav a { font-family: var(--font-display); font-size: 1.35rem; text-decoration: none; }
+  .hdr nav a.on { color: var(--terracotta); }
+  .today { text-align: center; font-size: .88rem; padding: 0 16px 14px; color: #6a5a40; }
+  .today b { color: var(--ink); }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#3fae6a; margin-right:6px; }
+
+  /* HERO: arched photo windows like the lounge's rounded cutouts */
+  .hero { padding: 30px 0 80px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 50px; align-items: center; }
+  .hero h1 { font-size: clamp(3rem, 6vw, 5rem); }
+  .hero h1 em { font-style: normal; color: var(--teal); }
+  .hero .lead { font-size: 1.12rem; max-width: 30rem; }
+  .tag { display: inline-block; font-family: var(--font-hand); font-size: 1.3rem; background: var(--sage); color: #fff; padding: 2px 14px; border-radius: 99px; margin-bottom: 14px; transform: rotate(-2deg); }
+  .arches { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; align-items: end; position: relative; }
+  .arch { border-radius: 999px 999px 26px 26px; overflow: hidden; border: 10px solid var(--birch); box-shadow: 0 14px 30px rgba(120,80,30,.15); }
+  .arch img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+  .arch.small img { aspect-ratio: 3/3.6; }
+  .arches .bloom { position: absolute; width: 120px; right: -26px; top: -30px; fill: var(--orange); z-index: 2; }
+  .art { position: absolute; z-index: 3; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(80,50,10,.15)); }
+
+  /* HOW IT WORKS: three plywood shelves */
+  .how { padding: 70px 0; }
+  .how .board { padding: 50px 40px; border-radius: 34px; position: relative; }
+  .how h2 { font-size: 3rem; text-align: center; }
+  .shelves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 26px; }
+  .shelf { background: var(--cream); border-radius: 22px; padding: 26px 24px 30px; text-align: center; box-shadow: 0 10px 0 -2px var(--birch-edge); }
+  .shelf i { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 12px; font-size: 1.8rem; color: #fff; }
+  .shelf:nth-child(1) i { background: var(--mustard); } .shelf:nth-child(2) i { background: var(--periwinkle); } .shelf:nth-child(3) i { background: var(--terracotta); }
+  .shelf h3 { font-size: 2rem; }
+
+  /* IMPACT: sage block */
+  .impact { background: var(--teal); color: #fff; padding: 90px 0; border-radius: 48px 48px 0 0; margin-top: 40px; }
+  .impact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .impact .num { font-family: var(--font-display); font-size: 7rem; line-height: .9; color: var(--birch); }
+  .impact .num small { display: block; font-size: 1.6rem; color: #d7efe9; }
+  .impact p { color: #e0f3ef; }
+  .impact .roundwrap { position: relative; }
+  .impact .round { border-radius: 50%; overflow: hidden; border: 10px solid var(--birch); aspect-ratio: 1; max-width: 440px; margin-left: auto; }
+  .impact .round img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* GALLERY on pegboard */
+  .gallery-sec { padding: 80px 0; }
+  .gallery-sec h2 { font-size: 3rem; text-align: center; }
+  .gallery-sec .sub { text-align: center; font-family: var(--font-hand); font-size: 1.35rem; color: #7a6040; }
+  .peg { padding: 40px; border-radius: 34px; margin-top: 26px; }
+  .pins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .pin { background: #fff; padding: 10px 10px 14px; border-radius: 10px; box-shadow: 0 8px 18px rgba(80,50,10,.18); transform: rotate(var(--r, -2deg)); }
+  .pin img { aspect-ratio: 1; object-fit: cover; border-radius: 6px; width: 100%; }
+  .pin span { display: block; text-align: center; font-family: var(--font-hand); font-size: 1.1rem; margin-top: 6px; }
+
+  footer { background: #3a2e22; color: #eadfcc; padding: 60px 0 30px; }
+  footer .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  footer h3 { color: var(--birch); font-size: 1.8rem; }
+  footer ul { list-style: none; padding: 0; margin: 0; font-size: .95rem; }
+
+  @media (max-width: 860px) {
+    .hdr nav a:not(.btn) { display: none; }
+    .hero .wrap, .impact .wrap { grid-template-columns: 1fr; }
+    .shelves { grid-template-columns: 1fr; }
+    .pins { grid-template-columns: 1fr 1fr; }
+    footer .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- long soft leaf, like the big lavender shapes on the walls -->
+    <symbol id="leaf" viewBox="0 0 200 90">
+      <path d="M4 66 C38 14 118 -4 196 22 C152 50 84 84 4 66Z"/>
+    </symbol>
+    <!-- chunky leaf with a notch, like the pale shapes behind the cats -->
+    <symbol id="leaf2" viewBox="0 0 160 160">
+      <path d="M18 142 C10 86 40 28 112 10 C120 40 116 70 98 92 C126 88 146 96 152 108 C120 136 70 156 18 142Z"/>
+    </symbol>
+    <!-- round-petal yellow flower -->
+    <symbol id="flower" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="25" ry="46" cy="-50"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(45)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(90)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(135)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(180)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(225)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(270)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(315)"/>
+        <circle r="34"/>
+      </g>
+    </symbol>
+    <!-- blunt 6-petal splash, like the periwinkle/orange shapes behind cats -->
+    <symbol id="splat" viewBox="-100 -100 200 200">
+      <g>
+        <rect x="-24" y="-96" width="48" height="96" rx="24"/>
+        <rect x="-22" y="-88" width="44" height="88" rx="22" transform="rotate(58)"/>
+        <rect x="-25" y="-94" width="50" height="94" rx="25" transform="rotate(122)"/>
+        <rect x="-22" y="-84" width="44" height="84" rx="22" transform="rotate(178)"/>
+        <rect x="-24" y="-92" width="48" height="92" rx="24" transform="rotate(238)"/>
+        <rect x="-21" y="-86" width="42" height="86" rx="21" transform="rotate(300)"/>
+        <circle r="40"/>
+      </g>
+    </symbol>
+    <!-- narrow-petal flower, like the sage one -->
+    <symbol id="star" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="17" ry="48" cy="-48"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(60)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(120)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(180)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(240)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(300)"/>
+        <circle r="24"/>
+      </g>
+    </symbol>
+    <!-- organic blob used as a photo mask -->
+    <clipPath id="blobMask" clipPathUnits="objectBoundingBox">
+      <path d="M.52 .02 C.74 .0 .95 .12 .98 .36 C1 .56 .93 .8 .74 .93 C.56 1.04 .3 .99 .14 .84 C-.02 .69 -.02 .42 .1 .24 C.2 .09 .36 .03 .52 .02Z"/>
+    </clipPath>
+  </defs>
+</svg>
+
+<div class="mock-banner"><span><b>Mockup B: Birch &amp; Blooms</b> · Warm and woody like the cat tree, pegboards and furniture</span><span><a href="a.html">← A</a> · <a href="index.html">All options</a> · <a href="c.html">C →</a></span></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <img src="../images/logo.png" alt="Kitty Brew Cat Café">
+    <nav>
+      <a class="on" href="#">Home</a><a href="#">Visit Us</a><a href="#">Menu</a><a href="#">Kitty Cam</a><a href="#">FAQ</a>
+      <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+    </nav>
+  </div>
+</header>
+<div class="today"><span class="dot"></span><b>Open now</b> · Café until <b>5:30</b> · Cat lounge until <b>6:00</b> · 721 Reading Rd, Mason</div>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="tag">Mason's cat café ✿</span>
+      <h1>Great coffee.<br>Happy cats.<br><em>Cozy space.</em></h1>
+      <p class="lead">Grab a handcrafted drink and settle into our lounge with 20–25 adoptable cats from local rescues. Every visit helps a cat find home.</p>
+      <div class="actions" style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+        <a class="btn btn--ghost" href="#"><i class="fa-solid fa-video"></i>Watch the Kitty Cam</a>
+      </div>
+    </div>
+    <div class="arches">
+      <svg class="bloom"><use href="#splat"/></svg>
+      <div class="arch"><img src="img/cat-tree.jpg" alt=""></div>
+      <div class="arch small"><img src="img/sleeping-kitten.jpg" alt=""></div>
+      <img class="art" src="img/art/calico-fish-box.webp" alt="" style="width:38%;left:-12%;bottom:-12%">
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="wrap">
+    <div class="board ply">
+      <img class="art" src="img/art/black-treat-bag.webp" alt="" style="width:150px;right:24px;top:-88px">
+      <h2>How a visit works</h2>
+      <div class="shelves">
+        <div class="shelf"><i class="fa-solid fa-mug-saucer"></i><h3>The Café</h3><p>Coffee, tea, frappés and snacks. Free to enter, open to everyone.</p></div>
+        <div class="shelf"><i class="fa-solid fa-cat"></i><h3>The Lounge</h3><p>50 minutes with the cats for $13. Kids are $7 on Wednesdays.</p></div>
+        <div class="shelf"><i class="fa-solid fa-heart"></i><h3>Adoptions</h3><p>Fall in love? Our rescue partners can help you take them home.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="wrap">
+    <div>
+      <div class="num">4,300+<small>cats adopted into loving homes</small></div>
+      <p>Every latte and every lounge visit directly supports our rescue partners: His Hands Extended Sanctuary, HART Animal Rescue, and Myles Ahead.</p>
+      <a class="btn" style="background:var(--birch);border-color:var(--birch);color:var(--ink)" href="#">Plan your visit</a>
+    </div>
+    <div class="roundwrap"><div class="round"><img src="img/calico.jpg" alt=""></div><img class="art" src="img/art/silver-cave-bed.webp" alt="" style="width:42%;left:2%;bottom:-6%"></div>
+  </div>
+</section>
+
+<section class="gallery-sec">
+  <div class="wrap">
+    <h2>Life in the lounge</h2>
+    <p class="sub">pinned up fresh from our Instagram</p>
+    <div class="peg">
+      <div class="pins">
+        <div class="pin" style="--r:-3deg"><img src="img/kitten-paw.jpg" alt=""><span>Gotcha!</span></div>
+        <div class="pin" style="--r:2deg"><img src="img/cat-drinks.jpg" alt=""><span>Frappé inspector</span></div>
+        <div class="pin" style="--r:-1deg"><img src="img/grey-cat-sofa.jpg" alt=""><span>Couch potato</span></div>
+        <div class="pin" style="--r:3deg"><img src="img/art/will-feral.webp" alt="" style="background:var(--wall);object-fit:contain;padding:6px"><span>Will feral</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><h3>Café Hours</h3><ul><li><b>Mon</b> 8:30–5:30</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 8:30–5:30</li><li><b>Fri</b> 8:30–6:30</li><li><b>Sat</b> 9:00–6:30</li><li><b>Sun</b> 10:00–4:30</li></ul></div>
+    <div><h3>Cat Lounge Hours</h3><ul><li><b>Mon</b> 11–6</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 11–6</li><li><b>Fri</b> 11–7</li><li><b>Sat</b> 10–7</li><li><b>Sun</b> 10–5</li></ul></div>
+    <div><h3>Find Us</h3><p>721 Reading Road<br>Mason, OH 45040<br>(513) 701-9001</p></div>
+  </div>
+</footer>
+</body>
+</html>

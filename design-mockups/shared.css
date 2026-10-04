@@ -1,21 +1,23 @@
 /* Shared pieces for the design mockups (not part of the live site) */
 
 :root {
-  /* Palette sampled from the lounge photos, brightened to match the paint */
-  --wall: #e6eeee;        /* pale mint-grey walls */
+  /* Palette taken from the mural artist's original files */
+  --wall: #e6eeee;        /* pale mint-grey walls (paint) */
   --wall-deep: #d6e2e2;
-  --lavender: #c9c8f0;    /* big soft leaf shapes */
-  --periwinkle: #7372cc;  /* the darker flower splashes */
+  --lavender: #bac6e4;    /* big soft leaf shapes */
+  --periwinkle: #8484c0;  /* periwinkle flower splashes */
   --periwinkle-deep: #3f3d86;
-  --mustard: #d8a93b;     /* yellow flowers */
-  --sage: #6f9b75;        /* green flower behind the stretching cat */
-  --teal: #2b8c84;        /* plant leaves */
-  --terracotta: #e04e1b;  /* orange flower behind the tortie, rugs */
-  --tangerine: #e7783f;   /* orange tabby cats */
-  --box: #d89b5c;         /* cardboard box */
+  --mustard: #d2ae2a;     /* yellow flowers */
+  --sage: #72907e;        /* sage flower + pillow */
+  --teal: #2a7e84;        /* plant leaves, cave bed */
+  --orange: #d27230;      /* orange flower splash, rug */
+  --terracotta: #b45a2a;  /* darker orange (tabby stripes) - readable with white text, used for buttons */
+  --tangerine: #f0ae5a;   /* orange tabby fur */
+  --box: #d8904e;         /* cardboard box */
+  --box-light: #f6c072;
   --birch: #ecd3a4;       /* the plywood cat tree and pegboards */
   --birch-edge: #c9a56b;
-  --ink: #1d1a18;         /* black linework */
+  --ink: #1d1a18;         /* linework */
   --cream: #fffaf1;
 
   --font-display: "Bebas Neue", Impact, sans-serif;
