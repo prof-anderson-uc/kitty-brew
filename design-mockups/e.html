@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup E | Kitty Brew</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* D = C's layout (split hero, indigo blocks, wavy edge) + A's personality (painted cats, colorful type, hand lettering) */
+  body { background: var(--wall); }
+  :root { --night: #2b2a55; }
+  section { position: relative; }
+  .shape { position: absolute; pointer-events: none; z-index: 0; }
+  .art { position: absolute; z-index: 3; pointer-events: none; filter: drop-shadow(0 10px 16px rgba(20,20,60,.18)); }
+  .hand { font-family: var(--font-hand); }
+
+  /* Header: C's big logo, A's pill button */
+  .hdr { background: var(--wall); }
+  .hdr .wrap { display: flex; align-items: center; justify-content: space-between; height: 116px; }
+  .hdr img { height: 96px; }
+  .hdr nav { display: flex; gap: 28px; align-items: center; }
+  .hdr nav a { font-family: var(--font-display); font-size: 1.45rem; text-decoration: none; }
+  .hdr nav a.on { color: var(--terracotta); }
+  .today { background: var(--periwinkle); color: #fff; font-size: .85rem; text-align: center; padding: 7px 16px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#7ff0a6; margin-right:6px; }
+
+  /* HERO: C's split, A's colorful headline + painted cats crossing the seam */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #fff; min-height: 620px; overflow: hidden; }
+  .hero .txt { padding: 70px 60px 80px max(24px, calc((100vw - 1140px)/2 + 24px)); display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+  .hero h1 { font-size: clamp(3.2rem, 6vw, 5.4rem); }
+  .hero h1 span { display: block; }
+  .hero h1 .c1 { color: var(--tangerine); } .hero h1 .c2 { color: var(--lavender); } .hero h1 .c3 { color: var(--mustard); }
+  .hero .lead { color: #dcdbf6; max-width: 28rem; font-size: 1.08rem; }
+  .hero .note { font-size: 1rem; color: #fff; margin: 4px 0 22px; }
+  .hero .note b { color: var(--mustard); font-weight: 700; }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero .btn--ghost { color: #fff; border-color: #fff; }
+  .hero .pic { position: relative; overflow: hidden; background: #3d3c7a; }
+  .hero .pic > .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* painted cats: smaller and tucked into the corners so the photo stays visible */
+
+  .wave { display: block; width: 100%; height: 70px; margin-top: -1px; }
+
+  /* HOW IT WORKS: A's painted cats, C's simple centered layout */
+  .how { text-align: center; padding: 10px 0 80px; overflow: hidden; }
+  .how h2 { font-size: 3rem; color: var(--ink); margin-bottom: 0; }
+  .how .sub { font-family: var(--font-hand); font-size: 1.45rem; color: var(--periwinkle-deep); margin-bottom: 34px; }
+  .how .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; position: relative; z-index: 1; }
+  .step-art { height: 200px; margin: 0 auto 14px; }
+  .step-art img { width: 100%; height: 100%; object-fit: contain; position: relative; transition: transform .3s; }
+  .step:hover .step-art img { transform: rotate(-3deg) scale(1.04); }
+  .how h3 { font-size: 2.1rem; }
+  .how h3.o { color: var(--terracotta); } .how h3.p { color: var(--periwinkle-deep); } .how h3.t { color: var(--teal); }
+  .how p { max-width: 19rem; margin: 0 auto; }
+
+  /* IMPACT: C's split with photo, A's big number + price card + leaping cat */
+  .impact { display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #fff; }
+  .impact .pic { background: url(img/lounge-corner.jpg) center / cover; min-height: 540px; position: relative; }
+  .impact .txt { padding: 70px max(24px, calc((100vw - 1140px)/2 + 24px)) 70px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .impact .num { font-family: var(--font-display); font-size: 6.5rem; line-height: .9; color: var(--mustard); }
+  .impact .num small { display: block; font-size: 1.5rem; color: var(--lavender); letter-spacing: 1px; }
+  .impact h2 { font-size: 2.6rem; margin-top: 14px; }
+  .impact p { color: #dcdbf6; }
+  .impact .price { background: rgba(255,255,255,.09); border-radius: 18px; padding: 14px 18px; margin: 6px 0 22px; }
+  .impact .price b { color: #fff; }
+
+  /* GALLERY (from A) */
+  .gallery-sec { padding: 90px 0 70px; overflow: hidden; }
+  .gallery-sec h2 { font-size: 3rem; text-align: center; margin: 0; }
+  .gallery-sec .sub { text-align: center; font-family: var(--font-hand); font-size: 1.35rem; color: var(--periwinkle-deep); margin-bottom: 30px; }
+  .gallery { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-auto-rows: 220px; gap: 16px; position: relative; z-index: 1; }
+  .gallery figure { margin: 0; border-radius: 22px; overflow: hidden; position: relative; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery .tall { grid-row: span 2; }
+  .gallery .illo { background: #fff; }
+  .gallery .illo img { object-fit: contain; padding: 12px; }
+  .gallery figcaption { position: absolute; left: 12px; bottom: 12px; background: #fff; border-radius: 99px; padding: 3px 12px; font-family: var(--font-hand); font-size: 1.05rem; }
+
+  /* REVIEWS (from A, simplified) */
+  .reviews { padding: 10px 0 70px; overflow: hidden; }
+  .reviews h2 { font-size: 3rem; text-align: center; margin-bottom: 26px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; position: relative; z-index: 1; }
+  .card { background: #fff; border-radius: 22px; padding: 26px; box-shadow: 0 8px 24px rgba(40,40,90,.08); }
+  .card b { display: block; font-family: var(--font-display); font-size: 1.35rem; margin-top: 10px; color: var(--periwinkle-deep); }
+
+  /* INSTAGRAM: latest posts (would load automatically through Behold) */
+  .insta { padding: 20px 0 70px; }
+  .insta-card { background: #fff; border-radius: 26px; padding: 26px 28px 30px; box-shadow: 0 8px 24px rgba(40,40,90,.08); position: relative; }
+  .insta-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .insta-head h2 { font-size: 2.4rem; margin: 0; }
+  .insta-head .hand { color: var(--periwinkle-deep); font-size: 1.25rem; display: block; margin-top: -4px; }
+  .insta-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .insta-grid a { aspect-ratio: 1; border-radius: 14px; overflow: hidden; display: block; position: relative; }
+  .insta-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .insta-grid a:hover img { transform: scale(1.06); }
+  .mock-note { font-size: .8rem; color: #8a8a99; margin: 12px 0 0; text-align: right; }
+
+  /* MURAL BAND, rebuilt from the artist's individual pieces so nothing is cut off.
+     Elements are spaced by % so the band stretches to any screen; below 1200px it just shows the middle. */
+  .band { position: relative; height: 290px; overflow: hidden; margin-bottom: -2px; }
+  .band-inner { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: max(100%, 1400px); }
+  .band img { position: absolute; bottom: 0; height: auto; }
+  .band .lf { z-index: 1; }   /* lavender leaves */
+  .band .fl { z-index: 2; }   /* flowers */
+  .band .ct { z-index: 3; }   /* cats + props */
+  .band .ct.up { z-index: 4; } /* the "floating" row overlaps the bottom row a little, like on the wall */
+  footer { background: var(--night); color: #ddd; padding: 50px 0 30px; }
+  footer .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  footer h3 { color: var(--mustard); font-size: 1.8rem; }
+  footer ul { list-style: none; padding: 0; margin: 0; font-size: .95rem; }
+
+  @media (max-width: 860px) {
+    .hdr nav a:not(.btn) { display: none; }
+    .hdr img { height: 72px; } .hdr .wrap { height: 92px; }
+    .hero, .impact { grid-template-columns: 1fr; }
+    .hero .pic { min-height: 320px; order: -1; }
+    .hero .txt { padding: 50px 24px 60px; }
+    .impact .pic { min-height: 320px; }
+    .impact .txt { padding: 60px 24px; }
+    .how .grid, .cards { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; }
+    .insta-grid { grid-template-columns: repeat(3, 1fr); }
+    .band { height: 232px; }
+    .band-inner { transform: translateX(-50%) scale(.8); transform-origin: bottom center; }
+    footer .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* =====================================================================
+     CAT ART: SIZES & POSITIONS  ← everything you'd want to tweak is here
+     =====================================================================
+     How the numbers work:
+       width    how big the drawing is. % = percent of the box it sits in
+                (e.g. the hero photo); px = a fixed size.
+       left / right / top / bottom
+                distance from that edge of the box. Bigger number = further
+                in from that edge. Negative numbers push it past the edge so
+                it hangs off (that's how cats "cross" a photo's border).
+                Use left OR right (not both), and top OR bottom.
+       transform: scaleX(-1)   mirror the drawing left-to-right
+       transform: rotate(-8deg) tilt it (negative = counter-clockwise)
+       z-index  stacking order: higher numbers sit on top of lower ones.
+     Tip: in your browser, right-click a cat → Inspect, and you can change
+     these values live to try them out before editing this file.
+     ===================================================================== */
+
+  /* ---- Hero: the two cats on the photo ---- */
+  .cat-hero-top    { width: 20%; right: 3%; top: 3%; }     /* black cat on the fish pillow (cat-string.svg) */
+  .cat-hero-bottom { width: 25%; left: 2%; bottom: 2%; }   /* calico in the fish box (cat-in-box.svg) */
+
+  /* ---- "How it works" step drawings ----
+     Each drawing fills a 200px-tall box (see .step-art above). Use height
+     to shrink one (e.g. 85%) and top / left to nudge it (e.g. top: 10px). */
+  .step-art .cat-step-cafe      { height: 100%; top: 0; left: 0; }  /* kitten + mug (cat-spilling-mug.svg) */
+  .step-art .cat-step-lounge    { height: 100%; top: 0; left: 0; }  /* napping orange cat (cat-napping.svg) */
+  .step-art .cat-step-adoptions { height: 100%; top: 0; left: 0; }  /* Siamese on teal cushion (cat-reaching.svg) */
+
+  /* ---- "Making a difference": cat on the photo's edge ---- */
+  .cat-impact { width: 26%; right: -9%; top: -7%; }          /* grey cat leaping off the yellow flower (cat-jumping.svg) */
+
+  /* ---- Reviews: cats peeking in from the sides (z-index 0 = behind the cards) ---- */
+  .cat-reviews-left  { width: 150px; left: -10px; bottom: 0; z-index: 0; }   /* Peaches (cat-peaches.svg) */
+  .cat-reviews-right { width: 150px; right: -6px; top: -24px; z-index: 0; }  /* stretching cat (cat-stretching.svg) */
+
+  /* ---- Instagram: cat peeking over the top of the card ---- */
+  .cat-insta { width: 130px; right: 40px; top: -78px; z-index: 0; }          /* sleepy orange cat (cat-sleepy.svg) */
+
+  /* ---- Mural band above the footer ----
+     left is a % of the band's width, so things stay spread out on any screen.
+     bottom is px up from the bottom edge of the band (the band is 290px tall,
+     so keep bottom + the drawing's height under ~290px or it gets cut off). */
+
+  /* Cats: the bottom row sits at bottom: 0, the "floating" row at bottom: 148px */
+  .band .band-cat-bed                { left: 0.6%; width: 140px; bottom: 0px; }
+  .band .band-cat-jumping            { left: 6.1%; width: 108px; bottom: 148px; }
+  .band .band-cat-in-box-02          { left: 11.6%; width: 128px; bottom: 0px; }
+  .band .band-cat-string             { left: 17.1%; width: 108px; bottom: 148px; }
+  .band .band-cat-behind-plant       { left: 22.6%; width: 148px; bottom: 0px; }
+  .band .band-cat-peaches            { left: 28.1%; width: 90px; bottom: 148px; }
+  .band .band-cat-tortie             { left: 33.6%; width: 160px; bottom: 0px; }
+  .band .band-cat-stretching         { left: 39.1%; width: 104px; bottom: 148px; }
+  .band .band-cat-will-feral         { left: 44.6%; width: 150px; bottom: 0px; }
+  .band .band-cat-ivan               { left: 50.1%; width: 80px; bottom: 148px; }
+  .band .band-cat-treat-bag          { left: 55.6%; width: 118px; bottom: 0px; }
+  .band .band-cat-sleepy             { left: 61.1%; width: 108px; bottom: 148px; }
+  .band .band-cat-british-shorthair  { left: 66.6%; width: 138px; bottom: 0px; }
+  .band .band-cat-tortie-flower      { left: 72.1%; width: 98px; bottom: 148px; }
+  .band .band-cat-in-box             { left: 77.6%; width: 112px; bottom: 0px; }
+  .band .band-cat-napping            { left: 83.1%; width: 118px; bottom: 148px; }
+  .band .band-cat-reaching           { left: 88.6%; width: 108px; bottom: 0px; }
+  .band .band-cat-spilling-mug       { left: auto; right: 0.6%; width: 118px; bottom: 148px; }
+
+  /* Little props tucked between the cats */
+  .band .band-toy-ball-1     { left: 8.2%; width: 22px; bottom: 0px; }
+  .band .band-fishbone-01-1  { left: 24.6%; width: 52px; bottom: 6px; }
+  .band .band-toy-fish-1     { left: 41.2%; width: 34px; bottom: 8px; }
+  .band .band-fishbone-02-1  { left: 57.8%; width: 52px; bottom: 6px; }
+  .band .band-toy-ball-2     { left: 74.4%; width: 22px; bottom: 0px; }
+  .band .band-toy-fish-2     { left: 91%; width: 34px; bottom: 8px; }
+
+  /* Lavender leaves (behind everything) */
+  .band .band-leaf-01  { left: -2%; width: 230px; bottom: -24px; }  /* leaves-05.svg */
+  .band .band-leaf-02  { left: 5%; width: 280px; bottom: 40px; transform: scaleX(-1); }  /* leaves-04.svg */
+  .band .band-leaf-03  { left: 11%; width: 250px; bottom: -18px; }  /* leaves-01.svg */
+  .band .band-leaf-04  { left: 17%; width: 190px; bottom: 60px; }  /* leaves-06.svg */
+  .band .band-leaf-05  { left: 22%; width: 250px; bottom: 110px; transform: scaleX(-1); }  /* leaves-03.svg */
+  .band .band-leaf-06  { left: 28%; width: 170px; bottom: -10px; }  /* leaves-02.svg */
+  .band .band-leaf-07  { left: 33%; width: 220px; bottom: -26px; transform: scaleX(-1); }  /* leaves-05.svg */
+  .band .band-leaf-08  { left: 39%; width: 270px; bottom: 30px; }  /* leaves-04.svg */
+  .band .band-leaf-09  { left: 45%; width: 180px; bottom: -12px; transform: scaleX(-1); }  /* leaves-06.svg */
+  .band .band-leaf-10  { left: 50%; width: 240px; bottom: 70px; transform: scaleX(-1); }  /* leaves-01.svg */
+  .band .band-leaf-11  { left: 56%; width: 240px; bottom: -6px; }  /* leaves-03.svg */
+  .band .band-leaf-12  { left: 61%; width: 220px; bottom: 20px; }  /* leaves-05.svg */
+  .band .band-leaf-13  { left: 67%; width: 160px; bottom: 90px; transform: scaleX(-1); }  /* leaves-02.svg */
+  .band .band-leaf-14  { left: 72%; width: 280px; bottom: -14px; transform: scaleX(-1); }  /* leaves-04.svg */
+  .band .band-leaf-15  { left: 78%; width: 190px; bottom: 40px; }  /* leaves-06.svg */
+  .band .band-leaf-16  { left: 83%; width: 250px; bottom: -16px; }  /* leaves-01.svg */
+  .band .band-leaf-17  { left: 88%; width: 240px; bottom: 120px; }  /* leaves-03.svg */
+  .band .band-leaf-18  { left: 93%; width: 230px; bottom: -22px; transform: scaleX(-1); }  /* leaves-05.svg */
+
+  /* Flowers (behind the cats, in front of the leaves) */
+  .band .band-flower-01  { left: 3.5%; width: 70px; bottom: 170px; }  /* flower-05.svg */
+  .band .band-flower-02  { left: 9%; width: 58px; bottom: 92px; }  /* flower-02.svg */
+  .band .band-flower-03  { left: 14.5%; width: 66px; bottom: 196px; }  /* flower-06.svg */
+  .band .band-flower-04  { left: 20.5%; width: 50px; bottom: 120px; }  /* flower-03.svg */
+  .band .band-flower-05  { left: 26%; width: 74px; bottom: 200px; }  /* flower-01.svg */
+  .band .band-flower-06  { left: 31.5%; width: 48px; bottom: 96px; }  /* flower-04.svg */
+  .band .band-flower-07  { left: 37.5%; width: 62px; bottom: 204px; }  /* flower-05.svg */
+  .band .band-flower-08  { left: 43%; width: 56px; bottom: 118px; }  /* flower-02.svg */
+  .band .band-flower-09  { left: 48.5%; width: 60px; bottom: 210px; }  /* flower-06.svg */
+  .band .band-flower-10  { left: 54%; width: 46px; bottom: 100px; }  /* flower-03.svg */
+  .band .band-flower-11  { left: 59.5%; width: 68px; bottom: 196px; }  /* flower-01.svg */
+  .band .band-flower-12  { left: 65%; width: 48px; bottom: 126px; }  /* flower-04.svg */
+  .band .band-flower-13  { left: 70.5%; width: 58px; bottom: 206px; }  /* flower-05.svg */
+  .band .band-flower-14  { left: 76%; width: 62px; bottom: 104px; }  /* flower-06.svg */
+  .band .band-flower-15  { left: 81.5%; width: 54px; bottom: 200px; }  /* flower-02.svg */
+  .band .band-flower-16  { left: 87%; width: 48px; bottom: 128px; }  /* flower-03.svg */
+  .band .band-flower-17  { left: 92.5%; width: 50px; bottom: 200px; }  /* flower-04.svg */
+  .band .band-flower-18  { left: 98%; width: 56px; bottom: 110px; }  /* flower-05.svg */
+
+  /* ---- Phone-size versions (screens narrower than 860px) ----
+     Anything not listed here keeps the setting from above. */
+  @media (max-width: 860px) {
+    .cat-hero-top      { width: min(20%, 100px); }
+    .cat-hero-bottom   { width: min(26%, 130px); left: 3%; bottom: 3%; }
+    .cat-impact        { width: 26%; right: 4%; top: auto; bottom: -10%; }
+    .cat-reviews-left,
+    .cat-reviews-right { display: none; }   /* hidden on phones: not enough room beside the cards */
+    .cat-insta         { width: 90px; right: 16px; top: -54px; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- long soft leaf, like the big lavender shapes on the walls -->
+    <symbol id="leaf" viewBox="0 0 200 90">
+      <path d="M4 66 C38 14 118 -4 196 22 C152 50 84 84 4 66Z"/>
+    </symbol>
+    <!-- chunky leaf with a notch, like the pale shapes behind the cats -->
+    <symbol id="leaf2" viewBox="0 0 160 160">
+      <path d="M18 142 C10 86 40 28 112 10 C120 40 116 70 98 92 C126 88 146 96 152 108 C120 136 70 156 18 142Z"/>
+    </symbol>
+    <!-- round-petal yellow flower -->
+    <symbol id="flower" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="25" ry="46" cy="-50"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(45)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(90)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(135)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(180)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(225)"/>
+        <ellipse rx="25" ry="46" cy="-50" transform="rotate(270)"/><ellipse rx="25" ry="46" cy="-50" transform="rotate(315)"/>
+        <circle r="34"/>
+      </g>
+    </symbol>
+    <!-- blunt 6-petal splash, like the periwinkle/orange shapes behind cats -->
+    <symbol id="splat" viewBox="-100 -100 200 200">
+      <g>
+        <rect x="-24" y="-96" width="48" height="96" rx="24"/>
+        <rect x="-22" y="-88" width="44" height="88" rx="22" transform="rotate(58)"/>
+        <rect x="-25" y="-94" width="50" height="94" rx="25" transform="rotate(122)"/>
+        <rect x="-22" y="-84" width="44" height="84" rx="22" transform="rotate(178)"/>
+        <rect x="-24" y="-92" width="48" height="92" rx="24" transform="rotate(238)"/>
+        <rect x="-21" y="-86" width="42" height="86" rx="21" transform="rotate(300)"/>
+        <circle r="40"/>
+      </g>
+    </symbol>
+    <!-- narrow-petal flower, like the sage one -->
+    <symbol id="star" viewBox="-100 -100 200 200">
+      <g>
+        <ellipse rx="17" ry="48" cy="-48"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(60)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(120)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(180)"/>
+        <ellipse rx="17" ry="48" cy="-48" transform="rotate(240)"/><ellipse rx="17" ry="48" cy="-48" transform="rotate(300)"/>
+        <circle r="24"/>
+      </g>
+    </symbol>
+    <!-- organic blob used as a photo mask -->
+    <clipPath id="blobMask" clipPathUnits="objectBoundingBox">
+      <path d="M.52 .02 C.74 .0 .95 .12 .98 .36 C1 .56 .93 .8 .74 .93 C.56 1.04 .3 .99 .14 .84 C-.02 .69 -.02 .42 .1 .24 C.2 .09 .36 .03 .52 .02Z"/>
+    </clipPath>
+  </defs>
+</svg>
+<div class="mock-banner"><span><b>Mockup E</b> · D refined: smaller painted cats, random hero photo, gallery, reviews, Instagram, rebuilt mural band</span><span><a href="d.html">← D</a> · <a href="index.html">All options</a></span></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <img src="../images/logo.png" alt="Kitty Brew Cat Café">
+    <nav>
+      <a class="on" href="#">Home</a><a href="#">Visit Us</a><a href="#">Menu</a><a href="#">Kitty Cam</a><a href="#">FAQ</a>
+      <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+    </nav>
+  </div>
+</header>
+<div class="today"><span class="dot"></span><b>Open now</b> · Café until <b>5:30</b> · Cat lounge until <b>6:00</b> · 721 Reading Rd, Mason</div>
+
+<section class="hero">
+  <svg class="shape" style="left:-90px;bottom:-70px;width:340px;fill:#3d3c7a;transform:rotate(-30deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:38%;top:36px;width:110px;fill:#3d3c7a"><use href="#splat"/></svg>
+  <div class="txt">
+    <h1><span class="c1">Great coffee.</span><span class="c2">Happy cats.</span><span class="c3">Cozy space.</span></h1>
+    <p class="lead">Kitty Brew Cat Café is where coffee lovers and cat lovers come together. Enjoy a handcrafted drink while relaxing with 20–25 adoptable cats from local rescues.</p>
+    <p class="note"><b>Reservations recommended.</b> Walk-ins welcome if there's room.</p>
+    <div class="actions">
+      <a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a>
+      <a class="btn btn--ghost" href="#"><i class="fa-solid fa-video"></i>Watch the Kitty Cam</a>
+    </div>
+  </div>
+  <div class="pic">
+    <!-- A different photo each visit (list in the script at the bottom of the page) -->
+    <img class="photo" data-hero-photo src="img/photos/hero-mural-calico.jpg" alt="Inside the Kitty Brew cat lounge">
+    <img class="art cat-hero-top" src="img/art/cat-string.svg" alt="">
+    <img class="art cat-hero-bottom" src="img/art/cat-in-box.svg" alt="">
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 0 H1440 V22 C1240 70 1080 10 900 38 C720 66 560 14 380 40 C220 62 100 30 0 46Z" fill="#2b2a55"/>
+  <path d="M0 46 C100 30 220 62 380 40 C560 14 720 66 900 38 C1080 10 1240 70 1440 22 V34 C1250 76 1080 24 900 50 C720 76 560 28 380 52 C220 72 100 44 0 58Z" fill="#bac6e4"/>
+</svg>
+
+<section class="how">
+  <svg class="shape" style="right:-50px;top:0;width:270px;fill:var(--lavender);transform:rotate(25deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:-40px;bottom:10px;width:200px;fill:var(--lavender);transform:rotate(-150deg)"><use href="#leaf2"/></svg>
+  <div class="wrap">
+    <h2>Never been to a cat café?</h2>
+    <p class="sub">Here's how it works ~</p>
+    <div class="grid">
+      <div class="step"><div class="step-art"><img class="cat-step-cafe" src="img/art/cat-spilling-mug.svg" alt="Illustrated kitten batting at a coffee mug"></div><h3 class="o">The Café</h3><p>Coffees, teas, frozen treats and snacks. Free to enter and always open to the public.</p></div>
+      <div class="step"><div class="step-art"><img class="cat-step-lounge" src="img/art/cat-napping.svg" alt="Illustrated fluffy orange cat rolling on a pillow"></div><h3 class="p">The Lounge</h3><p>Spend 50 minutes playing, relaxing, or just enjoying the cats' company. $13 per person.</p></div>
+      <div class="step"><div class="step-art"><img class="cat-step-adoptions" src="img/art/cat-reaching.svg" alt="Illustrated Siamese cat reaching up from a teal cushion"></div><h3 class="t">Adoptions</h3><p>Fall in love? Our partner rescues can help you take a furry friend home.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="pic" role="img" aria-label="The cozy corner of the cat lounge">
+    <img class="art cat-impact" src="img/art/cat-jumping.svg" alt="">
+  </div>
+  <div class="txt">
+    <svg class="shape" style="right:-60px;top:-50px;width:260px;fill:#3d3c7a"><use href="#flower"/></svg>
+    <div class="num">5,000+<small>cats adopted into loving homes</small></div>
+    <h2>Making a difference, one cat at a time</h2>
+    <p>Since opening in 2017 as Cincinnati's first cat café, we've helped over 5,000 cats find loving homes. Every visit, whether it's a latte to go or an hour in the lounge, directly supports our rescue partners.</p>
+    <div class="price"><b>Cat lounge: $13 for 50 minutes.</b> Kids 15 and under are $7 on Wednesdays.</div>
+    <div><a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a></div>
+  </div>
+</section>
+
+<section class="gallery-sec">
+  <svg class="shape" style="right:-60px;top:60px;width:300px;fill:var(--lavender);transform:rotate(-30deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="left:16%;top:40px;width:90px;fill:var(--orange)"><use href="#splat"/></svg>
+  <div class="wrap">
+    <h2>Step inside the lounge</h2>
+    <p class="sub">murals by <a href="https://www.brightwallcollective.com/" target="_blank">Brightwall Collective</a> · cat tree, couches &amp; plenty of sunbeams</p>
+    <div class="gallery">
+      <figure class="tall"><img src="img/photos/hero-cat-tree.jpg" alt=""><figcaption>The big cat tree</figcaption></figure>
+      <figure class="illo"><img src="img/art/cat-tortie-flower.svg" alt=""><figcaption>Painted residents</figcaption></figure>
+      <figure><img src="img/photos/fireplace-bed.jpg" alt=""><figcaption>Fireside naps</figcaption></figure>
+      <figure><img src="img/photos/gift-shop-2.jpg" alt=""><figcaption>The gift shop</figcaption></figure>
+      <figure><img src="img/cat-drinks.jpg" alt=""><figcaption>Frappés &amp; friends</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <img class="art cat-reviews-left" src="img/art/cat-peaches.svg" alt="">
+  <img class="art cat-reviews-right" src="img/art/cat-stretching.svg" alt="">
+  <div class="wrap">
+    <h2>What visitors say</h2>
+    <div class="cards">
+      <div class="card">If you like cats and want to play with them, this is your place! Such a calming and cat-egorically fun place 😺<b>Lexington S</b></div>
+      <div class="card">I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. It's my happy place.<b>Laura B</b></div>
+      <div class="card">Our whole family spent some quality time together and with kitties last night. Great Friday night family outing. 10/10<b>Brian K</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="insta">
+  <div class="wrap">
+    <div class="insta-card">
+      <img class="art cat-insta" src="img/art/cat-sleepy.svg" alt="">
+      <div class="insta-head">
+        <div><h2>@kittybrewcafe</h2><span class="hand">fresh from the lounge</span></div>
+        <a class="btn" href="https://www.instagram.com/kittybrewcafe/"><i class="fa-brands fa-instagram"></i>Follow on Instagram</a>
+      </div>
+      <div class="insta-grid">
+        <a href="#"><img src="img/photos/kitten-basket.jpg" alt=""></a>
+        <a href="#"><img src="img/photos/hero-siamese-basket.jpg" alt=""></a>
+        <a href="#"><img src="img/photos/mermaid-bed.jpg" alt=""></a>
+        <a href="#"><img src="img/photos/tabby-box-toy.jpg" alt=""></a>
+        <a href="#"><img src="img/photos/orange-cat-lobby.jpg" alt=""></a>
+        <a href="#"><img src="img/photos/kitten-tree.jpg" alt=""></a>
+      </div>
+      <p class="mock-note">Mockup: on the real site these six would be your latest posts, updated automatically.</p>
+    </div>
+  </div>
+</section>
+
+<div class="band" role="img" aria-label="Painted cats, leaves and flowers from the lounge mural">
+  <div class="band-inner">
+    <img class="lf band-leaf-01" src="img/art/leaves-05.svg" alt="">
+    <img class="lf band-leaf-02" src="img/art/leaves-04.svg" alt="">
+    <img class="lf band-leaf-03" src="img/art/leaves-01.svg" alt="">
+    <img class="lf band-leaf-04" src="img/art/leaves-06.svg" alt="">
+    <img class="lf band-leaf-05" src="img/art/leaves-03.svg" alt="">
+    <img class="lf band-leaf-06" src="img/art/leaves-02.svg" alt="">
+    <img class="lf band-leaf-07" src="img/art/leaves-05.svg" alt="">
+    <img class="lf band-leaf-08" src="img/art/leaves-04.svg" alt="">
+    <img class="lf band-leaf-09" src="img/art/leaves-06.svg" alt="">
+    <img class="lf band-leaf-10" src="img/art/leaves-01.svg" alt="">
+    <img class="lf band-leaf-11" src="img/art/leaves-03.svg" alt="">
+    <img class="lf band-leaf-12" src="img/art/leaves-05.svg" alt="">
+    <img class="lf band-leaf-13" src="img/art/leaves-02.svg" alt="">
+    <img class="lf band-leaf-14" src="img/art/leaves-04.svg" alt="">
+    <img class="lf band-leaf-15" src="img/art/leaves-06.svg" alt="">
+    <img class="lf band-leaf-16" src="img/art/leaves-01.svg" alt="">
+    <img class="lf band-leaf-17" src="img/art/leaves-03.svg" alt="">
+    <img class="lf band-leaf-18" src="img/art/leaves-05.svg" alt="">
+    <img class="fl band-flower-01" src="img/art/flower-05.svg" alt="">
+    <img class="fl band-flower-02" src="img/art/flower-02.svg" alt="">
+    <img class="fl band-flower-03" src="img/art/flower-06.svg" alt="">
+    <img class="fl band-flower-04" src="img/art/flower-03.svg" alt="">
+    <img class="fl band-flower-05" src="img/art/flower-01.svg" alt="">
+    <img class="fl band-flower-06" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-07" src="img/art/flower-05.svg" alt="">
+    <img class="fl band-flower-08" src="img/art/flower-02.svg" alt="">
+    <img class="fl band-flower-09" src="img/art/flower-06.svg" alt="">
+    <img class="fl band-flower-10" src="img/art/flower-03.svg" alt="">
+    <img class="fl band-flower-11" src="img/art/flower-01.svg" alt="">
+    <img class="fl band-flower-12" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-13" src="img/art/flower-05.svg" alt="">
+    <img class="fl band-flower-14" src="img/art/flower-06.svg" alt="">
+    <img class="fl band-flower-15" src="img/art/flower-02.svg" alt="">
+    <img class="fl band-flower-16" src="img/art/flower-03.svg" alt="">
+    <img class="fl band-flower-17" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-18" src="img/art/flower-05.svg" alt="">
+    <img class="ct band-cat-bed" src="img/art/cat-bed.svg" alt="">
+    <img class="ct up band-cat-jumping" src="img/art/cat-jumping.svg" alt="">
+    <img class="ct band-cat-in-box-02" src="img/art/cat-in-box-02.svg" alt="">
+    <img class="ct up band-cat-string" src="img/art/cat-string.svg" alt="">
+    <img class="ct band-cat-behind-plant" src="img/art/cat-behind-plant.svg" alt="">
+    <img class="ct up band-cat-peaches" src="img/art/cat-peaches.svg" alt="">
+    <img class="ct band-cat-tortie" src="img/art/cat-tortie.svg" alt="">
+    <img class="ct up band-cat-stretching" src="img/art/cat-stretching.svg" alt="">
+    <img class="ct band-cat-will-feral" src="img/art/cat-will-feral.svg" alt="">
+    <img class="ct up band-cat-ivan" src="img/art/cat-ivan.svg" alt="">
+    <img class="ct band-cat-treat-bag" src="img/art/cat-treat-bag.svg" alt="">
+    <img class="ct up band-cat-sleepy" src="img/art/cat-sleepy.svg" alt="">
+    <img class="ct band-cat-british-shorthair" src="img/art/cat-british-shorthair.svg" alt="">
+    <img class="ct up band-cat-tortie-flower" src="img/art/cat-tortie-flower.svg" alt="">
+    <img class="ct band-cat-in-box" src="img/art/cat-in-box.svg" alt="">
+    <img class="ct up band-cat-napping" src="img/art/cat-napping.svg" alt="">
+    <img class="ct band-cat-reaching" src="img/art/cat-reaching.svg" alt="">
+    <img class="ct up band-cat-spilling-mug" src="img/art/cat-spilling-mug.svg" alt="">
+    <img class="ct band-toy-ball-1" src="img/art/cat-toy-ball.svg" alt="">
+    <img class="ct band-fishbone-01-1" src="img/art/fishbone-01.svg" alt="">
+    <img class="ct band-toy-fish-1" src="img/art/cat-toy-fish.svg" alt="">
+    <img class="ct band-fishbone-02-1" src="img/art/fishbone-02.svg" alt="">
+    <img class="ct band-toy-ball-2" src="img/art/cat-toy-ball.svg" alt="">
+    <img class="ct band-toy-fish-2" src="img/art/cat-toy-fish.svg" alt="">
+  </div>
+</div>
+<footer>
+  <div class="wrap">
+    <div><h3>Café Hours</h3><ul><li><b>Mon</b> 8:30–5:30</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 8:30–5:30</li><li><b>Fri</b> 8:30–6:30</li><li><b>Sat</b> 9:00–6:30</li><li><b>Sun</b> 10:00–4:30</li></ul></div>
+    <div><h3>Cat Lounge Hours</h3><ul><li><b>Mon</b> 11–6</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 11–6</li><li><b>Fri</b> 11–7</li><li><b>Sat</b> 10–7</li><li><b>Sun</b> 10–5</li></ul></div>
+    <div><h3>Find Us</h3><p>721 Reading Road<br>Mason, OH 45040<br>(513) 701-9001</p></div>
+  </div>
+</footer>
+
+<script>
+  // Hero photo: pick one at random on every visit. To add a photo, put it in img/photos/ and add its name here.
+  const HERO_PHOTOS = [
+    "hero-mural-calico.jpg", "hero-cat-tree.jpg", "hero-siamese-basket.jpg", "hero-fireplace-tent.jpg",
+    "hero-black-cat.jpg", "hero-tabby.jpg", "hero-calico.jpg", "hero-cat-table.jpg"
+  ];
+  const heroImg = document.querySelector("[data-hero-photo]");
+  // (Mockup only: add ?hero=3 to the address to show a specific photo, counting from 1.)
+  const forced = parseInt(new URLSearchParams(location.search).get("hero"), 10);
+  const pick = forced >= 1 && forced <= HERO_PHOTOS.length ? forced - 1 : Math.floor(Math.random() * HERO_PHOTOS.length);
+  heroImg.src = "img/photos/" + HERO_PHOTOS[pick];
+</script>
+</body>
+</html>
