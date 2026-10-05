@@ -57,7 +57,7 @@
 
   /* IMPACT: C's split with photo, A's big number + price card + leaping cat */
   .impact { display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #fff; }
-  .impact .pic { background: url(img/lounge-corner.jpg) center / cover; min-height: 540px; position: relative; }
+  .impact .pic { background: url(img/photos/adoption-tabby.jpg) 72% center / cover; min-height: 540px; position: relative; }
   .impact .txt { padding: 70px max(24px, calc((100vw - 1140px)/2 + 24px)) 70px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
   .impact .num { font-family: var(--font-display); font-size: 6.5rem; line-height: .9; color: var(--mustard); }
   .impact .num small { display: block; font-size: 1.5rem; color: var(--lavender); letter-spacing: 1px; }
@@ -74,9 +74,7 @@
   .gallery figure { margin: 0; border-radius: 22px; overflow: hidden; position: relative; }
   .gallery img { width: 100%; height: 100%; object-fit: cover; }
   .gallery .tall { grid-row: span 2; }
-  .gallery .illo { background: #fff; }
-  .gallery .illo img { object-fit: contain; padding: 12px; }
-  .gallery figcaption { position: absolute; left: 12px; bottom: 12px; background: #fff; border-radius: 99px; padding: 3px 12px; font-family: var(--font-hand); font-size: 1.05rem; }
+  .gallery figcaption { position: absolute; left: 12px; top: 12px; background: #fff; border-radius: 99px; padding: 3px 12px; font-family: var(--font-hand); font-size: 1.05rem; }
 
   /* REVIEWS (from A, simplified) */
   .reviews { padding: 10px 0 70px; overflow: hidden; }
@@ -86,7 +84,7 @@
   .card b { display: block; font-family: var(--font-display); font-size: 1.35rem; margin-top: 10px; color: var(--periwinkle-deep); }
 
   /* INSTAGRAM: latest posts (would load automatically through Behold) */
-  .insta { padding: 20px 0 70px; }
+  .insta { padding: 90px 0 70px; }
   .insta-card { background: #fff; border-radius: 26px; padding: 26px 28px 30px; box-shadow: 0 8px 24px rgba(40,40,90,.08); position: relative; }
   .insta-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
   .insta-head h2 { font-size: 2.4rem; margin: 0; }
@@ -106,10 +104,40 @@
   .band .fl { z-index: 2; }   /* flowers */
   .band .ct { z-index: 3; }   /* cats + props */
   .band .ct.up { z-index: 4; } /* the "floating" row overlaps the bottom row a little, like on the wall */
-  footer { background: var(--night); color: #ddd; padding: 50px 0 30px; }
-  footer .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-  footer h3 { color: var(--mustard); font-size: 1.8rem; }
-  footer ul { list-style: none; padding: 0; margin: 0; font-size: .95rem; }
+  /* LOCATION: address + map */
+  .location { padding: 120px 0 80px; overflow: hidden; }
+  .location .wrap { position: relative; }
+  .loc-card { display: grid; grid-template-columns: 1fr 1.5fr; background: var(--night); color: #fff; border-radius: 28px; overflow: hidden; position: relative; z-index: 1; box-shadow: 0 10px 30px rgba(20,20,60,.15); }
+  .loc-txt { padding: 46px 44px; position: relative; overflow: hidden; }
+  .loc-txt h2 { font-size: 3rem; color: var(--mustard); margin-bottom: 0; }
+  .loc-txt .hand { color: var(--lavender); font-size: 1.3rem; display: block; margin-bottom: 18px; }
+  .loc-txt address { font-style: normal; font-size: 1.1rem; line-height: 1.6; margin-bottom: 12px; }
+  .loc-txt .landmarks { color: #cfcff0; font-size: .95rem; margin-bottom: 22px; }
+  .loc-map { min-height: 380px; }
+  .loc-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* FOOTER */
+  footer { background: var(--night); color: #ddd; padding: 50px 0 28px; }
+  footer .cols { display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: 36px; }
+  footer h3 { color: var(--mustard); font-size: 1.9rem; }
+  .hours { list-style: none; padding: 0; margin: 0; font-size: .95rem; line-height: 2; }
+  .hours li { display: grid; grid-template-columns: 7.5em 1fr; }
+  .hours li b { font-weight: 700; color: #fff; }
+  .hours li.is-today, .hours li.is-today b { color: var(--tangerine); }
+  .contact { list-style: none; padding: 0; margin: 0 0 18px; }
+  .contact li { margin-bottom: 8px; }
+  .contact a { color: #fff; text-decoration: none; font-weight: 500; }
+  .contact a:hover { color: var(--tangerine); }
+  .contact i { width: 1.4em; color: var(--lavender); }
+  .foot-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+  .btn--small { font-size: 1rem; padding: .6rem 1.05rem; }
+  .btn--outline { background: transparent; border-color: rgba(255,255,255,.6); color: #fff; }
+  .follow { display: flex; align-items: center; gap: 16px; }
+  .follow h3 { margin: 0; font-size: 1.6rem; }
+  .follow a { color: #fff; font-size: 1.4rem; }
+  .follow a:hover { color: var(--tangerine); }
+  .legal { border-top: 1px solid rgba(255,255,255,.12); margin-top: 38px; padding-top: 18px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: .85rem; color: #a9a8cc; }
+  .legal a { color: #d8d7f5; }
 
   @media (max-width: 860px) {
     .hdr nav a:not(.btn) { display: none; }
@@ -124,7 +152,10 @@
     .insta-grid { grid-template-columns: repeat(3, 1fr); }
     .band { height: 232px; }
     .band-inner { transform: translateX(-50%) scale(.8); transform-origin: bottom center; }
-    footer .wrap { grid-template-columns: 1fr; }
+    footer .cols { grid-template-columns: 1fr; gap: 30px; }
+    .loc-card { grid-template-columns: 1fr; }
+    .loc-txt { padding: 36px 26px; }
+    .loc-map { min-height: 300px; }
   }
 
   /* =====================================================================
@@ -146,8 +177,8 @@
      ===================================================================== */
 
   /* ---- Hero: the two cats on the photo ---- */
-  .cat-hero-top    { width: 20%; right: 3%; top: 3%; }     /* black cat on the fish pillow (cat-string.svg) */
-  .cat-hero-bottom { width: 25%; left: 2%; bottom: 2%; }   /* calico in the fish box (cat-in-box.svg) */
+  .cat-hero-top    { width: 25%; right: 2%; top: 3%; }     /* Will Feral, orange tabby with his "Will Feral" plant (cat-will-feral.svg) */
+  .cat-hero-bottom { width: 27%; left: 2%; bottom: 3%; }   /* Ivan, orange cat on a blue blanket (cat-ivan-blanket.png) */
 
   /* ---- "How it works" step drawings ----
      Each drawing fills a 200px-tall box (see .step-art above). Use height
@@ -160,11 +191,15 @@
   .cat-impact { width: 26%; right: -9%; top: -7%; }          /* grey cat leaping off the yellow flower (cat-jumping.svg) */
 
   /* ---- Reviews: cats peeking in from the sides (z-index 0 = behind the cards) ---- */
-  .cat-reviews-left  { width: 150px; left: -10px; bottom: 0; z-index: 0; }   /* Peaches (cat-peaches.svg) */
-  .cat-reviews-right { width: 150px; right: -6px; top: -24px; z-index: 0; }  /* stretching cat (cat-stretching.svg) */
+  .cat-reviews-left  { width: 130px; left: 0; bottom: 10px; z-index: 0; }    /* tortie on the orange flower (cat-tortie-flower.svg) */
+  .cat-reviews-right { width: 190px; right: 0; top: 14px; z-index: 0; }      /* tortie with the yarn on the orange rug (cat-tortie.svg) */
 
   /* ---- Instagram: cat peeking over the top of the card ---- */
-  .cat-insta { width: 130px; right: 40px; top: -78px; z-index: 0; }          /* sleepy orange cat (cat-sleepy.svg) */
+  .cat-insta { width: 140px; right: 40px; top: -96px; z-index: 0; }          /* white cat in the teal cave bed (cat-british-shorthair.svg) */
+
+
+  /* ---- Find Us: cat lounging on top of the map card ---- */
+  .cat-location { width: 170px; right: 60px; top: -112px; z-index: 2; }     /* cream cat on the purple cushion (cat-bed.svg) */
 
   /* ---- Mural band above the footer ----
      left is a % of the band's width, so things stay spread out on any screen.
@@ -172,82 +207,66 @@
      so keep bottom + the drawing's height under ~290px or it gets cut off). */
 
   /* Cats: the bottom row sits at bottom: 0, the "floating" row at bottom: 148px */
-  .band .band-cat-bed                { left: 0.6%; width: 140px; bottom: 0px; }
-  .band .band-cat-jumping            { left: 6.1%; width: 108px; bottom: 148px; }
-  .band .band-cat-in-box-02          { left: 11.6%; width: 128px; bottom: 0px; }
-  .band .band-cat-string             { left: 17.1%; width: 108px; bottom: 148px; }
-  .band .band-cat-behind-plant       { left: 22.6%; width: 148px; bottom: 0px; }
-  .band .band-cat-peaches            { left: 28.1%; width: 90px; bottom: 148px; }
-  .band .band-cat-tortie             { left: 33.6%; width: 160px; bottom: 0px; }
-  .band .band-cat-stretching         { left: 39.1%; width: 104px; bottom: 148px; }
-  .band .band-cat-will-feral         { left: 44.6%; width: 150px; bottom: 0px; }
-  .band .band-cat-ivan               { left: 50.1%; width: 80px; bottom: 148px; }
-  .band .band-cat-treat-bag          { left: 55.6%; width: 118px; bottom: 0px; }
-  .band .band-cat-sleepy             { left: 61.1%; width: 108px; bottom: 148px; }
-  .band .band-cat-british-shorthair  { left: 66.6%; width: 138px; bottom: 0px; }
-  .band .band-cat-tortie-flower      { left: 72.1%; width: 98px; bottom: 148px; }
-  .band .band-cat-in-box             { left: 77.6%; width: 112px; bottom: 0px; }
-  .band .band-cat-napping            { left: 83.1%; width: 118px; bottom: 148px; }
-  .band .band-cat-reaching           { left: 88.6%; width: 108px; bottom: 0px; }
-  .band .band-cat-spilling-mug       { left: auto; right: 0.6%; width: 118px; bottom: 148px; }
+  .band .band-cat-cookie        { left: 1.0%; width: 150px; bottom: 0px; }
+  .band .band-cat-peaches       { left: 7.9%; width: 84px; bottom: 148px; }
+  .band .band-cat-in-box-02     { left: 14.8%; width: 122px; bottom: 0px; }
+  .band .band-cat-stretching    { left: 21.7%; width: 100px; bottom: 148px; }
+  .band .band-cat-vlad          { left: 28.6%; width: 84px; bottom: 0px; }
+  .band .band-cat-string        { left: 35.5%; width: 104px; bottom: 148px; }
+  .band .band-cat-behind-plant  { left: 42.4%; width: 142px; bottom: 0px; }
+  .band .band-cat-ivan          { left: 49.3%; width: 78px; bottom: 148px; }
+  .band .band-cat-josie         { left: 56.2%; width: 140px; bottom: 0px; }
+  .band .band-cat-napping       { left: 63.1%; width: 112px; bottom: 148px; }
+  .band .band-cat-treat-bag     { left: 70.0%; width: 112px; bottom: 0px; }
+  .band .band-cat-spilling-mug  { left: 76.9%; width: 112px; bottom: 148px; }
+  .band .band-cat-morticia      { left: 83.8%; width: 100px; bottom: 0px; }
+  .band .band-cat-in-box        { left: 90.7%; width: 108px; bottom: 0px; }
 
   /* Little props tucked between the cats */
-  .band .band-toy-ball-1     { left: 8.2%; width: 22px; bottom: 0px; }
-  .band .band-fishbone-01-1  { left: 24.6%; width: 52px; bottom: 6px; }
-  .band .band-toy-fish-1     { left: 41.2%; width: 34px; bottom: 8px; }
-  .band .band-fishbone-02-1  { left: 57.8%; width: 52px; bottom: 6px; }
-  .band .band-toy-ball-2     { left: 74.4%; width: 22px; bottom: 0px; }
-  .band .band-toy-fish-2     { left: 91%; width: 34px; bottom: 8px; }
+  .band .band-toy-ball-1     { left: 10.6%; width: 22px; bottom: 0px; }
+  .band .band-fishbone-01-1  { left: 31.8%; width: 52px; bottom: 6px; }
+  .band .band-toy-fish-1     { left: 52.6%; width: 34px; bottom: 8px; }
+  .band .band-fishbone-02-1  { left: 66.4%; width: 52px; bottom: 6px; }
+  .band .band-toy-ball-2     { left: 80.2%; width: 22px; bottom: 0px; }
+  .band .band-toy-fish-2     { left: 95%; width: 34px; bottom: 8px; }
 
-  /* Lavender leaves (behind everything) */
-  .band .band-leaf-01  { left: -2%; width: 230px; bottom: -24px; }  /* leaves-05.svg */
-  .band .band-leaf-02  { left: 5%; width: 280px; bottom: 40px; transform: scaleX(-1); }  /* leaves-04.svg */
-  .band .band-leaf-03  { left: 11%; width: 250px; bottom: -18px; }  /* leaves-01.svg */
-  .band .band-leaf-04  { left: 17%; width: 190px; bottom: 60px; }  /* leaves-06.svg */
-  .band .band-leaf-05  { left: 22%; width: 250px; bottom: 110px; transform: scaleX(-1); }  /* leaves-03.svg */
-  .band .band-leaf-06  { left: 28%; width: 170px; bottom: -10px; }  /* leaves-02.svg */
-  .band .band-leaf-07  { left: 33%; width: 220px; bottom: -26px; transform: scaleX(-1); }  /* leaves-05.svg */
-  .band .band-leaf-08  { left: 39%; width: 270px; bottom: 30px; }  /* leaves-04.svg */
-  .band .band-leaf-09  { left: 45%; width: 180px; bottom: -12px; transform: scaleX(-1); }  /* leaves-06.svg */
-  .band .band-leaf-10  { left: 50%; width: 240px; bottom: 70px; transform: scaleX(-1); }  /* leaves-01.svg */
-  .band .band-leaf-11  { left: 56%; width: 240px; bottom: -6px; }  /* leaves-03.svg */
-  .band .band-leaf-12  { left: 61%; width: 220px; bottom: 20px; }  /* leaves-05.svg */
-  .band .band-leaf-13  { left: 67%; width: 160px; bottom: 90px; transform: scaleX(-1); }  /* leaves-02.svg */
-  .band .band-leaf-14  { left: 72%; width: 280px; bottom: -14px; transform: scaleX(-1); }  /* leaves-04.svg */
-  .band .band-leaf-15  { left: 78%; width: 190px; bottom: 40px; }  /* leaves-06.svg */
-  .band .band-leaf-16  { left: 83%; width: 250px; bottom: -16px; }  /* leaves-01.svg */
-  .band .band-leaf-17  { left: 88%; width: 240px; bottom: 120px; }  /* leaves-03.svg */
-  .band .band-leaf-18  { left: 93%; width: 230px; bottom: -22px; transform: scaleX(-1); }  /* leaves-05.svg */
+  /* Lavender leaves (behind everything). Kept smaller and spaced out, alternating
+     high and low, so each one reads as its own shape instead of a solid mass. */
+  .band .band-leaf-01  { left: -1%; width: 170px; bottom: -14px; }  /* leaves-01.svg */
+  .band .band-leaf-02  { left: 9%; width: 130px; bottom: 96px; transform: scaleX(-1); }  /* leaves-06.svg */
+  .band .band-leaf-03  { left: 18%; width: 180px; bottom: -6px; }  /* leaves-03.svg */
+  .band .band-leaf-04  { left: 28%; width: 120px; bottom: 110px; }  /* leaves-02.svg */
+  .band .band-leaf-05  { left: 37%; width: 200px; bottom: -12px; transform: scaleX(-1); }  /* leaves-04.svg */
+  .band .band-leaf-06  { left: 48%; width: 130px; bottom: 104px; }  /* leaves-06.svg */
+  .band .band-leaf-07  { left: 57%; width: 170px; bottom: -14px; transform: scaleX(-1); }  /* leaves-01.svg */
+  .band .band-leaf-08  { left: 67%; width: 120px; bottom: 96px; transform: scaleX(-1); }  /* leaves-02.svg */
+  .band .band-leaf-09  { left: 76%; width: 180px; bottom: -6px; transform: scaleX(-1); }  /* leaves-03.svg */
+  .band .band-leaf-10  { left: 87%; width: 200px; bottom: -12px; }  /* leaves-04.svg */
 
   /* Flowers (behind the cats, in front of the leaves) */
-  .band .band-flower-01  { left: 3.5%; width: 70px; bottom: 170px; }  /* flower-05.svg */
-  .band .band-flower-02  { left: 9%; width: 58px; bottom: 92px; }  /* flower-02.svg */
-  .band .band-flower-03  { left: 14.5%; width: 66px; bottom: 196px; }  /* flower-06.svg */
-  .band .band-flower-04  { left: 20.5%; width: 50px; bottom: 120px; }  /* flower-03.svg */
-  .band .band-flower-05  { left: 26%; width: 74px; bottom: 200px; }  /* flower-01.svg */
-  .band .band-flower-06  { left: 31.5%; width: 48px; bottom: 96px; }  /* flower-04.svg */
-  .band .band-flower-07  { left: 37.5%; width: 62px; bottom: 204px; }  /* flower-05.svg */
-  .band .band-flower-08  { left: 43%; width: 56px; bottom: 118px; }  /* flower-02.svg */
-  .band .band-flower-09  { left: 48.5%; width: 60px; bottom: 210px; }  /* flower-06.svg */
-  .band .band-flower-10  { left: 54%; width: 46px; bottom: 100px; }  /* flower-03.svg */
-  .band .band-flower-11  { left: 59.5%; width: 68px; bottom: 196px; }  /* flower-01.svg */
-  .band .band-flower-12  { left: 65%; width: 48px; bottom: 126px; }  /* flower-04.svg */
-  .band .band-flower-13  { left: 70.5%; width: 58px; bottom: 206px; }  /* flower-05.svg */
-  .band .band-flower-14  { left: 76%; width: 62px; bottom: 104px; }  /* flower-06.svg */
-  .band .band-flower-15  { left: 81.5%; width: 54px; bottom: 200px; }  /* flower-02.svg */
-  .band .band-flower-16  { left: 87%; width: 48px; bottom: 128px; }  /* flower-03.svg */
-  .band .band-flower-17  { left: 92.5%; width: 50px; bottom: 200px; }  /* flower-04.svg */
-  .band .band-flower-18  { left: 98%; width: 56px; bottom: 110px; }  /* flower-05.svg */
+  .band .band-flower-01  { left: 4%; width: 62px; bottom: 182px; }  /* flower-05.svg */
+  .band .band-flower-02  { left: 12%; width: 46px; bottom: 100px; }  /* flower-03.svg */
+  .band .band-flower-03  { left: 21%; width: 54px; bottom: 196px; }  /* flower-02.svg */
+  .band .band-flower-04  { left: 30%; width: 44px; bottom: 116px; }  /* flower-04.svg */
+  .band .band-flower-05  { left: 39%; width: 58px; bottom: 200px; }  /* flower-06.svg */
+  .band .band-flower-06  { left: 47%; width: 62px; bottom: 110px; }  /* flower-01.svg */
+  .band .band-flower-07  { left: 56%; width: 54px; bottom: 198px; }  /* flower-05.svg */
+  .band .band-flower-08  { left: 65%; width: 44px; bottom: 104px; }  /* flower-03.svg */
+  .band .band-flower-09  { left: 73%; width: 52px; bottom: 200px; }  /* flower-02.svg */
+  .band .band-flower-10  { left: 82%; width: 56px; bottom: 112px; }  /* flower-06.svg */
+  .band .band-flower-11  { left: 91%; width: 46px; bottom: 196px; }  /* flower-04.svg */
+  .band .band-flower-12  { left: 98%; width: 52px; bottom: 104px; }  /* flower-01.svg */
 
   /* ---- Phone-size versions (screens narrower than 860px) ----
      Anything not listed here keeps the setting from above. */
   @media (max-width: 860px) {
-    .cat-hero-top      { width: min(20%, 100px); }
+    .cat-hero-top      { width: min(25%, 120px); }
     .cat-hero-bottom   { width: min(26%, 130px); left: 3%; bottom: 3%; }
     .cat-impact        { width: 26%; right: 4%; top: auto; bottom: -10%; }
     .cat-reviews-left,
     .cat-reviews-right { display: none; }   /* hidden on phones: not enough room beside the cards */
-    .cat-insta         { width: 90px; right: 16px; top: -54px; }
+    .cat-location      { width: 120px; right: 30px; top: -80px; }
+    .cat-insta         { width: 104px; right: 16px; top: -56px; }
   }
 </style>
 </head>
@@ -327,8 +346,8 @@
   <div class="pic">
     <!-- A different photo each visit (list in the script at the bottom of the page) -->
     <img class="photo" data-hero-photo src="img/photos/hero-mural-calico.jpg" alt="Inside the Kitty Brew cat lounge">
-    <img class="art cat-hero-top" src="img/art/cat-string.svg" alt="">
-    <img class="art cat-hero-bottom" src="img/art/cat-in-box.svg" alt="">
+    <img class="art cat-hero-top" src="img/art/cat-will-feral.svg" alt="Will Feral">
+    <img class="art cat-hero-bottom" src="img/art/cat-ivan-blanket.png" alt="">
   </div>
 </section>
 <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
@@ -351,7 +370,7 @@
 </section>
 
 <section class="impact">
-  <div class="pic" role="img" aria-label="The cozy corner of the cat lounge">
+  <div class="pic" role="img" aria-label="A woman holding a grey tabby cat over her shoulder">
     <img class="art cat-impact" src="img/art/cat-jumping.svg" alt="">
   </div>
   <div class="txt">
@@ -359,6 +378,7 @@
     <div class="num">5,000+<small>cats adopted into loving homes</small></div>
     <h2>Making a difference, one cat at a time</h2>
     <p>Since opening in 2017 as Cincinnati's first cat café, we've helped over 5,000 cats find loving homes. Every visit, whether it's a latte to go or an hour in the lounge, directly supports our rescue partners.</p>
+    <p><strong style="color:#fff">Not looking to adopt? You're still welcome!</strong> Whether you already have pets at home, live somewhere that doesn't allow them, or just love being around cats, our lounge is the perfect place to unwind.</p>
     <div class="price"><b>Cat lounge: $13 for 50 minutes.</b> Kids 15 and under are $7 on Wednesdays.</div>
     <div><a class="btn" href="#"><i class="fa-regular fa-calendar"></i>Book a Visit or Event</a></div>
   </div>
@@ -369,10 +389,10 @@
   <svg class="shape" style="left:16%;top:40px;width:90px;fill:var(--orange)"><use href="#splat"/></svg>
   <div class="wrap">
     <h2>Step inside the lounge</h2>
-    <p class="sub">murals by <a href="https://www.brightwallcollective.com/" target="_blank">Brightwall Collective</a> · cat tree, couches &amp; plenty of sunbeams</p>
+    <p class="sub">coffee, cozy corners &amp; plenty of sunbeams</p>
     <div class="gallery">
       <figure class="tall"><img src="img/photos/hero-cat-tree.jpg" alt=""><figcaption>The big cat tree</figcaption></figure>
-      <figure class="illo"><img src="img/art/cat-tortie-flower.svg" alt=""><figcaption>Painted residents</figcaption></figure>
+      <figure><img src="img/cat_drink.jpg" alt="A tabby cat sniffing a whipped-cream drink"><figcaption>The café</figcaption></figure>
       <figure><img src="img/photos/fireplace-bed.jpg" alt=""><figcaption>Fireside naps</figcaption></figure>
       <figure><img src="img/photos/gift-shop-2.jpg" alt=""><figcaption>The gift shop</figcaption></figure>
       <figure><img src="img/cat-drinks.jpg" alt=""><figcaption>Frappés &amp; friends</figcaption></figure>
@@ -381,8 +401,8 @@
 </section>
 
 <section class="reviews">
-  <img class="art cat-reviews-left" src="img/art/cat-peaches.svg" alt="">
-  <img class="art cat-reviews-right" src="img/art/cat-stretching.svg" alt="">
+  <img class="art cat-reviews-left" src="img/art/cat-tortie-flower.svg" alt="">
+  <img class="art cat-reviews-right" src="img/art/cat-tortie.svg" alt="">
   <div class="wrap">
     <h2>What visitors say</h2>
     <div class="cards">
@@ -396,7 +416,7 @@
 <section class="insta">
   <div class="wrap">
     <div class="insta-card">
-      <img class="art cat-insta" src="img/art/cat-sleepy.svg" alt="">
+      <img class="art cat-insta" src="img/art/cat-british-shorthair.svg" alt="">
       <div class="insta-head">
         <div><h2>@kittybrewcafe</h2><span class="hand">fresh from the lounge</span></div>
         <a class="btn" href="https://www.instagram.com/kittybrewcafe/"><i class="fa-brands fa-instagram"></i>Follow on Instagram</a>
@@ -414,62 +434,66 @@
   </div>
 </section>
 
+<section class="location" id="find-us">
+  <svg class="shape" style="left:-50px;top:30px;width:260px;fill:var(--lavender);transform:rotate(-20deg)"><use href="#leaf"/></svg>
+  <svg class="shape" style="right:-40px;bottom:30px;width:220px;fill:var(--lavender);transform:rotate(160deg)"><use href="#leaf2"/></svg>
+  <div class="wrap">
+    <img class="art cat-location" src="img/art/cat-bed.svg" alt="">
+    <div class="loc-card">
+      <div class="loc-txt">
+        <svg class="shape" style="right:-50px;bottom:-60px;width:200px;fill:#3d3c7a"><use href="#flower"/></svg>
+        <h2>Find Us</h2>
+        <span class="hand">just north of Cincinnati</span>
+        <address><strong>Kitty Brew Cat Café</strong><br>721 Reading Road<br>Mason, OH 45040</address>
+        <p class="landmarks">At the corner of Tylersville &amp; Reading Road,<br>across from the WLW tower.</p>
+        <a class="btn" href="https://maps.google.com/?q=Kitty+Brew+Cat+Cafe+721+Reading+Road+Mason+OH"><i class="fa-solid fa-diamond-turn-right"></i>Get Directions</a>
+      </div>
+      <div class="loc-map">
+        <iframe title="Map showing Kitty Brew Cat Café" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=Kitty%20Brew%20Cat%20Cafe&amp;t=m&amp;z=14&amp;output=embed&amp;iwloc=near"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="band" role="img" aria-label="Painted cats, leaves and flowers from the lounge mural">
   <div class="band-inner">
-    <img class="lf band-leaf-01" src="img/art/leaves-05.svg" alt="">
-    <img class="lf band-leaf-02" src="img/art/leaves-04.svg" alt="">
-    <img class="lf band-leaf-03" src="img/art/leaves-01.svg" alt="">
-    <img class="lf band-leaf-04" src="img/art/leaves-06.svg" alt="">
-    <img class="lf band-leaf-05" src="img/art/leaves-03.svg" alt="">
-    <img class="lf band-leaf-06" src="img/art/leaves-02.svg" alt="">
-    <img class="lf band-leaf-07" src="img/art/leaves-05.svg" alt="">
-    <img class="lf band-leaf-08" src="img/art/leaves-04.svg" alt="">
-    <img class="lf band-leaf-09" src="img/art/leaves-06.svg" alt="">
-    <img class="lf band-leaf-10" src="img/art/leaves-01.svg" alt="">
-    <img class="lf band-leaf-11" src="img/art/leaves-03.svg" alt="">
-    <img class="lf band-leaf-12" src="img/art/leaves-05.svg" alt="">
-    <img class="lf band-leaf-13" src="img/art/leaves-02.svg" alt="">
-    <img class="lf band-leaf-14" src="img/art/leaves-04.svg" alt="">
-    <img class="lf band-leaf-15" src="img/art/leaves-06.svg" alt="">
-    <img class="lf band-leaf-16" src="img/art/leaves-01.svg" alt="">
-    <img class="lf band-leaf-17" src="img/art/leaves-03.svg" alt="">
-    <img class="lf band-leaf-18" src="img/art/leaves-05.svg" alt="">
+    <img class="lf band-leaf-01" src="img/art/leaves-01.svg" alt="">
+    <img class="lf band-leaf-02" src="img/art/leaves-06.svg" alt="">
+    <img class="lf band-leaf-03" src="img/art/leaves-03.svg" alt="">
+    <img class="lf band-leaf-04" src="img/art/leaves-02.svg" alt="">
+    <img class="lf band-leaf-05" src="img/art/leaves-04.svg" alt="">
+    <img class="lf band-leaf-06" src="img/art/leaves-06.svg" alt="">
+    <img class="lf band-leaf-07" src="img/art/leaves-01.svg" alt="">
+    <img class="lf band-leaf-08" src="img/art/leaves-02.svg" alt="">
+    <img class="lf band-leaf-09" src="img/art/leaves-03.svg" alt="">
+    <img class="lf band-leaf-10" src="img/art/leaves-04.svg" alt="">
     <img class="fl band-flower-01" src="img/art/flower-05.svg" alt="">
-    <img class="fl band-flower-02" src="img/art/flower-02.svg" alt="">
-    <img class="fl band-flower-03" src="img/art/flower-06.svg" alt="">
-    <img class="fl band-flower-04" src="img/art/flower-03.svg" alt="">
-    <img class="fl band-flower-05" src="img/art/flower-01.svg" alt="">
-    <img class="fl band-flower-06" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-02" src="img/art/flower-03.svg" alt="">
+    <img class="fl band-flower-03" src="img/art/flower-02.svg" alt="">
+    <img class="fl band-flower-04" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-05" src="img/art/flower-06.svg" alt="">
+    <img class="fl band-flower-06" src="img/art/flower-01.svg" alt="">
     <img class="fl band-flower-07" src="img/art/flower-05.svg" alt="">
-    <img class="fl band-flower-08" src="img/art/flower-02.svg" alt="">
-    <img class="fl band-flower-09" src="img/art/flower-06.svg" alt="">
-    <img class="fl band-flower-10" src="img/art/flower-03.svg" alt="">
-    <img class="fl band-flower-11" src="img/art/flower-01.svg" alt="">
-    <img class="fl band-flower-12" src="img/art/flower-04.svg" alt="">
-    <img class="fl band-flower-13" src="img/art/flower-05.svg" alt="">
-    <img class="fl band-flower-14" src="img/art/flower-06.svg" alt="">
-    <img class="fl band-flower-15" src="img/art/flower-02.svg" alt="">
-    <img class="fl band-flower-16" src="img/art/flower-03.svg" alt="">
-    <img class="fl band-flower-17" src="img/art/flower-04.svg" alt="">
-    <img class="fl band-flower-18" src="img/art/flower-05.svg" alt="">
-    <img class="ct band-cat-bed" src="img/art/cat-bed.svg" alt="">
-    <img class="ct up band-cat-jumping" src="img/art/cat-jumping.svg" alt="">
+    <img class="fl band-flower-08" src="img/art/flower-03.svg" alt="">
+    <img class="fl band-flower-09" src="img/art/flower-02.svg" alt="">
+    <img class="fl band-flower-10" src="img/art/flower-06.svg" alt="">
+    <img class="fl band-flower-11" src="img/art/flower-04.svg" alt="">
+    <img class="fl band-flower-12" src="img/art/flower-01.svg" alt="">
+    <img class="ct band-cat-cookie" src="img/art/cat-cookie.png" alt="">
+    <img class="ct up band-cat-peaches" src="img/art/cat-peaches.svg" alt="">
     <img class="ct band-cat-in-box-02" src="img/art/cat-in-box-02.svg" alt="">
+    <img class="ct up band-cat-stretching" src="img/art/cat-stretching.svg" alt="">
+    <img class="ct band-cat-vlad" src="img/art/cat-vlad.png" alt="">
     <img class="ct up band-cat-string" src="img/art/cat-string.svg" alt="">
     <img class="ct band-cat-behind-plant" src="img/art/cat-behind-plant.svg" alt="">
-    <img class="ct up band-cat-peaches" src="img/art/cat-peaches.svg" alt="">
-    <img class="ct band-cat-tortie" src="img/art/cat-tortie.svg" alt="">
-    <img class="ct up band-cat-stretching" src="img/art/cat-stretching.svg" alt="">
-    <img class="ct band-cat-will-feral" src="img/art/cat-will-feral.svg" alt="">
     <img class="ct up band-cat-ivan" src="img/art/cat-ivan.svg" alt="">
-    <img class="ct band-cat-treat-bag" src="img/art/cat-treat-bag.svg" alt="">
-    <img class="ct up band-cat-sleepy" src="img/art/cat-sleepy.svg" alt="">
-    <img class="ct band-cat-british-shorthair" src="img/art/cat-british-shorthair.svg" alt="">
-    <img class="ct up band-cat-tortie-flower" src="img/art/cat-tortie-flower.svg" alt="">
-    <img class="ct band-cat-in-box" src="img/art/cat-in-box.svg" alt="">
+    <img class="ct band-cat-josie" src="img/art/cat-josie.png" alt="">
     <img class="ct up band-cat-napping" src="img/art/cat-napping.svg" alt="">
-    <img class="ct band-cat-reaching" src="img/art/cat-reaching.svg" alt="">
+    <img class="ct band-cat-treat-bag" src="img/art/cat-treat-bag.svg" alt="">
     <img class="ct up band-cat-spilling-mug" src="img/art/cat-spilling-mug.svg" alt="">
+    <img class="ct band-cat-morticia" src="img/art/cat-morticia.png" alt="">
+    <img class="ct band-cat-in-box" src="img/art/cat-in-box.svg" alt="">
     <img class="ct band-toy-ball-1" src="img/art/cat-toy-ball.svg" alt="">
     <img class="ct band-fishbone-01-1" src="img/art/fishbone-01.svg" alt="">
     <img class="ct band-toy-fish-1" src="img/art/cat-toy-fish.svg" alt="">
@@ -480,9 +504,49 @@
 </div>
 <footer>
   <div class="wrap">
-    <div><h3>Café Hours</h3><ul><li><b>Mon</b> 8:30–5:30</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 8:30–5:30</li><li><b>Fri</b> 8:30–6:30</li><li><b>Sat</b> 9:00–6:30</li><li><b>Sun</b> 10:00–4:30</li></ul></div>
-    <div><h3>Cat Lounge Hours</h3><ul><li><b>Mon</b> 11–6</li><li><b>Tue</b> Closed</li><li><b>Wed–Thu</b> 11–6</li><li><b>Fri</b> 11–7</li><li><b>Sat</b> 10–7</li><li><b>Sun</b> 10–5</li></ul></div>
-    <div><h3>Find Us</h3><p>721 Reading Road<br>Mason, OH 45040<br>(513) 701-9001</p></div>
+    <div class="cols">
+      <div>
+        <h3>Café Hours</h3>
+        <ul class="hours" data-day-list>
+          <li data-day="1"><b>Mondays</b> 8:30 – 5:30</li><li data-day="2"><b>Tuesdays</b> Closed</li>
+          <li data-day="3"><b>Wednesdays</b> 8:30 – 5:30</li><li data-day="4"><b>Thursdays</b> 8:30 – 5:30</li>
+          <li data-day="5"><b>Fridays</b> 8:30 – 6:30</li><li data-day="6"><b>Saturdays</b> 9:00 – 6:30</li>
+          <li data-day="0"><b>Sundays</b> 10:00 – 4:30</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Cat Lounge Hours</h3>
+        <ul class="hours" data-day-list>
+          <li data-day="1"><b>Mondays</b> 11:00 – 6:00</li><li data-day="2"><b>Tuesdays</b> Closed</li>
+          <li data-day="3"><b>Wednesdays</b> 11:00 – 6:00</li><li data-day="4"><b>Thursdays</b> 11:00 – 6:00</li>
+          <li data-day="5"><b>Fridays</b> 11:00 – 7:00</li><li data-day="6"><b>Saturdays</b> 10:00 – 7:00</li>
+          <li data-day="0"><b>Sundays</b> 10:00 – 5:00</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact Us</h3>
+        <ul class="contact">
+          <li><i class="fa-solid fa-phone"></i><a href="tel:+15137019001">(513) 701-9001</a></li>
+          <li><i class="fa-solid fa-envelope"></i><a href="mailto:info@kittybrew.com">info@kittybrew.com</a></li>
+          <li><i class="fa-solid fa-location-dot"></i><a href="#find-us">721 Reading Rd, Mason, OH</a></li>
+        </ul>
+        <div class="foot-btns">
+          <a class="btn btn--small" href="https://app.squareup.com/gift/MLB44VR83Z10T/order"><i class="fa-solid fa-gift"></i>Gift Cards</a>
+          <a class="btn btn--small btn--outline" href="https://checkout.square.site/merchant/MLB44VR83Z10T/checkout/RAZJIN7GGJ6OONFYAF7IUV25"><i class="fa-solid fa-star"></i>Cat Club</a>
+          <a class="btn btn--small btn--outline" href="https://www.amazon.com/hz/wishlist/ls/1PSV29RUEBY1I?type=wishlist"><i class="fa-solid fa-box-open"></i>Wish List</a>
+        </div>
+        <div class="follow">
+          <h3>Follow Us!</h3>
+          <a href="https://www.facebook.com/kittybrewcafe" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.instagram.com/kittybrewcafe/" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.yelp.com/biz/kitty-brew-cat-cafe-mason" aria-label="Yelp"><i class="fa-brands fa-yelp"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Kitty Brew Cat Café · 721 Reading Road, Mason, OH 45040</span>
+      <span>Lounge murals by <a href="https://www.brightwallcollective.com/" target="_blank">Brightwall Collective</a></span>
+    </div>
   </div>
 </footer>
 
@@ -490,13 +554,18 @@
   // Hero photo: pick one at random on every visit. To add a photo, put it in img/photos/ and add its name here.
   const HERO_PHOTOS = [
     "hero-mural-calico.jpg", "hero-cat-tree.jpg", "hero-siamese-basket.jpg", "hero-fireplace-tent.jpg",
-    "hero-black-cat.jpg", "hero-tabby.jpg", "hero-calico.jpg", "hero-cat-table.jpg"
+    "hero-black-cat.jpg", "hero-tabby.jpg", "hero-calico.jpg", "hero-cat-table.jpg", "hero-cat-drink.jpg"
   ];
   const heroImg = document.querySelector("[data-hero-photo]");
   // (Mockup only: add ?hero=3 to the address to show a specific photo, counting from 1.)
   const forced = parseInt(new URLSearchParams(location.search).get("hero"), 10);
   const pick = forced >= 1 && forced <= HERO_PHOTOS.length ? forced - 1 : Math.floor(Math.random() * HERO_PHOTOS.length);
   heroImg.src = "img/photos/" + HERO_PHOTOS[pick];
+
+  // Highlight today's row in the footer hours (using café time, Eastern).
+  const today = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(
+    new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" }).format(new Date()));
+  document.querySelectorAll(`[data-day-list] [data-day="${today}"]`).forEach((li) => li.classList.add("is-today"));
 </script>
 </body>
 </html>
