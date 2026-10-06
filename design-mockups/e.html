@@ -139,6 +139,30 @@
   .legal { border-top: 1px solid rgba(255,255,255,.12); margin-top: 38px; padding-top: 18px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: .85rem; color: #a9a8cc; }
   .legal a { color: #d8d7f5; }
 
+  /* MOBILE ACTION BAR: hidden on larger screens, pinned to the bottom on phones */
+  .action-bar { display: none; }
+
+  @media (max-width: 860px) {
+    .action-bar {
+      display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 900;
+      background: var(--night);
+      padding: 8px 8px calc(8px + env(safe-area-inset-bottom));   /* extra room for the iPhone home bar */
+      box-shadow: 0 -6px 18px rgba(20,20,60,.25);
+    }
+    .action-bar a {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      color: #fff; text-decoration: none; border-radius: 12px; padding: 8px 4px;
+      font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 1px; line-height: 1;
+    }
+    .action-bar i { font-size: 1.1rem; color: var(--lavender); }
+    .action-bar .action-bar__book { background: var(--terracotta); flex-direction: row; gap: 8px; font-size: 1.2rem; border-radius: 999px; }
+    .action-bar .action-bar__book i { color: #fff; }
+    body { padding-bottom: 74px; }   /* so the bar never covers the bottom of the footer */
+    .hdr nav .btn { display: none; }   /* the bottom bar's Book button replaces the header one on phones */
+    .hero > .shape { display: none; }  /* background shapes would land on top of the photo */
+  }
+
   @media (max-width: 860px) {
     .hdr nav a:not(.btn) { display: none; }
     .hdr img { height: 72px; } .hdr .wrap { height: 92px; }
@@ -211,7 +235,7 @@
   .band .band-cat-peaches       { left: 7.9%; width: 84px; bottom: 148px; }
   .band .band-cat-in-box-02     { left: 14.8%; width: 122px; bottom: 0px; }
   .band .band-cat-stretching    { left: 21.7%; width: 100px; bottom: 148px; }
-  .band .band-cat-vlad          { left: 28.6%; width: 84px; bottom: 0px; }
+  .band .band-cat-vlad          { left: 28.6%; width: 86px; bottom: 0px; }
   .band .band-cat-string        { left: 35.5%; width: 104px; bottom: 148px; }
   .band .band-cat-behind-plant  { left: 42.4%; width: 142px; bottom: 0px; }
   .band .band-cat-ivan          { left: 49.3%; width: 78px; bottom: 148px; }
@@ -549,6 +573,13 @@
     </div>
   </div>
 </footer>
+
+<!-- Phones only: quick actions pinned to the bottom of the screen -->
+<nav class="action-bar" aria-label="Quick actions">
+  <a href="tel:+15137019001"><i class="fa-solid fa-phone" aria-hidden="true"></i>Call</a>
+  <a href="https://maps.google.com/?q=Kitty+Brew+Cat+Cafe+721+Reading+Road+Mason+OH"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Directions</a>
+  <a class="action-bar__book" href="#"><i class="fa-regular fa-calendar" aria-hidden="true"></i>Book a Visit</a>
+</nav>
 
 <script>
   // Hero photo: pick one at random on every visit. To add a photo, put it in img/photos/ and add its name here.
