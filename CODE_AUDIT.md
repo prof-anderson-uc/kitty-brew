@@ -6,6 +6,8 @@
 
 This was an audit only. No code was changed. Line numbers refer to the code as of the date above.
 
+**Update (October 9, 2026):** added the class-naming standard from the UCBA Stylekit (simple kebab-case, no BEM; lean on semantic structure instead of classing every element). See **section F**, plus the related notes in categories 4, 8 and 10 and recommendations 18–19.
+
 ---
 
 ## A. Overall assessment
@@ -23,6 +25,7 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 1. **Presentation in the markup.** About 15 decorative `<img>` tags per page (leaves and flowers), an inline wave SVG with hard-coded colors repeated on every page, and class names like `c1`, `c2`, `c-orange` and `hl`.
 2. **Content and presentation in JavaScript.** The footer hours and the 42-image mural band only exist after JS runs. Turn JS off and the footer hours are empty lists.
 3. **Two progressive-enhancement bugs.** Content with the `.reveal` class is invisible without JavaScript, and the closed phone menu is still reachable by keyboard.
+4. **BEM class naming.** 45 class names use BEM's `__` and `--` (for example `site-header__inner`, `btn--small`), which the UCBA Stylekit deliberately avoids. Some repeated elements also get a class each where a contextual selector would do (54 `.menu-item` and 54 `.price` classes on the Menu page). See section F.
 
 ### Architectural choices that add real complexity
 - **The mural band:** 42 absolutely positioned images, built by JS, sized with ~50 CSS rules, then scaled with `transform` on phones. It looks great, but it's the clearest case of complexity bought for design convenience.
@@ -115,6 +118,7 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 - **Mural band built with absolute positioning.** About 50 position rules ([styles.css:2061](css/styles.css#L2061) onward) plus a `width: max(100%, 1400px)` / `translateX(-50%)` centering trick ([styles.css:1518](css/styles.css#L1518)) and `scale(0.8)` on phones ([styles.css:1826](css/styles.css#L1826)). A collage really does need absolute positioning, but it's a lot of rules for one decorative strip.
 - **Colors written outside the tokens.** Nine hard-coded values, for example `#cfd9da` (three times, at [950](css/styles.css#L950), [1389](css/styles.css#L1389), [1734](css/styles.css#L1734)), `#1c1b38` (twice) and `#3a3846`.
 - **The file is long.** At 2,132 lines it's well organized, but intimidating to open in class.
+- **BEM naming.** 45 classes use `block__element` and `block--modifier` syntax, against the Stylekit's simple kebab-case convention. Full inventory and effort estimate in section F.
 
 ### 5. Responsive design: 8/10
 
@@ -202,6 +206,7 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 - **Changing the mural band means editing three places:** the list in JS, the positions in CSS, and the image files.
 - **The header and footer are duplicated across five HTML files.** That's normal for a static site with no build step, and a deliberate trade-off (no tooling), but a nav or footer change means five edits.
 - **The CSS–JS coupling** described in category 6.
+- **Mixed naming conventions.** The newer code is plain kebab-case (`cat-hero-top`, `review-cards`, `insta-grid`, `loc-card`), while the structural classes are BEM (`hero__text`, `nav__list`, `btn--ghost`). One convention would read more consistently (section F).
 
 ### 9. Dependencies, frameworks and unnecessary complexity: 8/10
 
@@ -215,7 +220,7 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 
 ### 10. Suitability as an educational example: 7/10
 
-There's plenty that's excellent to teach from (section D). Two things hold the score back: the JS-dependent content and a few clever tricks that need extra explanation before students can follow them.
+There's plenty that's excellent to teach from (section D). Three things hold the score back: the JS-dependent content, a few clever tricks that need extra explanation before students can follow them, and BEM class names that students would first have to learn a naming methodology to read (section F).
 
 ---
 
@@ -307,6 +312,7 @@ The JS-built mural band (an 81-line list plus a builder function, then 50 CSS ru
 - **Specificity-doubling selectors** like `.band .band-…`.
 - **JS-rendered hours.** This one teaches the opposite of progressive enhancement.
 - **The 2,132-line stylesheet.** Show excerpts rather than the whole file.
+- **BEM class names** like `menu-section__head` and `btn--outline`, until they're converted to plain kebab-case (section F).
 
 ---
 
@@ -332,6 +338,8 @@ The JS-built mural band (an 81-line list plus a builder function, then 50 CSS ru
 | 9 | Swap the menu icon with CSS instead of `innerHTML` | ~15 min | Shows CSS replacing JS | Very low |
 | 10 | Replace Font Awesome with ~20 inline SVG icons | 2–3 hrs | Removes a large dependency; faster pages | Medium: touches every page |
 | 11 | Avoid the double hero download (e.g. no default `src` plus a `<noscript>` fallback, or accept it) | ~30 min | Faster homepage load | Low; measure first |
+| 18 | Rename the 45 BEM classes to simple kebab-case (section F) | ~1.5–2 hrs including testing | Matches the Stylekit convention; consistent, approachable names; better classroom examples | Low: mechanical, scripted find-and-replace; main risk is a missed reference, caught by a visual check |
+| 19 | Replace repetitive per-element classes with contextual selectors (`.menu-grid > li`, `.faq details > div`), ideally together with recommendation 6 | ~1–2 hrs | About 130 fewer `class` attributes; HTML that leans on semantic structure | Low–medium: selectors become slightly more dependent on HTML structure |
 
 ### Low priority
 
@@ -349,3 +357,102 @@ The JS-built mural band (an 81-line list plus a builder function, then 50 CSS ru
 - Lighthouse or axe for accessibility and performance
 - A VoiceOver pass on the phone menu and FAQ
 - The browser's Network panel to measure the hero double-download
+
+---
+
+## F. Class naming: UCBA Stylekit convention (no BEM)
+
+**The standard:** simple, descriptive, lowercase kebab-case class names with single hyphens (`site-header-inner`, not `site-header__inner`; `btn-small`, not `btn--small`), and no extra classes where the existing semantic HTML structure can be selected instead.
+
+### Current state
+- **The site mixes two conventions.** About half the classes are already plain kebab-case (`review-cards`, `insta-grid`, `loc-card`, `cat-hero-top`, every `band-…` class, `contact-list`, `status-dot`, `nav-toggle`). The structural classes carried over from v1 use BEM.
+- **45 unique BEM class names**, referenced **282 times**: 115 in [`css/styles.css`](css/styles.css), 163 in the five HTML pages, and 4 in [`js/main.js`](js/main.js).
+- **No collisions:** none of the converted names would clash with an existing class.
+- **Not affected:** CSS custom properties (`--night`, `--header-h`) use `--` by CSS syntax, not BEM, and Font Awesome's `fa-…` classes are third-party. The archived `v1/` folder and `design-mockups/` keep their own copies and wouldn't change.
+
+### Full inventory
+
+| Current (BEM) | Proposed kebab-case | CSS refs | HTML refs | JS refs |
+|---|---|---|---|---|
+| `action-bar__book` | `action-bar-book` | 2 | 5 | 0 |
+| `book__help` | `book-help` | 1 | 1 | 0 |
+| `book__widget` | `book-widget` | 3 | 1 | 0 |
+| `brand__logo` | `brand-logo` | 4 | 5 | 0 |
+| `brand__word` | `brand-word` | 2 | 5 | 0 |
+| `btn--dark` | `btn-dark` | 2 | 2 | 0 |
+| `btn--ghost` | `btn-ghost` | 4 | 2 | 0 |
+| `btn--outline` | `btn-outline` | 2 | 10 | 0 |
+| `btn--small` | `btn-small` | 1 | 20 | 0 |
+| `cam__cta` | `cam-cta` | 1 | 1 | 0 |
+| `cam__frame` | `cam-frame` | 2 | 1 | 0 |
+| `cam__intro` | `cam-intro` | 1 | 1 | 0 |
+| `cam__live` | `cam-live` | 4 | 1 | 0 |
+| `cam__offline` | `cam-offline` | 4 | 1 | 0 |
+| `card--photo` | `card-photo` | 7 | 2 | 0 |
+| `card--wide` | `card-wide` | 1 | 3 | 0 |
+| `card__note` | `card-note` | 1 | 1 | 0 |
+| `deco--dim` | `deco-dim` | 1 | 15 | 0 |
+| `facts__list` | `facts-list` | 7 | 1 | 0 |
+| `faq__answer` | `faq-answer` | 4 | 19 | 0 |
+| `faq__cta` | `faq-cta` | 2 | 1 | 0 |
+| `faq__group` | `faq-group` | 2 | 6 | 0 |
+| `faq__links` | `faq-links` | 6 | 1 | 0 |
+| `footer__btns` | `footer-btns` | 1 | 5 | 0 |
+| `footer__cols` | `footer-cols` | 2 | 5 | 0 |
+| `footer__legal` | `footer-legal` | 2 | 5 | 0 |
+| `hero__actions` | `hero-actions` | 2 | 3 | 0 |
+| `hero__lead` | `hero-lead` | 1 | 1 | 0 |
+| `hero__media` | `hero-media` | 2 | 1 | 0 |
+| `hero__note` | `hero-note` | 2 | 1 | 0 |
+| `hero__photo` | `hero-photo` | 1 | 1 | 0 |
+| `hero__text` | `hero-text` | 3 | 1 | 0 |
+| `how__grid` | `how-grid` | 2 | 1 | 0 |
+| `impact__media` | `impact-media` | 2 | 1 | 0 |
+| `impact__num` | `impact-num` | 3 | 1 | 0 |
+| `impact__price` | `impact-price` | 2 | 1 | 0 |
+| `impact__text` | `impact-text` | 3 | 1 | 0 |
+| `menu-section__head` | `menu-section-head` | 4 | 8 | 0 |
+| `nav__list` | `nav-list` | 10 | 5 | 1 |
+| `section--flush-top` | `section-flush-top` | 1 | 1 | 0 |
+| `section--night` | `section-night` | 2 | 1 | 0 |
+| `site-header__inner` | `site-header-inner` | 2 | 5 | 0 |
+| `today-bar__addr` | `today-bar-addr` | 1 | 5 | 0 |
+| `today-bar__inner` | `today-bar-inner` | 2 | 5 | 0 |
+| `today-bar__sep` | `today-bar-sep` | 1 | 0 | 3 |
+| **45 classes** | | **115** | **163** | **4** |
+
+The JS references are the menu lookup `document.querySelector(".nav__list")` ([main.js:381](js/main.js#L381)) and three `today-bar__sep` spans inside the "Open now" template strings ([main.js:264](js/main.js#L264), [267](js/main.js#L267)).
+
+### A few names worth a second look while converting
+BEM's `--` marks a *variant* of something, and that meaning disappears in plain kebab-case. Most names still read fine (`btn-small`, `btn-ghost`, `section-night`), but two could be misread:
+- `card-photo` could read as "the photo inside a card" rather than "a card that has a photo." `card-with-photo` is clearer.
+- `deco-dim` reads fine, though `deco-faint` or `deco-subtle` may say more.
+
+`nav-list` would match the element's existing `id="nav-list"`. That's valid (classes and IDs are separate namespaces) and arguably tidy, but worth knowing.
+
+### Classes that semantic structure could replace
+The CSS already does this well in places, which makes good teaching examples: `.review blockquote` ([styles.css:695](css/styles.css#L695)), `.loc-text address` ([styles.css:806](css/styles.css#L806)) and `.card li` ([styles.css:1043](css/styles.css#L1043)) style elements by context instead of giving each one a class.
+
+The biggest opportunities to do more of that:
+
+| Pattern now | Count | Contextual alternative |
+|---|---|---|
+| `class="menu-item"` on every menu item ([cafe-menu/index.html:89](cafe-menu/index.html#L89)) | 54 | `.menu-grid > li`, once items become list items (recommendation 6) |
+| `class="price"` on every price | 54 | `.menu-grid h3 + p` or keep one `.price` class only if the markup needs it |
+| `class="faq__answer"` on every answer ([faq/index.html:88](faq/index.html#L88)) | 19 | `.faq details > div` |
+| `class="menu-section__head"` wrapper `div` ([cafe-menu/index.html:87](cafe-menu/index.html#L87)) | 8 | A `<header>` element inside each section, styled as `.menu-section > header` |
+| `class="hero__lead"` / `hero__note` paragraphs | 2 | `.hero-text p` plus one class for the note, or none |
+
+That removes roughly 130 `class` attributes, mostly on the Menu page. One trade-off is worth mentioning in class: contextual selectors depend on the HTML structure, so restructuring the markup can quietly break the styling. Single-purpose classes are more resilient. For repeated, uniform lists like these, the contextual approach is the better fit.
+
+### Effort to transition
+
+| Step | Effort |
+|---|---|
+| Scripted rename of all 45 classes across the 5 pages, `styles.css` and `main.js` (whole-word matching so `btn--small` doesn't touch `btn`) | ~30 min |
+| Update the CSS comments that mention class names, and refresh line references in this document | ~15 min |
+| Re-check: parser check, unused-class scan, and a visual comparison of every page at phone, tablet and desktop widths | ~45–60 min |
+| **Rename total** | **~1.5–2 hours** |
+| Optional: replace repetitive classes with contextual selectors (best done together with recommendation 6's menu and facts restructuring) | +1–2 hours |
+
+**Risk: low.** The rename is mechanical, there are no collisions, and only four references live in JavaScript. The main risk is a missed reference, such as a class built from a string. The visual comparison catches that.
