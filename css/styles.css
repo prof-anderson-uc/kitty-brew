@@ -1,28 +1,63 @@
 /* ==========================================================================
-   Kitty Brew Cat Café — site styles
+   Kitty Brew Cat Café — site styles (design E)
+   ==========================================================================
+   Sections in this file:
+     1. Colors, fonts & sizes      7. Inner pages (Visit, Menu, Kitty Cam, FAQ)
+     2. Base                       8. Mural band
+     3. Helpers                    9. Footer
+     4. Buttons                   10. Phone action bar
+     5. Header                    11. Responsive (smaller screens)
+     6. Homepage                  12. CAT ART & DECORATIONS: sizes & positions
+
+   Units: font sizes and spacing use rem (1rem = the browser's base text size,
+   16px by default) so they grow if a visitor enlarges their text. Divide px by
+   16 to convert: 24px = 1.5rem. Borders, page-edge gutters, header heights and
+   illustration sizes stay in px. Breakpoints use em for the same reason.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. COLORS, FONTS & SIZES
    ========================================================================== */
 
 :root {
-  --cream: #fffbf2;
-  --black: #000;
-  --ink: #1e1d19;
-  --red: #cc1f27;
-  --red-bright: #d22226;
-  --button: #cc1f27;
-  --button-hover: #c0392b;
-  --grey: #d6d6d6;
-  --muted: #6b665c;
+  /* Palette taken from Brightwall Collective's original mural files */
+  --wall: #e6eeee;            /* pale mint-grey walls: main page background */
+  --lavender: #bac6e4;        /* big soft leaf shapes */
+  --periwinkle: #8484c0;      /* periwinkle flower splashes */
+  --periwinkle-deep: #3f3d86; /* subheadings */
+  --night: #2b2a55;           /* deep indigo blocks (replaces the old black) */
+  --night-soft: #3d3c7a;      /* slightly lighter indigo, for shapes on indigo */
+  --mustard: #d2ae2a;         /* yellow flowers */
+  --sage: #72907e;
+  --teal: #2a7e84;
+  --orange: #d27230;          /* orange flower splash, rug */
+  --terracotta: #b45a2a;      /* darker orange: buttons (readable with white text) */
+  --terracotta-dark: #96481f; /* button hover */
+  --tangerine: #f0ae5a;       /* orange tabby fur: accents on indigo */
+  --ink: #1d1a18;             /* main text */
+  --muted: #5d5b6e;           /* secondary text */
+  --on-night: #dcdbf6;        /* body text on indigo */
   --white: #fff;
 
-  --font-display: "Bebas Neue", "Oswald", Impact, sans-serif;
-  --font-hero: "Montserrat", sans-serif;
-  --font-brand: "Montserrat Alternates", "Montserrat", sans-serif;
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-hand: "Patrick Hand SC", "Comic Sans MS", cursive;   /* like the mural lettering */
   --font-body: "Roboto", system-ui, sans-serif;
+  --font-brand: "Montserrat Alternates", "Montserrat", sans-serif;
 
   --container: 1140px;
-  --header-h: 140px;
+  /* Header heights stay in px: js/main.js reads these to know when to shrink the header. */
+  --header-h: 116px;
   --header-h-small: 64px;
+
+  --radius: 1.375rem;         /* rounded corners on cards and photos */
+  --shadow: 0 0.5rem 1.5rem rgba(40, 40, 90, 0.08);
 }
+
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
 
 *,
 *::before,
@@ -32,25 +67,22 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-h-small);
+  scroll-padding-top: calc(var(--header-h-small) + 2.5rem);
 }
 
-/* Font sizes use rem so text respects the visitor's browser text-size setting.
-   1rem = the browser's base size (16px by default), so to convert a pixel size
-   divide by 16: 24px = 1.5rem, 14px = 0.875rem. */
 body {
   margin: 0;
-  background: var(--cream);
-  color: var(--black);
+  background: var(--wall);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
 }
 
 a {
@@ -59,19 +91,28 @@ a {
 
 h1,
 h2,
-h3,
-h4 {
-  margin: 0 0 .4em;
+h3 {
   font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: .5px;
-  line-height: 1.1;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+  margin: 0 0 0.35em;
 }
 
 p {
   margin: 0 0 1em;
 }
 
+section {
+  position: relative;
+}
+
+
+/* ==========================================================================
+   3. HELPERS
+   ========================================================================== */
+
+.wrap,
 .container {
   width: 100%;
   max-width: var(--container);
@@ -92,12 +133,13 @@ p {
   position: absolute;
   left: 12px;
   top: 12px;
-  transform: translateY(calc(-100% - 24px)); /* moved up by its own height, so it stays hidden at any text size */
   z-index: 200;
-  background: var(--black);
+  transform: translateY(calc(-100% - 24px)); /* hidden above the page until focused */
+  background: var(--night);
   color: var(--white);
   padding: 0.625rem 1rem;
   text-decoration: none;
+  border-radius: 0.5rem;
 }
 
 .skip-link:focus {
@@ -105,83 +147,157 @@ p {
 }
 
 :focus-visible {
-  outline: 3px solid var(--button);
+  outline: 3px solid var(--terracotta);
   outline-offset: 3px;
 }
 
-/* ---------- Buttons ---------- */
+.hand {
+  font-family: var(--font-hand);
+}
+
+.hl {
+  font-weight: 700;
+}
+
+/* Subheading in the mural's hand-lettered style (small, used sparingly) */
+.sub {
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  color: var(--periwinkle-deep);
+  margin-bottom: 2rem;
+}
+
+/* Sections fade up as they scroll into view (see initReveal in main.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Painted cats and decorative leaves/flowers: positioned in section 12 */
+.art,
+.deco {
+  position: absolute;
+  pointer-events: none;
+  height: auto;
+}
+
+.art {
+  z-index: 3;
+  filter: drop-shadow(0 10px 16px rgba(20, 20, 60, 0.18));
+}
+
+.deco {
+  z-index: 0;
+}
+
+.deco--dim {
+  opacity: 0.16; /* lavender leaves turned into a subtle texture on indigo */
+}
+
+/* The wavy edge under the hero / page headers */
+.wave {
+  display: block;
+  width: 100%;
+  height: 70px;
+  margin-top: -1px;
+}
+
+
+/* ==========================================================================
+   4. BUTTONS
+   ========================================================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: .5em;
-  padding: 0.75rem 1.375rem;
-  background: var(--button);
+  gap: 0.5em;
+  padding: 0.8rem 1.4rem;
+  background: var(--terracotta);
   color: var(--white);
   font-family: var(--font-display);
-  font-size: 1.125rem;
-  letter-spacing: 2px;
+  font-size: 1.15rem;
+  letter-spacing: 1.5px;
   line-height: 1;
   text-decoration: none;
-  border: 2px solid var(--button);
-  border-radius: 3px;
+  border: 2px solid var(--terracotta);
+  border-radius: 999px;
   cursor: pointer;
-  transition: background .2s, border-color .2s, transform .2s;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .btn:hover {
-  background: var(--button-hover);
-  border-color: var(--button-hover);
+  background: var(--terracotta-dark);
+  border-color: var(--terracotta-dark);
 }
 
 .btn:active {
   transform: translateY(1px);
 }
 
+.btn--small {
+  font-size: 1rem;
+  padding: 0.6rem 1.05rem;
+}
+
 .btn--ghost {
   background: transparent;
-  color: inherit;
-  border-color: currentColor;
+  color: var(--ink);
+  border-color: var(--ink);
 }
 
 .btn--ghost:hover {
-  background: currentColor;
-}
-
-.btn--ghost:hover span {
-  color: var(--cream);
+  background: rgba(0, 0, 0, 0.06);
+  border-color: var(--ink);
 }
 
 .btn--dark {
-  background: var(--black);
-  border-color: var(--black);
+  background: var(--night);
+  border-color: var(--night);
 }
 
 .btn--dark:hover {
-  background: #333;
-  border-color: #333;
+  background: var(--night-soft);
+  border-color: var(--night-soft);
 }
 
-.btn--small {
-  padding: 0.5625rem 1rem;
-  font-size: 1rem;
+/* Ghost and outline buttons that sit on indigo */
+.on-night .btn--ghost,
+.btn--outline {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
-/* ---------- Header ---------- */
+.on-night .btn--ghost:hover,
+.btn--outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--white);
+}
+
+
+/* ==========================================================================
+   5. HEADER
+   ========================================================================== */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--cream);
-  transition: box-shadow .25s, margin-bottom .25s;
+  background: var(--wall);
+  transition: box-shadow 0.25s, margin-bottom 0.25s;
 }
 
 /* When the header shrinks, the margin takes up the space it gave back, so the
    page below never moves. (If it moved, the browser would nudge the scroll
    position back above the switch point and the header would flicker.) */
 .site-header.is-scrolled {
-  box-shadow: 0 2px 14px rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 14px rgba(20, 20, 60, 0.12);
   margin-bottom: calc(var(--header-h) - var(--header-h-small));
 }
 
@@ -191,7 +307,7 @@ p {
   justify-content: space-between;
   gap: 1.5rem;
   height: var(--header-h);
-  transition: height .25s;
+  transition: height 0.25s;
 }
 
 .site-header.is-scrolled .site-header__inner {
@@ -201,23 +317,21 @@ p {
 .brand {
   display: flex;
   align-items: center;
-  text-decoration: none;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .brand__logo {
-  height: 124px;
+  height: 96px;
   width: auto;
-  transition: height .25s, opacity .25s;
 }
 
 .brand__word {
+  display: none;
   font-family: var(--font-brand);
   font-weight: 600;
-  font-size: 2.125rem;
-  letter-spacing: .5px;
+  font-size: 2rem;
   line-height: 1;
-  display: none;
 }
 
 .site-header.is-scrolled .brand__logo {
@@ -244,15 +358,15 @@ p {
 
 .nav__list a {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  letter-spacing: .5px;
+  font-size: 1.45rem;
+  letter-spacing: 0.5px;
   text-decoration: none;
-  transition: color .2s;
+  transition: color 0.2s;
 }
 
 .nav__list a:hover,
 .nav__list a[aria-current="page"] {
-  color: var(--red-bright);
+  color: var(--terracotta);
 }
 
 .nav-toggle {
@@ -261,16 +375,15 @@ p {
   border: 0;
   padding: 0.5rem;
   cursor: pointer;
-  font-size: 1.625rem;
+  font-size: 1.6rem;
   line-height: 1;
-  color: var(--black);
+  color: var(--ink);
 }
 
-/* ---------- Today's hours bar ---------- */
-
+/* "Open now" bar under the header */
 .today-bar {
-  background: var(--ink);
-  color: var(--grey);
+  background: var(--periwinkle);
+  color: var(--white);
   font-size: 0.875rem;
   line-height: 1.4;
 }
@@ -281,18 +394,16 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.375rem 1.125rem;
-  padding: 0.5625rem 1.5rem;
+  padding: 0.5rem 24px;
 }
 
 .today-bar a {
   color: var(--white);
-  text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .today-bar strong {
-  color: var(--white);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .status-dot {
@@ -302,702 +413,489 @@ p {
   border-radius: 50%;
   margin-right: 0.375rem;
   vertical-align: 1px;
-  background: #8a8578;
+  background: #b9b8d8;
 }
 
 .status-dot.is-open {
-  background: #3fbf6a;
-  box-shadow: 0 0 0 3px rgba(63, 191, 106, .25);
+  background: #7ff0a6;
+  box-shadow: 0 0 0 3px rgba(127, 240, 166, 0.3);
 }
 
 .today-bar__sep {
-  opacity: .4;
+  opacity: 0.6;
 }
 
-/* ---------- Torn paper edges ---------- */
 
-.edge {
-  height: 150px;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
+/* ==========================================================================
+   6. HOMEPAGE
+   ========================================================================== */
 
-.edge--black-to-cream {
-  background-image: url("../images/bg-header-overlay-lg-black-2.png");
-  height: 108px;
-  background-color: var(--cream);
-}
-
-.edge--cream-to-black {
-  background-image: url("../images/bg-header-overlay-lg-black.png");
-  background-color: var(--cream);
-  margin-top: -1px;
-}
-
-.edge--black-to-cream-2 {
-  background-image: url("../images/bg-header-overlay-lg-black-2.png");
-  height: 108px;
-  background-color: var(--cream);
-}
-
-/* ---------- Hero ---------- */
-
+/* ---- Hero: indigo text panel + photo (a different photo each visit) ---- */
 .hero {
-  background: var(--black);
-  color: var(--white);
-}
-
-.hero__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 680px;
+  background: var(--night);
+  color: var(--white);
+  min-height: 38.75rem;
+  overflow: hidden;
 }
 
-.hero__content {
+.hero__text {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3.75rem 3rem 3.75rem max(24px, calc((100vw - var(--container)) / 2 + 24px));
+  padding: 4.375rem 3.75rem 5rem max(24px, calc((100vw - var(--container)) / 2 + 24px));
 }
 
 .hero h1 {
-  font-family: var(--font-hero);
-  font-weight: 400;
-  font-size: clamp(2.125rem, 4vw, 3.1875rem);
-  line-height: 1.2;
-  text-transform: uppercase;
-  margin-bottom: .35em;
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
 }
+
+.hero h1 span {
+  display: block;
+}
+
+.hero h1 .c1 { color: var(--tangerine); }
+.hero h1 .c2 { color: var(--lavender); }
+.hero h1 .c3 { color: var(--mustard); }
 
 .hero__lead {
-  font-size: 1.125rem;
-  line-height: 1.6;
-  max-width: 27.5rem;
+  color: var(--on-night);
+  max-width: 28rem;
+  font-size: 1.08rem;
 }
 
-.hero__reserve {
-  font-family: var(--font-hero);
-  font-weight: 700;
-  font-size: 1.375rem;
-  line-height: 1.15;
-  margin: 0.625rem 0 0.25rem;
+.hero__note {
+  margin: 0.25rem 0 1.4rem;
 }
 
-.hero__walkins {
-  font-family: var(--font-hero);
-  font-size: 0.9375rem;
-  color: var(--grey);
-  margin-bottom: 1.125rem;
-  letter-spacing: .5px;
+.hero__note b {
+  color: var(--mustard);
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-bottom: 2.125rem;
-}
-
-.hero__actions .btn--ghost {
-  color: var(--white);
-}
-
-.hero__actions .btn--ghost:hover span {
-  color: var(--black);
-}
-
-.follow {
-  display: flex;
-  align-items: center;
-  gap: 1.375rem;
-}
-
-.follow h2 {
-  color: var(--grey);
-  font-size: 2rem;
-  margin: 0;
-}
-
-.follow a {
-  font-size: 1.25rem;
-  color: var(--white);
-  transition: color .2s, transform .2s;
-  display: inline-block;
-}
-
-.follow a:hover {
-  color: var(--button);
-  transform: scale(1.15);
 }
 
 .hero__media {
-  background: url("../images/hero.jpg") center / cover no-repeat;
-  min-height: 420px;
-}
-
-/* ---------- How it works ---------- */
-
-.how {
-  padding: 1.875rem 0 4.375rem;
-  text-align: center;
-}
-
-.how h2 {
-  color: var(--red-bright);
-  font-size: 2.375rem;
-}
-
-.how__intro {
-  max-width: 51.25rem;
-  margin: 0 auto 3.125rem;
-  font-size: 1.0625rem;
-}
-
-.how__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-}
-
-.how__icon {
-  font-size: 3.375rem;
-  line-height: 1;
-  margin-bottom: 0.875rem;
-  display: inline-block;
-  transition: transform .5s;
-}
-
-.how__item:hover .how__icon {
-  animation: bounce-in .74s;
-}
-
-.how h3 {
-  color: var(--red);
-  font-size: 2.25rem;
-  margin-bottom: .2em;
-}
-
-.how__item p {
-  max-width: 18.75rem;
-  margin: 0 auto;
-}
-
-@keyframes bounce-in {
-  0% {
-    transform: scale(1);
-  }
-
-  30% {
-    transform: scale(1.25);
-  }
-
-  55% {
-    transform: scale(.9);
-  }
-
-  80% {
-    transform: scale(1.06);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-.first-visit {
-  margin: 3.5rem auto 0;
-  max-width: 60rem;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  list-style: none;
-  padding: 0;
-  counter-reset: step;
-  text-align: left;
-  line-height: 1.15;
-}
-
-.first-visit li {
   position: relative;
-  padding: 1.125rem 1.25rem 1.125rem 1.25rem;
-  /* border-top: 1px solid var(--black); */
-  counter-increment: step;
-}
-
-.first-visit li::before {
-  content: counter(step);
-  display: block;
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  line-height: 1;
-  color: var(--red);
-  margin-bottom: 0.375rem;
-}
-
-.first-visit strong {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.375rem;
-  letter-spacing: .5px;
-}
-
-.first-visit span {
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-/* ---------- Making a difference ---------- */
-
-.impact {
-  background: var(--black);
-  color: var(--white);
-}
-
-.impact__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 620px;
-}
-
-.impact__media {
-  background: url("../images/adoption.jpg") 30% center / cover no-repeat;
-  min-height: 380px;
-}
-
-.impact__content {
-  padding: 3.75rem max(24px, calc((100vw - var(--container)) / 2 + 24px)) 3.75rem 3.75rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.impact h2 {
-  font-size: 3.125rem;
-  color: #bdbdbd;
-}
-
-.impact__stat {
-  display: flex;
-  flex-wrap: wrap; /* label drops below the number if there isn't room */
-  align-items: baseline;
-  gap: 0.25rem 0.875rem;
-  margin: 0.375rem 0 1.25rem;
-  font-family: var(--font-display);
-}
-
-.impact__stat b {
-  font-size: 5.25rem;
-  line-height: .9;
-  color: var(--button);
-  font-weight: 400;
-}
-
-.impact__stat span {
-  flex: 1 1 5em; /* stays beside the number until it would be narrower than 5em */
-  font-size: 1.5rem;
-  letter-spacing: 1px;
-  color: var(--grey);
-  line-height: 1.1;
-}
-
-.impact__content p {
-  color: #e7e7e7;
-  font-size: 1rem;
-}
-
-.impact__price {
-  border-left: 3px solid var(--button);
-  padding: 0.25rem 0 0.25rem 1rem;
-  margin: 0.375rem 0 1.25rem;
-}
-
-.impact__price strong {
-  display: block;
-  font-size: 1.125rem;
-  color: var(--white);
-}
-
-/* ---------- Instagram grid ---------- */
-
-.insta {
-  padding: 1.25rem 0 4.375rem;
-}
-
-.insta__card {
-  background: var(--white);
-  padding: 1.625rem 1.625rem 1.875rem;
-  border-radius: 4px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, .05);
-}
-
-.insta__head {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.125rem;
-}
-
-.insta__head img {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--cream);
-}
-
-.insta__head h3 {
-  font-size: 1.125rem;
-  margin: 0;
-}
-
-.insta__head p {
-  font-size: 0.8125rem;
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.3;
-}
-
-.insta__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-}
-
-.insta__grid a {
-  display: block;
-  aspect-ratio: 1;
   overflow: hidden;
-  position: relative;
+  background: var(--night-soft);
 }
 
-.insta__grid img {
+.hero__photo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .4s;
 }
 
-.insta__grid a:hover img {
-  transform: scale(1.05);
-}
-
-.insta__actions {
-  display: flex;
-  justify-content: center;
-  gap: 0.625rem;
-  margin-top: 1.375rem;
-  flex-wrap: wrap;
-}
-
-/* ---------- Testimonials ---------- */
-
-.testimonials {
-  position: relative;
-  background: url("../images/cup.jpg") center / cover no-repeat;
-  color: var(--white);
-  padding: 4.375rem 0 3.75rem;
+/* ---- How it works ---- */
+.how {
+  text-align: center;
+  padding: 0.625rem 0 5rem;
   overflow: hidden;
 }
 
-.testimonials::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, .45);
+.how h2 {
+  font-size: 3rem;
+  margin-bottom: 0;
 }
 
-.testimonials>* {
+.how__grid {
   position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
 }
 
-.testimonials__title {
-  text-align: center;
-  margin-bottom: 2.25rem;
+.step-art {
+  height: 200px;
+  margin: 0 auto 0.875rem;
 }
 
-.testimonials__title small {
-  display: block;
-  font-family: var(--font-hero);
-  font-weight: 300;
-  font-size: 2.8125rem;
-  line-height: 1;
-}
-
-.testimonials__title span {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 4.375rem;
-  line-height: 1;
-}
-
-.carousel {
+.step-art img {
   position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s;
 }
 
-.carousel__track {
+.step:hover .step-art img {
+  transform: rotate(-3deg) scale(1.04);
+}
+
+.step h3 {
+  font-size: 2.1rem;
+}
+
+.step h3.c-orange { color: var(--terracotta); }
+.step h3.c-purple { color: var(--periwinkle-deep); }
+.step h3.c-teal   { color: var(--teal); }
+
+.step p {
+  max-width: 19rem;
+  margin: 0 auto;
+}
+
+/* ---- Making a difference: photo + indigo panel ---- */
+.impact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--night);
+  color: var(--white);
+}
+
+.impact__media {
+  position: relative;
+  min-height: 33.75rem;
+  background: url("../images/photos/adoption-tabby.jpg") 72% center / cover no-repeat;
+}
+
+.impact__text {
+  position: relative;
+  overflow: hidden;
   display: flex;
-  gap: 1.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  padding: 0.625rem calc(50% - 170px) 1.25rem;
-  scrollbar-width: none;
-}
-
-.carousel__track::-webkit-scrollbar {
-  display: none;
-}
-
-.quote {
-  flex: 0 0 340px;
-  scroll-snap-align: center;
-  margin: 0;
-  background: rgba(255, 255, 255, .22);
-  color: rgba(0, 0, 0, .45);
-  border-radius: 20px;
-  padding: 1.875rem 1.75rem;
-  text-align: center;
-  font-size: 0.9375rem;
-  line-height: 1.75;
-  transition: background .35s, color .35s, transform .35s;
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-}
-
-.quote.is-active {
-  background: var(--white);
-  color: var(--black);
-  transform: scale(1.03);
-}
-
-.quote blockquote {
-  margin: 0 0 1rem;
-}
-
-.quote figcaption {
-  font-family: var(--font-display);
-  font-size: 1.375rem;
-  letter-spacing: 1px;
-}
-
-.carousel__dots {
-  display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
+  padding: 4.375rem max(24px, calc((100vw - var(--container)) / 2 + 24px)) 4.375rem 5rem;
+}
+
+.impact__num {
+  font-family: var(--font-display);
+  font-size: 6.5rem;
+  line-height: 0.9;
+  color: var(--mustard);
+}
+
+.impact__num small {
+  display: block;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  color: var(--lavender);
+}
+
+.impact h2 {
+  font-size: 2.6rem;
   margin-top: 0.875rem;
 }
 
-.carousel__dots button {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  background: rgba(255, 255, 255, .45);
+.impact p {
+  color: var(--on-night);
 }
 
-.carousel__dots button[aria-current="true"] {
-  background: var(--white);
-}
-
-/* ---------- Location ---------- */
-
-.location {
-  background:
-    linear-gradient(90deg, rgba(30, 29, 25, .94) 0%, rgba(30, 29, 25, .82) 40%, rgba(30, 29, 25, .35) 100%),
-    var(--ink) url("../images/coffee-beans.png") center bottom / 100% auto no-repeat;
+.impact p strong {
   color: var(--white);
-  padding: 3.125rem 0;
 }
 
-.location__grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2.5rem;
-  align-items: center;
+.impact__price {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 1.125rem;
+  padding: 0.875rem 1.125rem;
+  margin: 0.375rem 0 1.375rem;
+  color: var(--on-night);
 }
 
-.location h2 {
-  color: var(--red);
-  font-size: 2.375rem;
-}
-
-.location address {
-  font-style: normal;
-  font-size: 1.0625rem;
-  line-height: 1.6;
-  margin-bottom: 0.875rem;
-}
-
-.location address strong {
-  font-weight: 700;
-}
-
-.location__note {
-  font-size: 0.875rem;
-  color: var(--grey);
-  line-height: 1.6;
-}
-
-.location__map {
-  width: 100%;
-  height: 260px;
-  border: 0;
-  display: block;
-}
-
-/* ---------- Footer ---------- */
-
-.site-footer {
-  background: var(--black) url("../images/orange-cat.png") right 40px bottom / 190px auto no-repeat;
+.impact__price b {
   color: var(--white);
-  padding: 3.75rem 0 2.5rem;
 }
 
-.footer__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2.5rem;
-  padding-right: 150px;
+/* ---- Step inside the lounge: photo gallery ---- */
+.gallery-sec {
+  padding: 5.625rem 0 4.375rem;
+  overflow: hidden;
 }
 
-.site-footer h2 {
-  font-size: 2.125rem;
-  margin-bottom: .5em;
-}
-
-.hours {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9375rem;
-  line-height: 2;
-}
-
-.hours li {
-  display: flex;
-  gap: 0.375rem;
-}
-
-.hours b {
-  font-weight: 700;
-  min-width: 100px;
-}
-
-.hours li.is-today {
-  color: var(--button);
-}
-
-.contact-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.125rem;
-}
-
-.contact-list li {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  margin-bottom: 0.375rem;
-}
-
-.contact-list a {
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.contact-list a:hover {
-  color: var(--button);
-}
-
-.site-footer .follow {
-  gap: 1.125rem;
-  margin-top: 1.375rem;
-}
-
-.site-footer .follow h2 {
-  color: var(--white);
-  font-size: 2.125rem;
+.gallery-sec h2 {
+  font-size: 3rem;
+  text-align: center;
   margin: 0;
 }
 
-.footer__legal {
-  border-top: 1px solid #222;
-  margin-top: 2.5rem;
-  padding-top: 1.125rem;
-  font-size: 0.8125rem;
-  color: #8a8a8a;
-}
-
-/* ---------- Mobile sticky action bar ---------- */
-
-.action-bar {
-  display: none;
-}
-
-/* ---------- Inner page header ---------- */
-
-.page-hero {
-  background: var(--black);
-  color: var(--white);
-  padding: 4rem 0 0.625rem;
+.gallery-sec .sub {
   text-align: center;
 }
 
+.gallery {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-auto-rows: 13.75rem;
+  gap: 1rem;
+}
+
+.gallery figure {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery .tall {
+  grid-row: span 2;
+}
+
+.gallery figcaption {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  background: var(--white);
+  border-radius: 99px;
+  padding: 0.2rem 0.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+}
+
+/* ---- Reviews (main.js shows 3 at random; without JavaScript the first 3 show) ---- */
+.reviews {
+  padding: 0.625rem 0 4.375rem;
+  overflow: hidden;
+}
+
+.reviews h2 {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1.625rem;
+}
+
+.review-cards {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.review-cards > :nth-child(n + 4) {
+  display: none;
+}
+
+.review {
+  margin: 0;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 1.625rem;
+  box-shadow: var(--shadow);
+}
+
+.review blockquote {
+  margin: 0;
+}
+
+.review figcaption {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.5px;
+  color: var(--periwinkle-deep);
+  margin-top: 0.625rem;
+}
+
+/* ---- Instagram ---- */
+.insta {
+  padding: 5.625rem 0 4.375rem;
+}
+
+.insta-card {
+  position: relative;
+  background: var(--white);
+  border-radius: 1.625rem;
+  padding: 1.625rem 1.75rem 1.875rem;
+  box-shadow: var(--shadow);
+}
+
+.insta-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.125rem;
+}
+
+.insta-head h2 {
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.insta-head .hand {
+  display: block;
+  margin-top: -0.25rem;
+  font-size: 1.25rem;
+  color: var(--periwinkle-deep);
+}
+
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.625rem;
+}
+
+.insta-grid a {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.insta-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.insta-grid a:hover img {
+  transform: scale(1.06);
+}
+
+/* ---- Find us: address + map (homepage and Visit page) ---- */
+.location {
+  padding: 7.5rem 0 5rem;
+  overflow: hidden;
+}
+
+.location .wrap {
+  position: relative;
+}
+
+.loc-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  background: var(--night);
+  color: var(--white);
+  border-radius: 1.75rem;
+  overflow: hidden;
+  box-shadow: 0 0.625rem 1.875rem rgba(20, 20, 60, 0.15);
+}
+
+.loc-text {
+  position: relative;
+  overflow: hidden;
+  padding: 2.875rem 2.75rem;
+}
+
+.loc-text h2 {
+  font-size: 3rem;
+  color: var(--mustard);
+  margin-bottom: 0;
+}
+
+.loc-text .hand {
+  display: block;
+  margin-bottom: 1.125rem;
+  font-size: 1.3rem;
+  color: var(--lavender);
+}
+
+.loc-text address {
+  font-style: normal;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.loc-text .landmarks {
+  color: var(--on-night);
+  font-size: 0.95rem;
+  margin-bottom: 1.375rem;
+}
+
+.loc-map {
+  min-height: 23.75rem;
+}
+
+.loc-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+
+/* ==========================================================================
+   7. INNER PAGES
+   ========================================================================== */
+
+/* ---- Page header: indigo band with a painted cat, then the wavy edge ---- */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--night);
+  color: var(--white);
+  text-align: center;
+  padding: 4rem 0 2.5rem;
+}
+
+.page-hero .wrap,
+.page-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
 .page-hero h1 {
-  font-size: clamp(3.5rem, 8vw, 5.625rem);
-  margin-bottom: .1em;
+  font-size: clamp(3.5rem, 8vw, 5.4rem);
+  color: var(--tangerine);
+  margin-bottom: 0.15em;
 }
 
 .page-hero p {
   max-width: 45rem;
   margin: 0 auto 0.75rem;
-  color: var(--grey);
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  color: var(--on-night);
+  font-size: 1.06rem;
+}
+
+.page-hero p strong {
+  color: var(--white);
 }
 
 .page-hero .hero__actions {
   justify-content: center;
-  margin: 1.375rem 0 0;
-}
-
-.page-hero .btn--ghost {
-  color: var(--white);
-}
-
-.page-hero .btn--ghost:hover span {
-  color: var(--black);
+  margin-top: 1.375rem;
 }
 
 .section {
   padding: 1.875rem 0 4.375rem;
 }
 
-.section--black {
-  background: var(--black);
+.section--flush-top {
+  padding-top: 0;
+}
+
+.section--night {
+  background: var(--night);
   color: var(--white);
-  padding: 1.25rem 0 3.75rem;
+  padding: 4.5rem 0 4.5rem;
+  overflow: hidden;
 }
 
 .section-title {
-  font-size: 3.125rem;
+  font-size: 3rem;
   text-align: center;
   margin-bottom: 1.875rem;
 }
 
-.section--black .section-title {
-  color: var(--white);
+.section--night .section-title {
+  color: var(--tangerine);
 }
 
-.red {
-  color: var(--red-bright);
-}
-
-/* jump links (menu + FAQ) */
+/* Jump links at the top of the Menu and FAQ pages */
 .jump {
   display: flex;
   flex-wrap: wrap;
@@ -1014,20 +912,21 @@ p {
   font-size: 1.125rem;
   letter-spacing: 1px;
   line-height: 1;
-  padding: 0.5625rem 1rem 0.5rem;
+  padding: 0.6rem 1rem 0.55rem;
   border-radius: 99px;
-  border: 2px solid var(--black);
+  background: var(--white);
+  color: var(--periwinkle-deep);
   text-decoration: none;
-  transition: background .2s, color .2s;
+  box-shadow: 0 2px 6px rgba(40, 40, 90, 0.06);
+  transition: background 0.2s, color 0.2s;
 }
 
 .jump a:hover {
-  background: var(--black);
-  color: var(--cream);
+  background: var(--periwinkle-deep);
+  color: var(--white);
 }
 
-/* ---------- Visit page ---------- */
-
+/* ---- Visit page: booking ---- */
 .book {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -1037,7 +936,7 @@ p {
 
 .facts {
   position: sticky;
-  top: calc(var(--header-h-small) + 56px);
+  top: calc(var(--header-h-small) + 3.5rem);
 }
 
 .facts__list {
@@ -1048,7 +947,7 @@ p {
 
 .facts__list li {
   padding: 0.875rem 0;
-  border-bottom: 1px solid #e8dfcb;
+  border-bottom: 1px solid #cfd9da;
   line-height: 1.4;
 }
 
@@ -1062,7 +961,7 @@ p {
   font-weight: 400;
   font-size: 2.125rem;
   line-height: 1;
-  color: var(--red);
+  color: var(--terracotta);
 }
 
 .facts__list span {
@@ -1077,11 +976,11 @@ p {
 }
 
 .book__widget {
+  min-height: 30rem;
   background: var(--white);
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 1.125rem;
-  min-height: 480px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, .05);
+  box-shadow: var(--shadow);
 }
 
 .book__widget h2 {
@@ -1089,12 +988,19 @@ p {
   margin-bottom: 0.25rem;
 }
 
-.book__widget>p {
+.book__widget > p {
   color: var(--muted);
   font-size: 0.9375rem;
   margin-bottom: 0.875rem;
 }
 
+.book__help {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+}
+
+/* ---- Visit page: policy cards ---- */
 .policy-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1102,16 +1008,26 @@ p {
 }
 
 .card {
-  background: #111;
-  border: 1px solid #262626;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
   padding: 1.75rem 1.875rem;
+  color: var(--on-night);
 }
 
 .card h3 {
   font-size: 2.125rem;
-  color: var(--button);
-  margin-bottom: .3em;
+  color: var(--mustard);
+  margin-bottom: 0.3em;
+}
+
+.card .hl,
+.card strong {
+  color: var(--white);
+}
+
+.card a {
+  color: var(--white);
 }
 
 .card p:last-child,
@@ -1130,7 +1046,7 @@ p {
 }
 
 .card li::marker {
-  color: var(--button);
+  color: var(--tangerine);
 }
 
 .card--wide {
@@ -1138,21 +1054,26 @@ p {
 }
 
 .card--photo {
-  padding: 0;
-  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 0;
+  overflow: hidden;
 }
 
-.card--photo>div {
+.card--photo > div {
   padding: 1.75rem 1.875rem;
 }
 
-.card--photo img {
+.card--photo > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   min-height: 260px;
+  object-fit: cover;
+}
+
+.card__note {
+  font-size: 0.875rem;
+  color: #aaa9c8;
 }
 
 .big {
@@ -1165,13 +1086,8 @@ p {
 
 .big small {
   font-size: 1.375rem;
-  color: var(--grey);
   letter-spacing: 1px;
-}
-
-.hl {
-  color: var(--white);
-  font-weight: 700;
+  color: var(--lavender);
 }
 
 .rules {
@@ -1184,34 +1100,32 @@ p {
 }
 
 .rules li {
-  padding-left: 1.875rem;
   position: relative;
-  line-height: 1.55;
-  font-size: 0.9375rem;
-  color: #ddd;
   margin: 0;
+  padding-left: 1.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
 }
 
 .rules li::before {
-  content: "\f1b0";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
+  content: "\f1b0";   /* Font Awesome paw print */
   position: absolute;
   left: 0;
   top: 2px;
-  color: var(--button);
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
   font-size: 1rem;
+  color: var(--tangerine);
 }
 
 .rules strong {
   display: block;
-  color: var(--white);
+  margin-bottom: 0.125rem;
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 1.375rem;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   line-height: 1.2;
-  margin-bottom: 0.125rem;
 }
 
 .included {
@@ -1219,27 +1133,26 @@ p {
   grid-template-columns: 1fr 1fr;
   gap: 0.625rem 1.25rem;
   list-style: none;
-  padding: 0;
   margin: 0.75rem 0 1rem;
+  padding: 0;
 }
 
 .included li {
   display: flex;
-  gap: 0.625rem;
   align-items: baseline;
-  line-height: 1.45;
+  gap: 0.625rem;
   font-size: 0.9375rem;
+  line-height: 1.45;
 }
 
 .included i {
-  color: var(--button);
+  color: var(--tangerine);
 }
 
-/* ---------- Menu page ---------- */
-
+/* ---- Menu page ---- */
 .menu-section {
   margin-bottom: 3.5rem;
-  scroll-margin-top: calc(var(--header-h-small) + 50px);
+  scroll-margin-top: calc(var(--header-h-small) + 3rem);
 }
 
 .menu-section__head {
@@ -1247,15 +1160,15 @@ p {
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 3px solid var(--black);
+  border-bottom: 3px solid var(--periwinkle-deep);
   padding-bottom: 0.375rem;
   margin-bottom: 1.375rem;
 }
 
 .menu-section__head h2 {
   font-size: 2.875rem;
+  color: var(--terracotta);
   margin: 0;
-  color: var(--red-bright);
 }
 
 .menu-section__head span {
@@ -1279,13 +1192,14 @@ p {
   margin: 0 0 0.125rem;
 }
 
+/* dotted leader line between the item name and its price */
 .menu-item h3::after {
   content: "";
   order: 1;
   flex: 1;
-  border-bottom: 2px dotted #c9bda4;
-  transform: translateY(-6px);
   min-width: 20px;
+  border-bottom: 2px dotted #b4c0cf;
+  transform: translateY(-6px);
 }
 
 .menu-item h3 .price {
@@ -1299,26 +1213,23 @@ p {
 
 .menu-item p {
   margin: 0;
-  color: #333;
-  font-size: 1rem;
+  color: #3a3846;
   line-height: 1.55;
 }
 
 .menu-item .flavors {
+  margin-top: 0.25rem;
   font-size: 0.875rem;
   color: var(--muted);
-  margin-top: 0.25rem;
 }
 
 .menu-note {
   text-align: center;
   color: var(--muted);
   font-size: 0.9375rem;
-  margin-top: -20px;
 }
 
-/* ---------- Kitty Cam ---------- */
-
+/* ---- Kitty Cam page ---- */
 .cam {
   max-width: 1080px;
   margin: 0 auto;
@@ -1327,36 +1238,36 @@ p {
 .cam__frame {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: #111;
-  border-radius: 8px;
+  background: #1c1b38;
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, .25);
+  box-shadow: 0 0.625rem 2.5rem rgba(20, 20, 60, 0.25);
 }
 
 .cam__frame video {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
-  background: #111;
+  background: #1c1b38;
 }
 
 .cam__live {
   position: absolute;
-  top: 14px;
-  left: 14px;
+  top: 0.875rem;
+  left: 0.875rem;
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 0.4375rem;
-  background: rgba(0, 0, 0, .6);
+  gap: 0.45rem;
+  background: rgba(0, 0, 0, 0.6);
   color: var(--white);
   font-family: var(--font-display);
   font-size: 1.0625rem;
   letter-spacing: 1.5px;
   line-height: 1;
-  padding: 0.375rem 0.6875rem 0.3125rem;
-  border-radius: 3px;
+  padding: 0.375rem 0.7rem 0.3rem;
+  border-radius: 99px;
 }
 
 .cam__live::before {
@@ -1369,9 +1280,7 @@ p {
 }
 
 @keyframes pulse {
-  50% {
-    opacity: .3;
-  }
+  50% { opacity: 0.3; }
 }
 
 .cam__offline {
@@ -1380,20 +1289,21 @@ p {
   display: none;
   place-items: center;
   text-align: center;
-  background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url("../images/cat-and-coffee.jpg") center / cover;
-  color: var(--white);
   padding: 1.5rem;
+  background: linear-gradient(rgba(43, 42, 85, 0.82), rgba(43, 42, 85, 0.82)), url("../images/photos/hero-cat-drink.jpg") center / cover;
+  color: var(--white);
 }
 
 .cam__offline h2 {
   font-size: 2.75rem;
-  margin-bottom: .2em;
+  color: var(--tangerine);
+  margin-bottom: 0.2em;
 }
 
 .cam__offline p {
-  color: var(--grey);
   max-width: 28.75rem;
   margin: 0 auto;
+  color: var(--on-night);
 }
 
 .cam.is-offline .cam__offline {
@@ -1404,10 +1314,15 @@ p {
   display: none;
 }
 
+.cam__cta {
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
 .cam__intro {
-  text-align: center;
   max-width: 47.5rem;
   margin: 2.125rem auto 0;
+  text-align: center;
   font-size: 1.0625rem;
 }
 
@@ -1415,34 +1330,33 @@ p {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-top: 0.625rem;
 }
 
 .support a {
   display: block;
-  text-decoration: none;
   background: var(--white);
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 1.75rem 1.625rem;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, .05);
-  transition: transform .25s, box-shadow .25s;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .support a:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, .1);
+  box-shadow: 0 0.875rem 1.875rem rgba(40, 40, 90, 0.12);
 }
 
 .support i {
-  font-size: 2.125rem;
-  color: var(--red);
-  margin-bottom: 0.625rem;
   display: block;
+  margin-bottom: 0.625rem;
+  font-size: 2.125rem;
+  color: var(--terracotta);
 }
 
 .support h3 {
   font-size: 1.875rem;
-  margin-bottom: .2em;
+  margin-bottom: 0.2em;
 }
 
 .support p {
@@ -1452,8 +1366,7 @@ p {
   line-height: 1.55;
 }
 
-/* ---------- FAQ ---------- */
-
+/* ---- FAQ page ---- */
 .faq {
   max-width: 56.25rem;
   margin: 0 auto;
@@ -1461,32 +1374,32 @@ p {
 
 .faq__group {
   margin-bottom: 2.75rem;
-  scroll-margin-top: calc(var(--header-h-small) + 50px);
+  scroll-margin-top: calc(var(--header-h-small) + 3rem);
 }
 
-.faq__group>h2 {
+.faq__group > h2 {
   font-size: 2.75rem;
-  color: var(--red-bright);
-  border-bottom: 3px solid var(--black);
+  color: var(--terracotta);
+  border-bottom: 3px solid var(--periwinkle-deep);
   padding-bottom: 0.25rem;
   margin-bottom: 0.5rem;
 }
 
 .faq details {
-  border-bottom: 1px solid #e3d9c3;
+  border-bottom: 1px solid #cfd9da;
 }
 
 .faq summary {
-  list-style: none;
-  cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   padding: 1.125rem 0.25rem;
+  list-style: none;
+  cursor: pointer;
   font-family: var(--font-display);
   font-size: 1.625rem;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   line-height: 1.15;
 }
 
@@ -1496,12 +1409,12 @@ p {
 
 .faq summary::after {
   content: "+";
+  flex-shrink: 0;
   font-family: var(--font-body);
   font-size: 1.625rem;
   line-height: 1;
-  color: var(--red);
-  transition: transform .2s;
-  flex-shrink: 0;
+  color: var(--terracotta);
+  transition: transform 0.2s;
 }
 
 .faq details[open] summary::after {
@@ -1509,7 +1422,7 @@ p {
 }
 
 .faq summary:hover {
-  color: var(--red-bright);
+  color: var(--periwinkle-deep);
 }
 
 .faq__answer {
@@ -1537,23 +1450,23 @@ p {
 
 .faq__links a {
   display: flex;
-  gap: 0.875rem;
   align-items: flex-start;
-  text-decoration: none;
+  gap: 0.875rem;
   background: var(--white);
-  border-radius: 6px;
+  border: 1px solid #d5dfe0;
+  border-radius: 0.875rem;
   padding: 0.875rem 1rem;
-  border: 1px solid #eee3cc;
+  text-decoration: none;
 }
 
 .faq__links a:hover {
-  border-color: var(--button);
+  border-color: var(--terracotta);
 }
 
 .faq__links i {
-  color: var(--red);
-  font-size: 1.375rem;
   margin-top: 0.1875rem;
+  font-size: 1.375rem;
+  color: var(--terracotta);
 }
 
 .faq__links strong {
@@ -1561,94 +1474,209 @@ p {
 }
 
 .faq__links span {
-  font-size: 0.9062rem;
+  display: block;
+  font-size: 0.906rem;
   color: var(--muted);
   line-height: 1.5;
-  display: block;
 }
 
 .faq__cta {
+  margin-top: 1.25rem;
+  padding: 2.125rem 1.25rem;
   text-align: center;
   background: var(--white);
-  border-radius: 8px;
-  padding: 2.125rem 1.25rem;
-  margin-top: 1.25rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .faq__cta h2 {
   font-size: 2.5rem;
 }
 
-/* ---------- Scroll reveal ---------- */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .7s ease, transform .7s ease;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .how__item:hover .how__icon {
-    animation: none;
-  }
-
-  .insta__grid img,
-  .quote {
-    transition: none;
-  }
-}
 
 /* ==========================================================================
-   Responsive
+   8. MURAL BAND (above the footer on every page)
    ==========================================================================
-   Breakpoints use em (1em = 16px at the default text size) instead of px.
-   If a visitor enlarges their browser's text, the layout switches to the
-   smaller-screen styles sooner, so bigger text still fits.
+   The images are added by main.js (see MURAL_BAND there) so the list lives in
+   one place instead of being copied into all five pages. Each piece's size and
+   position is set in section 12.
+   ========================================================================== */
+
+.band {
+  position: relative;
+  height: 290px;
+  overflow: hidden;
+  margin-bottom: -2px;
+}
+
+.band-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max(100%, 1400px);   /* below 1400px wide, the band just shows its middle */
+}
+
+.band img {
+  position: absolute;
+  bottom: 0;
+  height: auto;
+}
+
+.band .lf { z-index: 1; }     /* lavender leaves */
+.band .fl { z-index: 2; }     /* flowers */
+.band .ct { z-index: 3; }     /* cats + props */
+.band .ct.up { z-index: 4; }  /* the "floating" row overlaps the bottom row a little, like on the wall */
+
+
+/* ==========================================================================
+   9. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background: var(--night);
+  color: var(--on-night);
+  padding: 3.125rem 0 1.75rem;
+}
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.1fr;
+  gap: 2.25rem;
+}
+
+.site-footer h2 {
+  font-size: 1.9rem;
+  color: var(--mustard);
+}
+
+/* Hours lists are filled in by main.js from KB_HOURS */
+.hours {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 2;
+}
+
+.hours li {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+}
+
+.hours b {
+  color: var(--white);
+}
+
+.hours li.is-today,
+.hours li.is-today b {
+  color: var(--tangerine);
+}
+
+.contact-list {
+  list-style: none;
+  margin: 0 0 1.125rem;
+  padding: 0;
+}
+
+.contact-list li {
+  margin-bottom: 0.5rem;
+}
+
+.contact-list a {
+  color: var(--white);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  color: var(--tangerine);
+}
+
+.contact-list i {
+  width: 1.4em;
+  color: var(--lavender);
+}
+
+.footer__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 1.375rem;
+}
+
+.follow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-footer .follow h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.follow a {
+  font-size: 1.4rem;
+  color: var(--white);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.follow a:hover {
+  color: var(--tangerine);
+  transform: scale(1.1);
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  margin-top: 2.375rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+  color: #a9a8cc;
+}
+
+.footer__legal a {
+  color: var(--on-night);
+}
+
+
+/* ==========================================================================
+   10. PHONE ACTION BAR (Call / Directions / Book), hidden on larger screens
+   ========================================================================== */
+
+.action-bar {
+  display: none;
+}
+
+
+/* ==========================================================================
+   11. RESPONSIVE
+   Breakpoints use em (1em = 16px at the default text size): if a visitor
+   enlarges their text, the smaller-screen layout kicks in sooner.
    ========================================================================== */
 
 @media (max-width: 64em) { /* 1024px at default text size */
-  .nav {
-    gap: 1.125rem;
-  }
-
+  .nav,
   .nav__list {
-    gap: 1rem;
+    gap: 1.125rem;
   }
 
   .nav__list a {
     font-size: 1.25rem;
   }
 
-  .brand__logo {
-    height: 100px;
-  }
-
   .nav .btn {
-    font-size: 0.9375rem;
-    padding: 0.5625rem 0.75rem;
+    font-size: 0.95rem;
+    padding: 0.55rem 0.8rem;
   }
 
-  .footer__grid {
-    padding-right: 0;
-  }
-
-  .site-footer {
-    background-size: 130px auto;
+  .brand__logo {
+    height: 84px;
   }
 
   .rules {
@@ -1658,7 +1686,7 @@ p {
 
 @media (max-width: 53.75em) { /* 860px */
   :root {
-    --header-h: 80px;
+    --header-h: 88px;
     --header-h-small: 60px;
   }
 
@@ -1666,12 +1694,13 @@ p {
     height: 70px;
   }
 
+  /* phone menu: the ☰ button shows, links drop down when it's tapped */
   .nav-toggle {
     display: block;
   }
 
   .nav .btn {
-    display: none;
+    display: none;   /* the action bar's Book button replaces it */
   }
 
   .nav__list {
@@ -1679,13 +1708,13 @@ p {
     inset: var(--header-h-small) 0 auto 0;
     flex-direction: column;
     gap: 0;
-    background: var(--cream);
     padding: 0.5rem 24px 1.25rem;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, .12);
+    background: var(--wall);
+    box-shadow: 0 12px 20px rgba(20, 20, 60, 0.15);
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s, transform .2s;
+    transition: opacity 0.2s, transform 0.2s;
   }
 
   .site-header:not(.is-scrolled) .nav__list {
@@ -1702,36 +1731,27 @@ p {
     display: block;
     padding: 0.625rem 0;
     font-size: 1.625rem;
-    border-bottom: 1px solid #eee3cc;
+    border-bottom: 1px solid #cfd9da;
   }
 
-  .hero__grid {
+  /* homepage */
+  .hero,
+  .impact {
     grid-template-columns: minmax(0, 1fr);
     min-height: 0;
   }
 
   .hero__media {
     order: -1;
-    min-height: 0;
     aspect-ratio: 16 / 11;
   }
 
-  .hero__content {
-    padding: 2.25rem 24px 2.75rem;
+  .hero__text {
+    padding: 2.75rem 24px 3.25rem;
   }
 
-  .how__grid {
-    grid-template-columns: 1fr;
-    gap: 2.125rem;
-  }
-
-  .first-visit {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .impact__grid {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
+  .hero > .deco {
+    display: none;   /* would land on top of the photo */
   }
 
   .impact__media {
@@ -1739,20 +1759,42 @@ p {
     aspect-ratio: 16 / 11;
   }
 
-  .impact__content {
-    padding: 2.75rem 24px;
+  .impact__text {
+    padding: 3.25rem 24px;
   }
 
-  .impact h2 {
-    font-size: 2.625rem;
+  .how__grid,
+  .review-cards {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .location__grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 10.625rem;
   }
 
-  .book {
+  .insta-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .loc-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .loc-text {
+    padding: 2.25rem 1.625rem;
+  }
+
+  .loc-map {
+    min-height: 18.75rem;
+  }
+
+  /* inner pages */
+  .book,
+  .policy-grid,
+  .card--photo,
+  .menu-grid,
+  .support {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1770,54 +1812,39 @@ p {
     padding: 0 0 0.75rem;
   }
 
-  .policy-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .card--photo {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .card--photo img {
+  .card--photo > img {
     min-height: 0;
     aspect-ratio: 16 / 9;
   }
 
-  .menu-grid {
+  /* mural band + footer */
+  .band {
+    height: 232px;
+  }
+
+  .band-inner {
+    transform: translateX(-50%) scale(0.8);
+    transform-origin: bottom center;
+  }
+
+  .footer__cols {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.375rem;
+    gap: 1.875rem;
   }
 
-  .support {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .footer__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .footer__contact {
-    grid-column: 1 / -1;
-  }
-
-  .site-footer {
-    background-position: right 16px bottom 70px;
-    padding-bottom: 6.875rem;
-  }
-
-  /* sticky action bar */
+  /* phone action bar, pinned to the bottom of the screen */
   .action-bar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 90;
-    background: var(--black);
-    padding: 0.5rem 0.5rem calc(8px + env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.6fr;
     gap: 0.5rem;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, .2);
+    padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom)); /* room for the iPhone home bar */
+    background: var(--night);
+    box-shadow: 0 -6px 18px rgba(20, 20, 60, 0.25);
   }
 
   .action-bar a {
@@ -1825,95 +1852,47 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.125rem;
+    gap: 0.2rem;
+    padding: 0.5rem 0.25rem;
+    border-radius: 0.75rem;
     color: var(--white);
-    text-decoration: none;
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 1.05rem;
     letter-spacing: 1px;
     line-height: 1;
-    padding: 0.5rem 0.25rem;
-    border-radius: 4px;
+    text-decoration: none;
   }
 
   .action-bar i {
-    font-size: 1.0625rem;
+    font-size: 1.1rem;
+    color: var(--lavender);
   }
 
   .action-bar .action-bar__book {
-    background: var(--button);
-    font-size: 1.1875rem;
-    text-align: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    background: var(--terracotta);
+    border-radius: 999px;
+    font-size: 1.2rem;
+  }
+
+  .action-bar .action-bar__book i {
+    color: var(--white);
   }
 
   body {
-    padding-bottom: 4.25rem;
+    padding-bottom: 4.625rem;   /* so the action bar never covers the end of the page */
   }
 }
 
 @media (max-width: 35em) { /* 560px */
+  .wrap,
   .container {
     padding: 0 16px;
   }
 
-  .hero__content {
-    padding: 1.875rem 16px 2.5rem;
-  }
-
-  .impact__content {
-    padding: 2.5rem 16px;
-  }
-
-  .edge {
-    height: 70px;
-  }
-
-  .edge--black-to-cream,
-  .edge--black-to-cream-2 {
-    height: 56px;
-  }
-
-  .how h2 {
-    font-size: 2rem;
-  }
-
-  .first-visit {
-    grid-template-columns: 1fr;
-  }
-
-  .insta__card {
-    padding: 1rem;
-  }
-
-  .insta__grid {
-    gap: 0.25rem;
-  }
-
-  .testimonials__title small {
-    font-size: 2.125rem;
-  }
-
-  .testimonials__title span {
-    font-size: 3.375rem;
-  }
-
-  .carousel__track {
-    padding: 0.625rem calc(50% - 140px) 1.25rem;
-    gap: 1rem;
-  }
-
-  .quote {
-    flex-basis: 280px;
-    padding: 1.5rem 1.25rem;
-  }
-
-  .footer__grid {
-    grid-template-columns: 1fr;
-    gap: 1.875rem;
-  }
-
   .today-bar__inner {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 16px;
     font-size: 0.8125rem;
     gap: 0.125rem 0.75rem;
   }
@@ -1922,24 +1901,33 @@ p {
     display: none;
   }
 
-  .page-hero {
-    padding-top: 2.75rem;
+  .hero__text,
+  .impact__text {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
+  .how h2,
+  .gallery-sec h2,
+  .reviews h2,
   .section-title {
     font-size: 2.5rem;
   }
 
-  .facts__list {
-    grid-template-columns: 1fr;
+  .impact__num {
+    font-size: 5rem;
   }
 
-  .book__widget {
-    padding: 0.625rem;
+  .insta-card {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .insta-grid {
+    gap: 0.375rem;
   }
 
   .card,
-  .card--photo>div {
+  .card--photo > div {
     padding: 1.375rem 1.25rem;
   }
 
@@ -1947,12 +1935,9 @@ p {
     padding: 0;
   }
 
-  .rules {
-    grid-template-columns: 1fr;
-  }
-
+  .rules,
   .included {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .menu-section__head h2 {
@@ -1971,12 +1956,177 @@ p {
     font-size: 1.375rem;
   }
 
-  .faq__group>h2 {
-    font-size: 2.375rem;
-  }
-
   .jump a {
     font-size: 1rem;
-    padding: 0.5rem 0.75rem 0.4375rem;
+    padding: 0.5rem 0.75rem 0.45rem;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .step:hover .step-art img,
+  .insta-grid a:hover img,
+  .support a:hover {
+    transform: none;
+  }
+
+  .cam__live::before {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================================
+   12. CAT ART & DECORATIONS: SIZES & POSITIONS  ← everything you'd want to
+       tweak is here
+   ==========================================================================
+   How the numbers work:
+     width    how big the drawing is. % = percent of the box it sits in
+              (e.g. the hero photo); px = a fixed size.
+     left / right / top / bottom
+              distance from that edge of the box. Bigger number = further in
+              from that edge. Negative numbers push it past the edge so it
+              hangs off (that's how cats "cross" a photo's border).
+              Use left OR right (not both), and top OR bottom.
+     transform: scaleX(-1)    mirror the drawing left-to-right
+     transform: rotate(-8deg)  tilt it (negative = counter-clockwise)
+     z-index  stacking order: higher numbers sit on top of lower ones.
+   Tip: in your browser, right-click a cat → Inspect, and you can change these
+   values live to try them out before editing this file.
+   ========================================================================== */
+
+/* ---- Homepage hero: the two cats on the photo ---- */
+.cat-hero-top    { width: 25%; right: 2%; top: 3%; }    /* Will Feral with his "Will Feral" plant (cat-will-feral.webp) */
+.cat-hero-bottom { width: 27%; left: 2%; bottom: 3%; }  /* Ivan, orange cat on a blue blanket (cat-ivan-blanket.webp) */
+
+/* ---- "How it works" step drawings ----
+   Each drawing fills a 200px-tall box (see .step-art). Use height to shrink
+   one (e.g. 85%) and top / left to nudge it (e.g. top: 10px). */
+.step-art .cat-step-cafe      { height: 100%; top: 0; left: 0; }  /* kitten + mug (cat-spilling-mug.webp) */
+.step-art .cat-step-lounge    { height: 100%; top: 0; left: 0; }  /* napping orange cat (cat-napping.webp) */
+.step-art .cat-step-adoptions { height: 100%; top: 0; left: 0; }  /* Siamese on teal cushion (cat-reaching.webp) */
+
+/* ---- "Making a difference": cat on the photo's edge ---- */
+.cat-impact { width: 26%; right: -9%; top: -7%; }  /* grey cat leaping off the yellow flower (cat-jumping.webp) */
+
+/* ---- Reviews: cats peeking in from the sides (z-index 0 = behind the cards) ---- */
+.cat-reviews-left  { width: 130px; left: 0; bottom: 10px; z-index: 0; }  /* tortie on the orange flower (cat-tortie-flower.webp) */
+.cat-reviews-right { width: 190px; right: 0; top: 14px; z-index: 0; }    /* tortie with the yarn on the orange rug (cat-tortie.webp) */
+
+/* ---- Instagram: cat peeking over the top of the card ---- */
+.cat-insta { width: 140px; right: 40px; top: -96px; z-index: 0; }  /* white cat in the teal cave bed (cat-british-shorthair.webp) */
+
+/* ---- Find Us: cat lounging on top of the map card ---- */
+.cat-location { width: 170px; right: 60px; top: -112px; z-index: 2; }  /* cream cat on the purple cushion (cat-bed.webp) */
+
+/* ---- Inner page headers: one painted cat in the corner of each ---- */
+.cat-page-visit { width: 150px; right: 4%; bottom: 8px; }  /* calico in the fish box (cat-in-box.webp) */
+.cat-page-menu  { width: 190px; right: 4%; bottom: 6px; }  /* kitten knocking over a mug (cat-spilling-mug.webp) */
+.cat-page-cam   { width: 160px; right: 4%; bottom: 8px; }  /* black cat peeking over the fish pillow (cat-string.webp) */
+.cat-page-faq   { width: 120px; right: 5%; bottom: 8px; }  /* cream cat looking up, curious (cat-ivan.webp) */
+
+/* ---- Decorative leaves & flowers behind sections (Brightwall's shapes) ----
+   On indigo they use .deco--dim so they read as a subtle texture. */
+.deco-hero-leaf   { width: 300px; left: -80px; bottom: -60px; transform: rotate(-20deg); }  /* leaves-03.svg */
+.deco-hero-flower { width: 110px; left: 40%; top: 36px; }                                     /* flower-06.svg */
+.deco-how-right   { width: 260px; right: -60px; top: 0; transform: rotate(25deg); }          /* leaves-03.svg */
+.deco-how-left    { width: 180px; left: -40px; bottom: 10px; }                                /* leaves-06.svg */
+.deco-impact      { width: 240px; right: -50px; top: -40px; }                                 /* flower-01.svg (dimmed) */
+.deco-gallery-leaf   { width: 280px; right: -60px; top: 60px; transform: rotate(-30deg); }    /* leaves-01.svg */
+.deco-gallery-flower { width: 80px; left: 15%; top: 40px; }                                    /* flower-03.svg */
+.deco-loc-left    { width: 230px; left: -50px; top: 30px; }                                    /* leaves-04.svg */
+.deco-loc-right   { width: 190px; right: -40px; bottom: 30px; transform: rotate(160deg); }    /* leaves-02.svg */
+.deco-loc-card    { width: 190px; right: -50px; bottom: -60px; }                               /* flower-06.svg (dimmed) */
+.deco-page-left   { width: 260px; left: -70px; bottom: -40px; transform: rotate(-15deg); }    /* inner page headers: leaves-04.svg (dimmed) */
+.deco-page-right  { width: 110px; left: 12%; top: 30px; }                                      /* inner page headers: flower-06.svg (dimmed) */
+.deco-night-left  { width: 280px; left: -80px; top: 40px; }                                    /* indigo sections: leaves-01.svg (dimmed) */
+.deco-night-right { width: 220px; right: -60px; bottom: 40px; transform: rotate(150deg); }    /* indigo sections: leaves-05.svg (dimmed) */
+
+/* ---- Mural band above the footer ----
+   left is a % of the band's width, so things stay spread out on any screen.
+   bottom is px up from the band's bottom edge (the band is 290px tall, so
+   keep bottom + the drawing's height under ~290px or it gets cut off).
+   Which images appear is listed in MURAL_BAND in js/main.js. */
+
+/* Cats: the bottom row sits at bottom: 0, the "floating" row at bottom: 148px */
+.band .band-cat-cookie        { left: 1%;    width: 150px; bottom: 0; }
+.band .band-cat-peaches       { left: 7.9%;  width: 84px;  bottom: 148px; }
+.band .band-cat-in-box-02     { left: 14.8%; width: 122px; bottom: 0; }
+.band .band-cat-stretching    { left: 21.7%; width: 100px; bottom: 148px; }
+.band .band-cat-vlad          { left: 28.6%; width: 86px;  bottom: 0; }
+.band .band-cat-string        { left: 35.5%; width: 104px; bottom: 148px; }
+.band .band-cat-behind-plant  { left: 42.4%; width: 142px; bottom: 0; }
+.band .band-cat-ivan          { left: 49.3%; width: 78px;  bottom: 148px; }
+.band .band-cat-josie         { left: 56.2%; width: 140px; bottom: 0; }
+.band .band-cat-napping       { left: 63.1%; width: 112px; bottom: 148px; }
+.band .band-cat-treat-bag     { left: 70%;   width: 112px; bottom: 0; }
+.band .band-cat-spilling-mug  { left: 76.9%; width: 112px; bottom: 148px; }
+.band .band-cat-morticia      { left: 83.8%; width: 100px; bottom: 0; }
+.band .band-cat-in-box        { left: 90.7%; width: 108px; bottom: 0; }
+
+/* Little props tucked between the cats */
+.band .band-toy-ball-1    { left: 10.6%; width: 22px; bottom: 0; }
+.band .band-fishbone-01   { left: 31.8%; width: 52px; bottom: 6px; }
+.band .band-toy-fish-1    { left: 52.6%; width: 34px; bottom: 8px; }
+.band .band-fishbone-02   { left: 66.4%; width: 52px; bottom: 6px; }
+.band .band-toy-ball-2    { left: 80.2%; width: 22px; bottom: 0; }
+.band .band-toy-fish-2    { left: 95%;   width: 34px; bottom: 8px; }
+
+/* Lavender leaves (behind everything). Kept smaller and spaced out, alternating
+   high and low, so each one reads as its own shape instead of a solid mass. */
+.band .band-leaf-01 { left: -1%; width: 170px; bottom: -14px; }                         /* leaves-01.svg */
+.band .band-leaf-02 { left: 9%;  width: 130px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-06.svg */
+.band .band-leaf-03 { left: 18%; width: 180px; bottom: -6px; }                          /* leaves-03.svg */
+.band .band-leaf-04 { left: 28%; width: 120px; bottom: 110px; }                         /* leaves-02.svg */
+.band .band-leaf-05 { left: 37%; width: 200px; bottom: -12px; transform: scaleX(-1); }  /* leaves-04.svg */
+.band .band-leaf-06 { left: 48%; width: 130px; bottom: 104px; }                         /* leaves-06.svg */
+.band .band-leaf-07 { left: 57%; width: 170px; bottom: -14px; transform: scaleX(-1); }  /* leaves-01.svg */
+.band .band-leaf-08 { left: 67%; width: 120px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-02.svg */
+.band .band-leaf-09 { left: 76%; width: 180px; bottom: -6px;  transform: scaleX(-1); }  /* leaves-03.svg */
+.band .band-leaf-10 { left: 87%; width: 200px; bottom: -12px; }                         /* leaves-04.svg */
+
+/* Flowers (behind the cats, in front of the leaves) */
+.band .band-flower-01 { left: 4%;  width: 62px; bottom: 182px; }  /* flower-05.svg */
+.band .band-flower-02 { left: 12%; width: 46px; bottom: 100px; }  /* flower-03.svg */
+.band .band-flower-03 { left: 21%; width: 54px; bottom: 196px; }  /* flower-02.svg */
+.band .band-flower-04 { left: 30%; width: 44px; bottom: 116px; }  /* flower-04.svg */
+.band .band-flower-05 { left: 39%; width: 58px; bottom: 200px; }  /* flower-06.svg */
+.band .band-flower-06 { left: 47%; width: 62px; bottom: 110px; }  /* flower-01.svg */
+.band .band-flower-07 { left: 56%; width: 54px; bottom: 198px; }  /* flower-05.svg */
+.band .band-flower-08 { left: 65%; width: 44px; bottom: 104px; }  /* flower-03.svg */
+.band .band-flower-09 { left: 73%; width: 52px; bottom: 200px; }  /* flower-02.svg */
+.band .band-flower-10 { left: 82%; width: 56px; bottom: 112px; }  /* flower-06.svg */
+.band .band-flower-11 { left: 91%; width: 46px; bottom: 196px; }  /* flower-04.svg */
+.band .band-flower-12 { left: 98%; width: 52px; bottom: 104px; }  /* flower-01.svg */
+
+/* ---- Smaller laptops & tablets (narrower than about 1220px) ----
+   Page-header cats move from the corner to centered above the title, so they
+   never cover the text. */
+@media (max-width: 76em) { /* 1216px */
+  .page-hero .art { position: relative; right: auto; bottom: auto; display: block; margin: -1.25rem auto 0.5rem; }
+  .cat-page-visit { width: 110px; }
+  .cat-page-menu  { width: 130px; }
+  .cat-page-cam   { width: 110px; }
+  .cat-page-faq   { width: 80px; }
+}
+
+/* ---- Phone-size versions (screens narrower than 860px) ----
+   Anything not listed here keeps the setting from above. */
+@media (max-width: 53.75em) {
+  .cat-hero-top      { width: min(25%, 120px); }
+  .cat-hero-bottom   { width: min(26%, 130px); left: 3%; bottom: 3%; }
+  .cat-impact        { width: 26%; right: 4%; top: auto; bottom: -10%; }
+  .cat-reviews-left,
+  .cat-reviews-right { display: none; }   /* hidden on phones: not enough room beside the cards */
+  .cat-insta         { width: 104px; right: 16px; top: -72px; }
+  .cat-location      { width: 120px; right: 30px; top: -80px; }
 }

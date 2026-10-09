@@ -9,8 +9,9 @@
      2. Header         — shrinking the header when you scroll, and the mobile
                          (hamburger) menu
      3. Scroll reveal  — sections that fade in as you scroll down
-     4. Carousel       — the customer testimonials slider (homepage only)
-     5. Kitty Cam      — the live video player (Kitty Cam page only)
+     4. Homepage       — a random hero photo and 3 random reviews each visit
+     5. Mural band     — the strip of painted cats above the footer (every page)
+     6. Kitty Cam      — the live video player (Kitty Cam page only)
 
    HOW THE PIECES CONNECT
    Each feature is a function (a named, reusable block of code). Nothing runs
@@ -456,142 +457,144 @@ function initReveal() {
 
 
 /* ====================================
-   4. TESTIMONIALS CAROUSEL (homepage)
-   ====================================
-   The reviews sit side by side in a row that scrolls sideways
-   (.carousel__track). The CSS handles the swiping and makes each card snap
-   into the center. This code adds:
-     - the row of dots underneath, one per review
-     - highlighting the card in the middle (white, instead of see-through)
-     - auto-advancing every 6 seconds, pausing while someone is interacting
+   4. HOMEPAGE EXTRAS: random hero photo + random reviews
    ==================================== */
 
-function initCarousel() {
-  const track = document.querySelector(".carousel__track");
-  if (!track) return; // not on the homepage
+// ---------------------------------------------------------------------------
+// HERO PHOTOS — a different one each visit.
+// To add a photo: save it in images/photos/ (landscape works best, roughly
+// 1600px wide, with the subject near the middle) and add its file name here.
+// ---------------------------------------------------------------------------
+const HERO_PHOTOS = [
+  "hero-mural-calico.jpg",
+  "hero-cat-tree.jpg",
+  "hero-siamese-basket.jpg",
+  "hero-fireplace-tent.jpg",
+  "hero-black-cat.jpg",
+  "hero-tabby.jpg",
+  "hero-calico.jpg",
+  "hero-cat-table.jpg",
+  "hero-cat-drink.jpg"
+];
 
-  // track.children are the review cards. They come back as an HTML
-  // collection rather than a true list; `[...something]` (the "spread"
-  // syntax) copies them into a real array so we can use forEach on them.
-  const slides = [...track.children];
-  const dots = document.querySelector(".carousel__dots");
+function initHeroPhoto() {
+  // The hero <img> has data-hero-photo on it. Its starting src is the photo
+  // that shows if JavaScript is off; we swap it for a random one.
+  const img = document.querySelector("[data-hero-photo]");
+  if (!img) return; // not on the homepage
 
-  let current = 0; // which review is highlighted (0 = the first one)
-  let timer;       // holds the auto-advance timer so we can stop it later
+  // Math.random() gives a number from 0 up to (not including) 1. Multiplying
+  // by the list length and rounding down with Math.floor gives a valid
+  // position in the list: 0, 1, 2 … up to the last one.
+  let pick = Math.floor(Math.random() * HERO_PHOTOS.length);
 
-  // Create one dot button per review.
-  // forEach passes each item and its position. We don't need the item
-  // itself, so it's named `_`, a common way of saying "unused".
-  slides.forEach((_, i) => {
-    const b = document.createElement("button"); // make a new <button>
-    b.type = "button";
-    b.setAttribute("aria-label", `Show review ${i + 1}`); // for screen readers
+  // Handy for previewing: add ?hero=3 to the page address to always show the
+  // third photo (counting from 1). URLSearchParams reads the part of the
+  // address after the "?".
+  const forced = parseInt(new URLSearchParams(location.search).get("hero"), 10);
+  if (forced >= 1 && forced <= HERO_PHOTOS.length) pick = forced - 1;
 
-    // Clicking a dot jumps to that review and restarts the 6-second timer.
-    b.addEventListener("click", () => {
-      goTo(i);
-      restart();
-    });
+  img.src = "images/photos/" + HERO_PHOTOS[pick];
+}
 
-    dots.appendChild(b); // add the new button to the page
-  });
+// ---------------------------------------------------------------------------
+// REVIEWS — show 3 of them, picked at random each visit.
+// All the reviews are written in index.html. The CSS shows only the first 3
+// (that's what visitors see if JavaScript is off), so this just shuffles the
+// list and moves 3 random ones to the front.
+// ---------------------------------------------------------------------------
+function initReviews() {
+  const list = document.querySelector("[data-reviews]");
+  if (!list) return;
 
-  // mark(i): highlight review number i and its matching dot.
-  // (This only changes the styling; goTo below does the actual scrolling.)
-  function mark(i) {
-    current = i;
+  const reviews = [...list.children];
 
-    // Give "is-active" to the chosen card and remove it from all the others.
-    slides.forEach((s, j) => s.classList.toggle("is-active", j === i));
-
-    // Same for the dots. aria-current="true" marks the active dot, and the
-    // CSS styles it solid white.
-    [...dots.children].forEach((d, j) => d.setAttribute("aria-current", String(j === i)));
+  // "Fisher–Yates shuffle": walk backwards through the list, swapping each
+  // item with a random one at or before it. It gives every order an equal
+  // chance. `[a, b] = [b, a]` swaps two values in one line.
+  for (let i = reviews.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [reviews[i], reviews[j]] = [reviews[j], reviews[i]];
   }
 
-  // goTo(i): scroll the row so review i sits in the center, then highlight it.
-  function goTo(i) {
-    const s = slides[i];
-
-    // offsetLeft is how far the card sits from the left edge of the row.
-    // Subtracting half of the leftover space (row width minus card width)
-    // centers the card rather than pinning it to the left edge.
-    track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.clientWidth) / 2 });
-    mark(i);
-  }
-
-  // ---- Keep the highlight in sync when someone swipes ---------
-  //
-  // When a visitor swipes the row themselves, find whichever card is now
-  // closest to the center and highlight it.
-  //
-  // Scroll events fire many times per second. requestAnimationFrame waits
-  // until the browser is about to draw the next frame, and
-  // cancelAnimationFrame throws away any check that was already waiting.
-  // Together they mean we do this work at most once per frame, which keeps
-  // swiping smooth.
-  let raf;
-  track.addEventListener("scroll", () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      // The horizontal position of the center of the visible area.
-      const mid = track.scrollLeft + track.clientWidth / 2;
-
-      // Find the card whose center is nearest to `mid`. Start with
-      // "infinitely far away", then keep whichever card beats the best so far.
-      let best = 0;
-      let bestDist = Infinity;
-      slides.forEach((s, j) => {
-        // Math.abs removes any minus sign, so a card 50px to the left and a
-        // card 50px to the right both count as 50px away.
-        const d = Math.abs(s.offsetLeft + s.clientWidth / 2 - mid);
-        if (d < bestDist) {
-          bestDist = d;
-          best = j;
-        }
-      });
-
-      // Only update if the highlighted card actually changed.
-      if (best !== current) mark(best);
-    });
-  }, { passive: true });
-
-  // ---- Auto-advance -----------------
-  //
-  // Some people turn on "Reduce motion" in their device settings because
-  // movement on screen makes them uncomfortable. matchMedia checks for that
-  // setting, and if it's on, we never auto-scroll.
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // restart(): stop any existing timer and start a fresh 6-second one.
-  function restart() {
-    // clearInterval stops a repeating timer.
-    clearInterval(timer);
-
-    // setInterval runs a function over and over, every N milliseconds
-    // (6000 ms = 6 seconds). Each time, move to the next review.
-    // `% slides.length` wraps from the last review back to the first.
-    if (!reduce) timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
-  }
-
-  // Pause while someone is touching, clicking or hovering over the reviews,
-  // so a card doesn't slide away while they're reading it. Moving the mouse
-  // away starts the timer again.
-  track.addEventListener("pointerdown", () => clearInterval(timer));
-  track.addEventListener("mouseenter", () => clearInterval(timer));
-  track.addEventListener("mouseleave", restart);
-
-  // Start with the first review highlighted and centered.
-  // goTo waits one frame (requestAnimationFrame) so the browser has finished
-  // laying out the cards before we measure their positions.
-  mark(0);
-  requestAnimationFrame(() => goTo(0));
-  restart();
+  // append() moves an element that's already on the page to the end of its
+  // parent. Doing that for every review in shuffled order rebuilds the list
+  // in the new order.
+  reviews.forEach((review) => list.append(review));
 }
 
 
 /* ====================================
-   5. LIVE KITTY CAM (Kitty Cam page)
+   5. MURAL BAND (above the footer, every page)
+   ====================================
+   Rather than copying ~50 <img> tags into all five pages, each page has an
+   empty placeholder:
+     <div class="band" data-mural-band data-art-path="../images/art/"></div>
+   and this code fills it in. To change which pieces appear, edit the list
+   below. To change a piece's size or position, edit its line in the CAT ART
+   section at the bottom of css/styles.css (the class names match).
+   ==================================== */
+
+// Each entry: [class name, file name, layer]
+// layer: "lf" = leaf (back), "fl" = flower (middle), "ct" = cat or prop
+// (front), "ct up" = a cat in the higher "floating" row.
+const MURAL_BAND = [
+  ["band-leaf-01", "leaves-01.svg", "lf"], ["band-leaf-02", "leaves-06.svg", "lf"],
+  ["band-leaf-03", "leaves-03.svg", "lf"], ["band-leaf-04", "leaves-02.svg", "lf"],
+  ["band-leaf-05", "leaves-04.svg", "lf"], ["band-leaf-06", "leaves-06.svg", "lf"],
+  ["band-leaf-07", "leaves-01.svg", "lf"], ["band-leaf-08", "leaves-02.svg", "lf"],
+  ["band-leaf-09", "leaves-03.svg", "lf"], ["band-leaf-10", "leaves-04.svg", "lf"],
+
+  ["band-flower-01", "flower-05.svg", "fl"], ["band-flower-02", "flower-03.svg", "fl"],
+  ["band-flower-03", "flower-02.svg", "fl"], ["band-flower-04", "flower-04.svg", "fl"],
+  ["band-flower-05", "flower-06.svg", "fl"], ["band-flower-06", "flower-01.svg", "fl"],
+  ["band-flower-07", "flower-05.svg", "fl"], ["band-flower-08", "flower-03.svg", "fl"],
+  ["band-flower-09", "flower-02.svg", "fl"], ["band-flower-10", "flower-06.svg", "fl"],
+  ["band-flower-11", "flower-04.svg", "fl"], ["band-flower-12", "flower-01.svg", "fl"],
+
+  ["band-cat-cookie", "cat-cookie.webp", "ct"],
+  ["band-cat-peaches", "cat-peaches.webp", "ct up"],
+  ["band-cat-in-box-02", "cat-in-box-02.webp", "ct"],
+  ["band-cat-stretching", "cat-stretching.webp", "ct up"],
+  ["band-cat-vlad", "cat-vlad.webp", "ct"],
+  ["band-cat-string", "cat-string.webp", "ct up"],
+  ["band-cat-behind-plant", "cat-behind-plant.webp", "ct"],
+  ["band-cat-ivan", "cat-ivan.webp", "ct up"],
+  ["band-cat-josie", "cat-josie.webp", "ct"],
+  ["band-cat-napping", "cat-napping.webp", "ct up"],
+  ["band-cat-treat-bag", "cat-treat-bag.webp", "ct"],
+  ["band-cat-spilling-mug", "cat-spilling-mug.webp", "ct up"],
+  ["band-cat-morticia", "cat-morticia.webp", "ct"],
+  ["band-cat-in-box", "cat-in-box.webp", "ct"],
+
+  ["band-toy-ball-1", "cat-toy-ball.svg", "ct"], ["band-fishbone-01", "fishbone-01.svg", "ct"],
+  ["band-toy-fish-1", "cat-toy-fish.svg", "ct"], ["band-fishbone-02", "fishbone-02.svg", "ct"],
+  ["band-toy-ball-2", "cat-toy-ball.svg", "ct"], ["band-toy-fish-2", "cat-toy-fish.svg", "ct"]
+];
+
+function initMuralBand() {
+  const band = document.querySelector("[data-mural-band]");
+  if (!band) return;
+
+  // Pages in subfolders need "../images/art/", the homepage needs
+  // "images/art/". Each page says which in its data-art-path attribute.
+  const path = band.dataset.artPath || "images/art/";
+
+  // .map() turns each entry into a string of HTML; .join("") glues them.
+  // The [cls, file, layer] in the arrow function's parentheses unpacks each
+  // three-item entry into three named variables (destructuring again).
+  // loading="lazy" tells the browser it can wait to download these until the
+  // visitor scrolls near the band, so the top of the page loads first.
+  const imgs = MURAL_BAND.map(([cls, file, layer]) =>
+    `<img class="${layer} ${cls}" src="${path}${file}" alt="" loading="lazy">`
+  ).join("");
+
+  band.innerHTML = `<div class="band-inner">${imgs}</div>`;
+}
+
+
+/* ====================================
+   6. LIVE KITTY CAM (Kitty Cam page)
    ====================================
    The camera in the lounge streams video in a format called HLS
    ("HTTP Live Streaming"). The address below points to the stream's
@@ -600,7 +603,7 @@ function initCarousel() {
 
    Safari and iPhones can play HLS on their own. Most other browsers (Chrome,
    Firefox, Edge) can't, so the Kitty Cam page also loads a free library
-   called hls.js (see the <script> tag near the bottom of live/index.html),
+   called hls.js (see the <script> tags in the <head> of live/index.html),
    which teaches those browsers how to play it.
   ==================================== */
 
@@ -636,7 +639,7 @@ function initCam() {
 
   // Safety net: if nothing has started after 15 seconds (15,000 ms), assume
   // the camera is down and show the message. setTimeout runs a function
-  // once after a delay (setInterval, used in the carousel, runs repeatedly).
+  // once after a delay (setInterval, used for the "Open now" bar, runs repeatedly).
   setTimeout(offline, 15000);
 
   // Now pick how to play the stream, trying the options in order:
@@ -708,7 +711,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initHeader();   // shrinking header + mobile menu
   initReveal();   // fade-in sections
-  initCarousel(); // testimonials (only does anything on the homepage)
+  initHeroPhoto(); // random hero photo (homepage only)
+  initReviews();   // 3 random reviews (homepage only)
+  initMuralBand(); // painted cats above the footer
   initCam();      // live video (only does anything on the Kitty Cam page)
 
   // Keep the copyright year in the footer current:
