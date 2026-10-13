@@ -18,8 +18,11 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 | 2 | Hide the closed phone menu from keyboard and screen readers | **Done (Oct 13).** `visibility: hidden` added to the closed `.nav-list` |
 | 3 | Fix the "Open now" bar contrast | **Done (Oct 13).** New `--periwinkle-dark` token (`#6a69ae`): white text now 4.95:1 |
 | 4 | Footer hours in the HTML | **Won't do (decision).** Visitors with JavaScript off are rare; keeping `KB_HOURS` as the single place to edit hours is worth more. Google still gets the hours from the business details on the homepage |
+| 5 | Adoption photo as a real `<img>` | **Done (Oct 13).** `<img class="impact-photo">` with alt text, `object-fit: cover` and the same 72% crop; `role="img"` removed |
+| 6 | More meaningful HTML elements | **Done (Oct 13).** Menu items are `<ul>`/`<li>` with the price in its own `<p class="price">` after the `<h3>`; menu section heads are `<header>`; Visit facts are a `<dl>`; `<b>` and `<span class="hl">` became `<strong>` (`.hl` removed); `<div class="big">` and `.impact-price` are now `<p>`. The day names in the JS-built hours lists stay `<b>` (labels, not importance) |
 | 7 | One `.section-title` class; one container class | **Done (Oct 13).** `.section-title` used for all main section headings (three duplicate rules removed); `.wrap` removed in favor of `.container` |
 | 18 | Rename the 45 BEM classes to kebab-case | **Done (Oct 13).** All 45 renamed (283 references); `card--photo` became `card-with-photo` |
+| 19 | Contextual selectors instead of classing every element | **Done (Oct 13), partly by choice.** Menu: `.menu-item` and `.menu-section-head` removed, now styled as `.menu-grid > li`, `.menu-grid h3` and `.menu-section > header`. Visit facts styled through `.facts-list dt`/`dd`. **Kept on purpose:** the FAQ classes (`.faq-answer` etc., the owner's decision), `.price` (clearer than a positional selector), and `.hero-lead`/`.hero-note` (two paragraphs styled differently) |
 | All others | | Not started |
 
 **Note:** line numbers and class names in the sections below describe the code as audited on October 9, before these changes. For example, `site-header__inner` is now `site-header-inner`.
