@@ -10,6 +10,22 @@ This was an audit only. No code was changed. Line numbers refer to the code as o
 
 ---
 
+## Status of recommendations
+
+| # | Recommendation | Status |
+|---|---|---|
+| 1 | Scope `.reveal` to a `.js` class | **Done (Oct 13, 2026).** `main.js` adds `js` to `<html>` first; content stays visible if the script doesn't run |
+| 2 | Hide the closed phone menu from keyboard and screen readers | **Done (Oct 13).** `visibility: hidden` added to the closed `.nav-list` |
+| 3 | Fix the "Open now" bar contrast | **Done (Oct 13).** New `--periwinkle-dark` token (`#6a69ae`): white text now 4.95:1 |
+| 4 | Footer hours in the HTML | **Won't do (decision).** Visitors with JavaScript off are rare; keeping `KB_HOURS` as the single place to edit hours is worth more. Google still gets the hours from the business details on the homepage |
+| 7 | One `.section-title` class; one container class | **Done (Oct 13).** `.section-title` used for all main section headings (three duplicate rules removed); `.wrap` removed in favor of `.container` |
+| 18 | Rename the 45 BEM classes to kebab-case | **Done (Oct 13).** All 45 renamed (283 references); `card--photo` became `card-with-photo` |
+| All others | | Not started |
+
+**Note:** line numbers and class names in the sections below describe the code as audited on October 9, before these changes. For example, `site-header__inner` is now `site-header-inner`.
+
+---
+
 ## A. Overall assessment
 
 **Overall: about 7/10 against the course philosophy.** The foundation fits what the courses teach. It's plain HTML, CSS and vanilla JS with no framework and no build step. It uses semantic landmarks, Grid and Flexbox throughout, custom properties, and heavy explanatory comments. The main gap is how much of the visual design lives in markup and JavaScript instead of CSS, plus a few genuine accessibility and progressive-enhancement bugs.

@@ -25,6 +25,7 @@
   --wall: #e6eeee;            /* pale mint-grey walls: main page background */
   --lavender: #bac6e4;        /* big soft leaf shapes */
   --periwinkle: #8484c0;      /* periwinkle flower splashes */
+  --periwinkle-dark: #6a69ae; /* "Open now" bar: deep enough for white text (4.95:1 contrast) */
   --periwinkle-deep: #3f3d86; /* subheadings */
   --night: #2b2a55;           /* deep indigo blocks (replaces the old black) */
   --night-soft: #3d3c7a;      /* slightly lighter indigo, for shapes on indigo */
@@ -112,7 +113,6 @@ section {
    3. HELPERS
    ========================================================================== */
 
-.wrap,
 .container {
   width: 100%;
   max-width: var(--container);
@@ -161,20 +161,24 @@ section {
 
 /* Subheading in the mural's hand-lettered style (small, used sparingly) */
 .sub {
+  text-align: center;
   font-family: var(--font-hand);
   font-size: 1.4rem;
   color: var(--periwinkle-deep);
   margin-bottom: 2rem;
 }
 
-/* Sections fade up as they scroll into view (see initReveal in main.js) */
-.reveal {
+/* Sections fade up as they scroll into view (see initReveal in main.js).
+   The starting "hidden" state only applies when the html element has the
+   class "js", which main.js adds as soon as it runs. If the script never
+   loads, these sections simply stay visible. */
+.js .reveal {
   opacity: 0;
   transform: translateY(1.5rem);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.reveal.is-visible {
+.js .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
@@ -196,7 +200,7 @@ section {
   z-index: 0;
 }
 
-.deco--dim {
+.deco-dim {
   opacity: 0.16; /* lavender leaves turned into a subtle texture on indigo */
 }
 
@@ -240,42 +244,42 @@ section {
   transform: translateY(1px);
 }
 
-.btn--small {
+.btn-small {
   font-size: 1rem;
   padding: 0.6rem 1.05rem;
 }
 
-.btn--ghost {
+.btn-ghost {
   background: transparent;
   color: var(--ink);
   border-color: var(--ink);
 }
 
-.btn--ghost:hover {
+.btn-ghost:hover {
   background: rgba(0, 0, 0, 0.06);
   border-color: var(--ink);
 }
 
-.btn--dark {
+.btn-dark {
   background: var(--night);
   border-color: var(--night);
 }
 
-.btn--dark:hover {
+.btn-dark:hover {
   background: var(--night-soft);
   border-color: var(--night-soft);
 }
 
 /* Ghost and outline buttons that sit on indigo */
-.on-night .btn--ghost,
-.btn--outline {
+.on-night .btn-ghost,
+.btn-outline {
   background: transparent;
   color: var(--white);
   border-color: rgba(255, 255, 255, 0.7);
 }
 
-.on-night .btn--ghost:hover,
-.btn--outline:hover {
+.on-night .btn-ghost:hover,
+.btn-outline:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: var(--white);
 }
@@ -301,7 +305,7 @@ section {
   margin-bottom: calc(var(--header-h) - var(--header-h-small));
 }
 
-.site-header__inner {
+.site-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -310,7 +314,7 @@ section {
   transition: height 0.25s;
 }
 
-.site-header.is-scrolled .site-header__inner {
+.site-header.is-scrolled .site-header-inner {
   height: var(--header-h-small);
 }
 
@@ -321,12 +325,12 @@ section {
   text-decoration: none;
 }
 
-.brand__logo {
+.brand-logo {
   height: 96px;
   width: auto;
 }
 
-.brand__word {
+.brand-word {
   display: none;
   font-family: var(--font-brand);
   font-weight: 600;
@@ -334,11 +338,11 @@ section {
   line-height: 1;
 }
 
-.site-header.is-scrolled .brand__logo {
+.site-header.is-scrolled .brand-logo {
   display: none;
 }
 
-.site-header.is-scrolled .brand__word {
+.site-header.is-scrolled .brand-word {
   display: block;
 }
 
@@ -348,7 +352,7 @@ section {
   gap: 1.75rem;
 }
 
-.nav__list {
+.nav-list {
   display: flex;
   gap: 1.75rem;
   list-style: none;
@@ -356,7 +360,7 @@ section {
   padding: 0;
 }
 
-.nav__list a {
+.nav-list a {
   font-family: var(--font-display);
   font-size: 1.45rem;
   letter-spacing: 0.5px;
@@ -364,8 +368,8 @@ section {
   transition: color 0.2s;
 }
 
-.nav__list a:hover,
-.nav__list a[aria-current="page"] {
+.nav-list a:hover,
+.nav-list a[aria-current="page"] {
   color: var(--terracotta);
 }
 
@@ -382,13 +386,13 @@ section {
 
 /* "Open now" bar under the header */
 .today-bar {
-  background: var(--periwinkle);
+  background: var(--periwinkle-dark);
   color: var(--white);
   font-size: 0.875rem;
   line-height: 1.4;
 }
 
-.today-bar__inner {
+.today-bar-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -421,7 +425,7 @@ section {
   box-shadow: 0 0 0 3px rgba(127, 240, 166, 0.3);
 }
 
-.today-bar__sep {
+.today-bar-sep {
   opacity: 0.6;
 }
 
@@ -440,7 +444,7 @@ section {
   overflow: hidden;
 }
 
-.hero__text {
+.hero-text {
   position: relative;
   z-index: 2;
   display: flex;
@@ -461,33 +465,33 @@ section {
 .hero h1 .c2 { color: var(--lavender); }
 .hero h1 .c3 { color: var(--mustard); }
 
-.hero__lead {
+.hero-lead {
   color: var(--on-night);
   max-width: 28rem;
   font-size: 1.08rem;
 }
 
-.hero__note {
+.hero-note {
   margin: 0.25rem 0 1.4rem;
 }
 
-.hero__note b {
+.hero-note b {
   color: var(--mustard);
 }
 
-.hero__actions {
+.hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.hero__media {
+.hero-media {
   position: relative;
   overflow: hidden;
   background: var(--night-soft);
 }
 
-.hero__photo {
+.hero-photo {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -502,12 +506,7 @@ section {
   overflow: hidden;
 }
 
-.how h2 {
-  font-size: 3rem;
-  margin-bottom: 0;
-}
-
-.how__grid {
+.how-grid {
   position: relative;
   z-index: 1;
   display: grid;
@@ -553,13 +552,13 @@ section {
   color: var(--white);
 }
 
-.impact__media {
+.impact-media {
   position: relative;
   min-height: 33.75rem;
   background: url("../images/photos/adoption-tabby.jpg") 72% center / cover no-repeat;
 }
 
-.impact__text {
+.impact-text {
   position: relative;
   overflow: hidden;
   display: flex;
@@ -568,14 +567,14 @@ section {
   padding: 4.375rem max(24px, calc((100vw - var(--container)) / 2 + 24px)) 4.375rem 5rem;
 }
 
-.impact__num {
+.impact-num {
   font-family: var(--font-display);
   font-size: 6.5rem;
   line-height: 0.9;
   color: var(--mustard);
 }
 
-.impact__num small {
+.impact-num small {
   display: block;
   font-size: 1.5rem;
   letter-spacing: 1px;
@@ -595,7 +594,7 @@ section {
   color: var(--white);
 }
 
-.impact__price {
+.impact-price {
   background: rgba(255, 255, 255, 0.09);
   border-radius: 1.125rem;
   padding: 0.875rem 1.125rem;
@@ -603,7 +602,7 @@ section {
   color: var(--on-night);
 }
 
-.impact__price b {
+.impact-price b {
   color: var(--white);
 }
 
@@ -611,16 +610,6 @@ section {
 .gallery-sec {
   padding: 5.625rem 0 4.375rem;
   overflow: hidden;
-}
-
-.gallery-sec h2 {
-  font-size: 3rem;
-  text-align: center;
-  margin: 0;
-}
-
-.gallery-sec .sub {
-  text-align: center;
 }
 
 .gallery {
@@ -664,12 +653,6 @@ section {
 .reviews {
   padding: 0.625rem 0 4.375rem;
   overflow: hidden;
-}
-
-.reviews h2 {
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 1.625rem;
 }
 
 .review-cards {
@@ -768,7 +751,7 @@ section {
   overflow: hidden;
 }
 
-.location .wrap {
+.location .container {
   position: relative;
 }
 
@@ -842,7 +825,6 @@ section {
   padding: 4rem 0 2.5rem;
 }
 
-.page-hero .wrap,
 .page-hero .container {
   position: relative;
   z-index: 1;
@@ -865,7 +847,7 @@ section {
   color: var(--white);
 }
 
-.page-hero .hero__actions {
+.page-hero .hero-actions {
   justify-content: center;
   margin-top: 1.375rem;
 }
@@ -874,24 +856,31 @@ section {
   padding: 1.875rem 0 4.375rem;
 }
 
-.section--flush-top {
+.section-flush-top {
   padding-top: 0;
 }
 
-.section--night {
+.section-night {
   background: var(--night);
   color: var(--white);
   padding: 4.5rem 0 4.5rem;
   overflow: hidden;
 }
 
+/* Main heading for a page section (used on every page) */
 .section-title {
   font-size: 3rem;
   text-align: center;
-  margin-bottom: 1.875rem;
+  margin-bottom: 1.75rem;
 }
 
-.section--night .section-title {
+/* When a hand-lettered subheading follows, the two sit together.
+   :has() selects the title only if a .sub comes right after it. */
+.section-title:has(+ .sub) {
+  margin-bottom: 0;
+}
+
+.section-night .section-title {
   color: var(--tangerine);
 }
 
@@ -939,23 +928,23 @@ section {
   top: calc(var(--header-h-small) + 3.5rem);
 }
 
-.facts__list {
+.facts-list {
   list-style: none;
   margin: 0 0 1.375rem;
   padding: 0;
 }
 
-.facts__list li {
+.facts-list li {
   padding: 0.875rem 0;
   border-bottom: 1px solid #cfd9da;
   line-height: 1.4;
 }
 
-.facts__list li:first-child {
+.facts-list li:first-child {
   padding-top: 0;
 }
 
-.facts__list b {
+.facts-list b {
   display: block;
   font-family: var(--font-display);
   font-weight: 400;
@@ -964,7 +953,7 @@ section {
   color: var(--terracotta);
 }
 
-.facts__list span {
+.facts-list span {
   font-size: 0.9375rem;
   color: var(--muted);
 }
@@ -975,7 +964,7 @@ section {
   margin-bottom: 0.625rem;
 }
 
-.book__widget {
+.book-widget {
   min-height: 30rem;
   background: var(--white);
   border-radius: var(--radius);
@@ -983,18 +972,18 @@ section {
   box-shadow: var(--shadow);
 }
 
-.book__widget h2 {
+.book-widget h2 {
   font-size: 2.375rem;
   margin-bottom: 0.25rem;
 }
 
-.book__widget > p {
+.book-widget > p {
   color: var(--muted);
   font-size: 0.9375rem;
   margin-bottom: 0.875rem;
 }
 
-.book__help {
+.book-help {
   font-size: 0.875rem;
   color: var(--muted);
   margin: 0.75rem 0 0;
@@ -1049,29 +1038,29 @@ section {
   color: var(--tangerine);
 }
 
-.card--wide {
+.card-wide {
   grid-column: 1 / -1;
 }
 
-.card--photo {
+.card-with-photo {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0;
   overflow: hidden;
 }
 
-.card--photo > div {
+.card-with-photo > div {
   padding: 1.75rem 1.875rem;
 }
 
-.card--photo > img {
+.card-with-photo > img {
   width: 100%;
   height: 100%;
   min-height: 260px;
   object-fit: cover;
 }
 
-.card__note {
+.card-note {
   font-size: 0.875rem;
   color: #aaa9c8;
 }
@@ -1155,7 +1144,7 @@ section {
   scroll-margin-top: calc(var(--header-h-small) + 3rem);
 }
 
-.menu-section__head {
+.menu-section-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -1165,13 +1154,13 @@ section {
   margin-bottom: 1.375rem;
 }
 
-.menu-section__head h2 {
+.menu-section-head h2 {
   font-size: 2.875rem;
   color: var(--terracotta);
   margin: 0;
 }
 
-.menu-section__head span {
+.menu-section-head span {
   font-family: var(--font-display);
   font-size: 1.375rem;
   letter-spacing: 1px;
@@ -1235,7 +1224,7 @@ section {
   margin: 0 auto;
 }
 
-.cam__frame {
+.cam-frame {
   position: relative;
   aspect-ratio: 16 / 9;
   background: #1c1b38;
@@ -1244,7 +1233,7 @@ section {
   box-shadow: 0 0.625rem 2.5rem rgba(20, 20, 60, 0.25);
 }
 
-.cam__frame video {
+.cam-frame video {
   display: block;
   width: 100%;
   height: 100%;
@@ -1252,7 +1241,7 @@ section {
   background: #1c1b38;
 }
 
-.cam__live {
+.cam-live {
   position: absolute;
   top: 0.875rem;
   left: 0.875rem;
@@ -1270,7 +1259,7 @@ section {
   border-radius: 99px;
 }
 
-.cam__live::before {
+.cam-live::before {
   content: "";
   width: 9px;
   height: 9px;
@@ -1283,7 +1272,7 @@ section {
   50% { opacity: 0.3; }
 }
 
-.cam__offline {
+.cam-offline {
   position: absolute;
   inset: 0;
   display: none;
@@ -1294,32 +1283,32 @@ section {
   color: var(--white);
 }
 
-.cam__offline h2 {
+.cam-offline h2 {
   font-size: 2.75rem;
   color: var(--tangerine);
   margin-bottom: 0.2em;
 }
 
-.cam__offline p {
+.cam-offline p {
   max-width: 28.75rem;
   margin: 0 auto;
   color: var(--on-night);
 }
 
-.cam.is-offline .cam__offline {
+.cam.is-offline .cam-offline {
   display: grid;
 }
 
-.cam.is-offline .cam__live {
+.cam.is-offline .cam-live {
   display: none;
 }
 
-.cam__cta {
+.cam-cta {
   justify-content: center;
   margin-top: 1.25rem;
 }
 
-.cam__intro {
+.cam-intro {
   max-width: 47.5rem;
   margin: 2.125rem auto 0;
   text-align: center;
@@ -1372,12 +1361,12 @@ section {
   margin: 0 auto;
 }
 
-.faq__group {
+.faq-group {
   margin-bottom: 2.75rem;
   scroll-margin-top: calc(var(--header-h-small) + 3rem);
 }
 
-.faq__group > h2 {
+.faq-group > h2 {
   font-size: 2.75rem;
   color: var(--terracotta);
   border-bottom: 3px solid var(--periwinkle-deep);
@@ -1425,30 +1414,30 @@ section {
   color: var(--periwinkle-deep);
 }
 
-.faq__answer {
+.faq-answer {
   padding: 0 0.25rem 1.375rem;
 }
 
-.faq__answer ul {
+.faq-answer ul {
   padding-left: 1.2em;
 }
 
-.faq__answer li {
+.faq-answer li {
   margin-bottom: 0.5rem;
   line-height: 1.6;
 }
 
-.faq__answer li::marker {
+.faq-answer li::marker {
   content: "🐾  ";
 }
 
-.faq__links {
+.faq-links {
   display: grid;
   gap: 0.75rem;
   margin: 0.625rem 0;
 }
 
-.faq__links a {
+.faq-links a {
   display: flex;
   align-items: flex-start;
   gap: 0.875rem;
@@ -1459,28 +1448,28 @@ section {
   text-decoration: none;
 }
 
-.faq__links a:hover {
+.faq-links a:hover {
   border-color: var(--terracotta);
 }
 
-.faq__links i {
+.faq-links i {
   margin-top: 0.1875rem;
   font-size: 1.375rem;
   color: var(--terracotta);
 }
 
-.faq__links strong {
+.faq-links strong {
   display: block;
 }
 
-.faq__links span {
+.faq-links span {
   display: block;
   font-size: 0.906rem;
   color: var(--muted);
   line-height: 1.5;
 }
 
-.faq__cta {
+.faq-cta {
   margin-top: 1.25rem;
   padding: 2.125rem 1.25rem;
   text-align: center;
@@ -1489,7 +1478,7 @@ section {
   box-shadow: var(--shadow);
 }
 
-.faq__cta h2 {
+.faq-cta h2 {
   font-size: 2.5rem;
 }
 
@@ -1540,7 +1529,7 @@ section {
   padding: 3.125rem 0 1.75rem;
 }
 
-.footer__cols {
+.footer-cols {
   display: grid;
   grid-template-columns: 1fr 1fr 1.1fr;
   gap: 2.25rem;
@@ -1599,7 +1588,7 @@ section {
   color: var(--lavender);
 }
 
-.footer__btns {
+.footer-btns {
   display: flex;
   flex-wrap: wrap;
   gap: 0.625rem;
@@ -1628,7 +1617,7 @@ section {
   transform: scale(1.1);
 }
 
-.footer__legal {
+.footer-legal {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -1640,7 +1629,7 @@ section {
   color: #a9a8cc;
 }
 
-.footer__legal a {
+.footer-legal a {
   color: var(--on-night);
 }
 
@@ -1662,11 +1651,11 @@ section {
 
 @media (max-width: 64em) { /* 1024px at default text size */
   .nav,
-  .nav__list {
+  .nav-list {
     gap: 1.125rem;
   }
 
-  .nav__list a {
+  .nav-list a {
     font-size: 1.25rem;
   }
 
@@ -1675,7 +1664,7 @@ section {
     padding: 0.55rem 0.8rem;
   }
 
-  .brand__logo {
+  .brand-logo {
     height: 84px;
   }
 
@@ -1690,7 +1679,7 @@ section {
     --header-h-small: 60px;
   }
 
-  .brand__logo {
+  .brand-logo {
     height: 70px;
   }
 
@@ -1703,7 +1692,7 @@ section {
     display: none;   /* the action bar's Book button replaces it */
   }
 
-  .nav__list {
+  .nav-list {
     position: fixed;
     inset: var(--header-h-small) 0 auto 0;
     flex-direction: column;
@@ -1713,21 +1702,23 @@ section {
     box-shadow: 0 12px 20px rgba(20, 20, 60, 0.15);
     transform: translateY(-8px);
     opacity: 0;
+    visibility: hidden;   /* also removes the hidden links from keyboard Tab order and screen readers */
     pointer-events: none;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
   }
 
-  .site-header:not(.is-scrolled) .nav__list {
+  .site-header:not(.is-scrolled) .nav-list {
     top: var(--header-h);
   }
 
-  .nav__list.is-open {
+  .nav-list.is-open {
     opacity: 1;
+    visibility: visible;
     transform: none;
     pointer-events: auto;
   }
 
-  .nav__list a {
+  .nav-list a {
     display: block;
     padding: 0.625rem 0;
     font-size: 1.625rem;
@@ -1741,12 +1732,12 @@ section {
     min-height: 0;
   }
 
-  .hero__media {
+  .hero-media {
     order: -1;
     aspect-ratio: 16 / 11;
   }
 
-  .hero__text {
+  .hero-text {
     padding: 2.75rem 24px 3.25rem;
   }
 
@@ -1754,16 +1745,16 @@ section {
     display: none;   /* would land on top of the photo */
   }
 
-  .impact__media {
+  .impact-media {
     min-height: 0;
     aspect-ratio: 16 / 11;
   }
 
-  .impact__text {
+  .impact-text {
     padding: 3.25rem 24px;
   }
 
-  .how__grid,
+  .how-grid,
   .review-cards {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1792,7 +1783,7 @@ section {
   /* inner pages */
   .book,
   .policy-grid,
-  .card--photo,
+  .card-with-photo,
   .menu-grid,
   .support {
     grid-template-columns: minmax(0, 1fr);
@@ -1802,17 +1793,17 @@ section {
     position: static;
   }
 
-  .facts__list {
+  .facts-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 0.75rem;
   }
 
-  .facts__list li {
+  .facts-list li {
     padding: 0 0 0.75rem;
   }
 
-  .card--photo > img {
+  .card-with-photo > img {
     min-height: 0;
     aspect-ratio: 16 / 9;
   }
@@ -1827,7 +1818,7 @@ section {
     transform-origin: bottom center;
   }
 
-  .footer__cols {
+  .footer-cols {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.875rem;
   }
@@ -1868,7 +1859,7 @@ section {
     color: var(--lavender);
   }
 
-  .action-bar .action-bar__book {
+  .action-bar .action-bar-book {
     flex-direction: row;
     gap: 0.5rem;
     background: var(--terracotta);
@@ -1876,7 +1867,7 @@ section {
     font-size: 1.2rem;
   }
 
-  .action-bar .action-bar__book i {
+  .action-bar .action-bar-book i {
     color: var(--white);
   }
 
@@ -1886,35 +1877,31 @@ section {
 }
 
 @media (max-width: 35em) { /* 560px */
-  .wrap,
   .container {
     padding: 0 16px;
   }
 
-  .today-bar__inner {
+  .today-bar-inner {
     padding: 0.5rem 16px;
     font-size: 0.8125rem;
     gap: 0.125rem 0.75rem;
   }
 
-  .today-bar__addr {
+  .today-bar-addr {
     display: none;
   }
 
-  .hero__text,
-  .impact__text {
+  .hero-text,
+  .impact-text {
     padding-left: 16px;
     padding-right: 16px;
   }
 
-  .how h2,
-  .gallery-sec h2,
-  .reviews h2,
   .section-title {
     font-size: 2.5rem;
   }
 
-  .impact__num {
+  .impact-num {
     font-size: 5rem;
   }
 
@@ -1927,11 +1914,11 @@ section {
   }
 
   .card,
-  .card--photo > div {
+  .card-with-photo > div {
     padding: 1.375rem 1.25rem;
   }
 
-  .card--photo {
+  .card-with-photo {
     padding: 0;
   }
 
@@ -1940,7 +1927,7 @@ section {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .menu-section__head h2 {
+  .menu-section-head h2 {
     font-size: 2.375rem;
   }
 
@@ -1967,7 +1954,7 @@ section {
     scroll-behavior: auto;
   }
 
-  .reveal {
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;
@@ -1979,7 +1966,7 @@ section {
     transform: none;
   }
 
-  .cam__live::before {
+  .cam-live::before {
     animation: none;
   }
 }
@@ -2035,7 +2022,7 @@ section {
 .cat-page-faq   { width: 120px; right: 5%; bottom: 8px; }  /* cream cat looking up, curious (cat-ivan.webp) */
 
 /* ---- Decorative leaves & flowers behind sections (Brightwall's shapes) ----
-   On indigo they use .deco--dim so they read as a subtle texture. */
+   On indigo they use .deco-dim so they read as a subtle texture. */
 .deco-hero-leaf   { width: 300px; left: -80px; bottom: -60px; transform: rotate(-20deg); }  /* leaves-03.svg */
 .deco-hero-flower { width: 110px; left: 40%; top: 36px; }                                     /* flower-06.svg */
 .deco-how-right   { width: 260px; right: -60px; top: 0; transform: rotate(25deg); }          /* leaves-03.svg */

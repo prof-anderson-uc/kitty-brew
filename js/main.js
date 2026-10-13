@@ -40,6 +40,13 @@
    ==================================== */
 
 
+// Let the CSS know JavaScript is running. Styles that depend on this script
+// (like the fade-in sections, see .js .reveal in styles.css) only apply when
+// <html> has this class, so the page still works if the script fails to load.
+// document.documentElement is the <html> element.
+document.documentElement.classList.add("js");
+
+
 /* ====================================
    1. HOURS
    ==================================== */
@@ -261,10 +268,10 @@ function renderTodayBar() {
     // The green dot is a <span> styled in styles.css (.status-dot.is-open).
     // .join(...) glues the list items into one string, putting the
     // separator between each pair.
-    html = `<span class="status-dot is-open"></span><strong>Open now</strong> <span class="today-bar__sep">·</span> ${bits.join(' <span class="today-bar__sep">·</span> ')}`;
+    html = `<span class="status-dot is-open"></span><strong>Open now</strong> <span class="today-bar-sep">·</span> ${bits.join(' <span class="today-bar-sep">·</span> ')}`;
   } else {
     // Closed: grey dot plus when the café opens next.
-    html = `<span class="status-dot"></span><strong>Closed now</strong> <span class="today-bar__sep">·</span> Opens ${nextOpening(KB_HOURS.cafe, day, minutes)}`;
+    html = `<span class="status-dot"></span><strong>Closed now</strong> <span class="today-bar-sep">·</span> Opens ${nextOpening(KB_HOURS.cafe, day, minutes)}`;
   }
 
   // innerHTML replaces everything inside the element with our new HTML.
@@ -378,7 +385,7 @@ function initHeader() {
   // instead. Tapping it adds the class "is-open" to the list, and the CSS
   // slides the menu into view.
   const toggle = document.querySelector(".nav-toggle"); // the ☰ button
-  const list = document.querySelector(".nav__list");    // the menu links
+  const list = document.querySelector(".nav-list");    // the menu links
   if (!toggle || !list) return;
 
   // setOpen(true) opens the menu; setOpen(false) closes it.
