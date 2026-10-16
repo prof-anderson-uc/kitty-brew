@@ -9,7 +9,7 @@
      2. Header         — shrinking the header when you scroll, and the mobile
                          (hamburger) menu
      3. Scroll reveal  — sections that fade in as you scroll down
-     4. Homepage       — a random hero photo and 3 random reviews each visit
+     4. Homepage       — a random hero photo, and the reviews carousel
      5. Mural band     — the strip of painted cats above the footer (every page)
      6. Kitty Cam      — the live video player (Kitty Cam page only)
 
@@ -509,29 +509,139 @@ function initHeroPhoto() {
 }
 
 // ---------------------------------------------------------------------------
-// REVIEWS — show 3 of them, picked at random each visit.
-// All the reviews are written in index.html. The CSS shows only the first 3
-// (that's what visitors see if JavaScript is off), so this just shuffles the
-// list and moves 3 random ones to the front.
+// REVIEWS CAROUSEL — starts on a random review and moves along by itself.
+// All the reviews are written in index.html, in a row that scrolls sideways
+// (CSS scroll-snap does the sliding, so it also works by swiping). This code
+// adds the extras: previous/next buttons, a dot for each position, a pause
+// button, and moving to the next review every few seconds.
 // ---------------------------------------------------------------------------
+const REVIEW_DELAY = 7000; // milliseconds between moves (7000 = 7 seconds)
+
 function initReviews() {
-  const list = document.querySelector("[data-reviews]");
-  if (!list) return;
+  const track = document.querySelector("[data-reviews]");
+  if (!track) return; // not on the homepage
 
-  const reviews = [...list.children];
+  const cards = [...track.children];
+  const controls = track.parentElement.querySelector(".carousel-controls");
+  const dotsBox = controls.querySelector("[data-dots]");
+  const pauseBtn = controls.querySelector("[data-pause]");
 
-  // "Fisher–Yates shuffle": walk backwards through the list, swapping each
-  // item with a random one at or before it. It gives every order an equal
-  // chance. `[a, b] = [b, a]` swaps two values in one line.
-  for (let i = reviews.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [reviews[i], reviews[j]] = [reviews[j], reviews[i]];
+  // People who've asked their device for less motion get no auto-advance
+  // and no smooth sliding.
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let index = 0;              // which card is first in view
+  let timer = null;           // the auto-advance timer, when it's running
+  let paused = reduceMotion;  // true once the visitor presses pause
+
+  controls.hidden = false;    // the buttons only work with JavaScript, so show them now
+
+  // How many cards fit side by side right now (3, 2 or 1). CSS decides this
+  // with --visible; we read it back so the two always agree.
+  const visible = () => parseInt(getComputedStyle(track).getPropertyValue("--visible"), 10) || 1;
+
+  // The last position that still fills the row (with 8 reviews and 3 in view,
+  // that's position 5, showing reviews 6, 7 and 8).
+  const lastIndex = () => Math.max(0, cards.length - visible());
+
+  // Slide so card number i is first in view. Going past the end wraps around
+  // to the start, and going back from the start wraps to the end.
+  function goTo(i, smooth = true) {
+    if (i > lastIndex()) i = 0;
+    if (i < 0) i = lastIndex();
+    index = i;
+    track.scrollTo({
+      left: cards[i].offsetLeft - cards[0].offsetLeft,
+      behavior: smooth && !reduceMotion ? "smooth" : "auto"
+    });
+    updateDots();
   }
 
-  // append() moves an element that's already on the page to the end of its
-  // parent. Doing that for every review in shuffled order rebuilds the list
-  // in the new order.
-  reviews.forEach((review) => list.append(review));
+  // One dot per position. They're rebuilt when the screen size changes,
+  // because the number of positions depends on how many cards fit.
+  function buildDots() {
+    dotsBox.innerHTML = "";
+    for (let i = 0; i <= lastIndex(); i++) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Show review ${i + 1} of ${cards.length}`);
+      dot.addEventListener("click", () => { goTo(i); restart(); });
+      dotsBox.append(dot);
+    }
+    updateDots();
+  }
+
+  // aria-current marks the active dot; the CSS colors it terracotta.
+  function updateDots() {
+    [...dotsBox.children].forEach((dot, i) => {
+      dot.setAttribute("aria-current", i === index ? "true" : "false");
+    });
+  }
+
+  // Auto-advance: start() runs goTo(next) every REVIEW_DELAY milliseconds,
+  // stop() cancels it, restart() resets the countdown after a click.
+  function start() {
+    if (paused || timer) return;
+    timer = setInterval(() => goTo(index + 1), REVIEW_DELAY);
+  }
+  function stop() {
+    clearInterval(timer);
+    timer = null;
+  }
+  function restart() {
+    stop();
+    start();
+  }
+
+  controls.querySelector("[data-prev]").addEventListener("click", () => { goTo(index - 1); restart(); });
+  controls.querySelector("[data-next]").addEventListener("click", () => { goTo(index + 1); restart(); });
+
+  // The pause button switches between pause and play, and its icon and label
+  // change to match.
+  function showPauseState() {
+    pauseBtn.setAttribute("aria-label", paused ? "Play the reviews" : "Pause the reviews");
+    pauseBtn.querySelector("i").className = paused ? "fa-solid fa-play" : "fa-solid fa-pause";
+  }
+  pauseBtn.addEventListener("click", () => {
+    paused = !paused;
+    showPauseState();
+    paused ? stop() : start();
+  });
+
+  // Hold still while someone is reading (mouse over the reviews) or using the
+  // keyboard inside them, and while the browser tab is hidden.
+  const carousel = track.parentElement;
+  carousel.addEventListener("mouseenter", stop);
+  carousel.addEventListener("mouseleave", start);
+  carousel.addEventListener("focusin", stop);
+  carousel.addEventListener("focusout", start);
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+
+  // When the visitor swipes or scrolls the row themselves, work out which card
+  // is now first so the dots stay in sync. "scrollend" fires once the
+  // scrolling stops (browsers without it simply skip this).
+  track.addEventListener("scrollend", () => {
+    const step = cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : 1;
+    index = Math.min(lastIndex(), Math.round(track.scrollLeft / step));
+    updateDots();
+  });
+
+  // If the screen gets wider or narrower (say, a phone turned sideways),
+  // rebuild the dots and line the row back up. Phones also fire "resize" when
+  // the address bar slides away, so we only act when the width changed.
+  let lastWidth = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth === lastWidth) return;
+    lastWidth = innerWidth;
+    buildDots();
+    goTo(Math.min(index, lastIndex()), false);
+  });
+
+  // Start on a random review, jumping there instantly (no slide on page load).
+  buildDots();
+  showPauseState();
+  goTo(Math.floor(Math.random() * (lastIndex() + 1)), false);
+  start();
 }
 
 
@@ -550,10 +660,10 @@ function initReviews() {
 // layer: "lf" = leaf (back), "fl" = flower (middle), "ct" = cat or prop
 // (front), "ct up" = a cat in the higher "floating" row.
 const MURAL_BAND = [
-  ["band-leaf-01", "leaves-01.svg", "lf"], ["band-leaf-02", "leaves-06.svg", "lf"],
-  ["band-leaf-03", "leaves-03.svg", "lf"], ["band-leaf-04", "leaves-02.svg", "lf"],
-  ["band-leaf-05", "leaves-04.svg", "lf"], ["band-leaf-06", "leaves-06.svg", "lf"],
-  ["band-leaf-07", "leaves-01.svg", "lf"], ["band-leaf-08", "leaves-02.svg", "lf"],
+  ["band-leaf-01", "leaves-01.svg", "lf"], ["band-leaf-02", "leaves-04.svg", "lf"],
+  ["band-leaf-03", "leaves-03.svg", "lf"], ["band-leaf-04", "leaves-03.svg", "lf"],
+  ["band-leaf-05", "leaves-04.svg", "lf"], ["band-leaf-06", "leaves-04.svg", "lf"],
+  ["band-leaf-07", "leaves-01.svg", "lf"], ["band-leaf-08", "leaves-03.svg", "lf"],
   ["band-leaf-09", "leaves-03.svg", "lf"], ["band-leaf-10", "leaves-04.svg", "lf"],
 
   ["band-flower-01", "flower-05.svg", "fl"], ["band-flower-02", "flower-03.svg", "fl"],
@@ -577,7 +687,7 @@ const MURAL_BAND = [
   ["band-cat-treat-bag", "cat-treat-bag.webp", "ct"],
   ["band-cat-spilling-mug", "cat-spilling-mug.webp", "ct up"],
   ["band-cat-morticia", "cat-morticia.webp", "ct"],
-  ["band-cat-in-box", "cat-in-box.webp", "ct"],
+  ["band-cat-sleepy", "cat-sleepy.webp", "ct"],
 
   ["band-toy-ball-1", "cat-toy-ball.svg", "ct"], ["band-fishbone-01", "fishbone-01.svg", "ct"],
   ["band-toy-fish-1", "cat-toy-fish.svg", "ct"], ["band-fishbone-02", "fishbone-02.svg", "ct"],
@@ -724,7 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeader();   // shrinking header + mobile menu
   initReveal();   // fade-in sections
   initHeroPhoto(); // random hero photo (homepage only)
-  initReviews();   // 3 random reviews (homepage only)
+  initReviews();   // reviews carousel (homepage only)
   initMuralBand(); // painted cats above the footer
   initCam();      // live video (only does anything on the Kitty Cam page)
 

@@ -127,7 +127,8 @@
     <!-- ===================== HOW IT WORKS ===================== -->
     <section class="how" aria-labelledby="how-title">
       <img class="deco deco-how-right" src="images/art/leaves-03.svg" alt="">
-      <img class="deco deco-how-left" src="images/art/leaves-06.svg" alt="">
+      <img class="deco deco-how-left" src="images/art/leaves-05.svg" alt="">
+      <img class="deco deco-how-flower" src="images/art/flower-04.svg" alt="">
       <div class="container">
         <h2 class="section-title" id="how-title">Never been to a cat café?</h2>
         <p class="sub">Here's how it works ~</p>
@@ -170,12 +171,13 @@
 
     <!-- ===================== STEP INSIDE ===================== -->
     <section class="gallery-sec" aria-labelledby="gallery-title">
-      <img class="deco deco-gallery-leaf" src="images/art/leaves-01.svg" alt="">
+      <img class="deco deco-gallery-leaf" src="images/art/leaves-04.svg" alt="">
       <img class="deco deco-gallery-flower" src="images/art/flower-03.svg" alt="">
       <div class="container">
         <h2 class="section-title" id="gallery-title">Step inside the lounge</h2>
         <p class="sub">coffee, cozy corners &amp; plenty of sunbeams</p>
         <div class="gallery reveal">
+          <img class="art cat-gallery" src="images/art/cat-will-feral.webp" alt="">
           <figure class="tall"><img src="images/photos/hero-cat-tree.jpg" alt="Cats on the big wooden cat tree" loading="lazy"><figcaption>Giant cat tree</figcaption></figure>
           <figure><img src="images/photos/lounge-panorama.jpg" alt="The whole cat lounge, with the big wooden cat tree in the middle" loading="lazy"><figcaption>The lounge</figcaption></figure>
           <figure><img src="images/photos/fireplace-bed.jpg" alt="An orange cat napping by the fireplace" loading="lazy"><figcaption>Fireside naps</figcaption></figure>
@@ -189,42 +191,74 @@
     <section class="reviews" aria-labelledby="reviews-title">
       <img class="art cat-reviews-left" src="images/art/cat-tortie-flower.webp" alt="">
       <img class="art cat-reviews-right" src="images/art/cat-tortie.webp" alt="">
+      <img class="deco deco-reviews-flower" src="images/art/flower-02.svg" alt="">
       <div class="container">
         <h2 class="section-title" id="reviews-title">What visitors say</h2>
-        <!-- 3 of these show at random each visit (see initReviews in js/main.js) -->
-        <div class="review-cards" data-reviews>
-          <figure class="review">
-            <blockquote>If you like cats and want to play with them, this is your place! If you're looking to adopt, you can find pretty much any temperament here and see how they like you. Such a calming and cat-egorically fun place 😺</blockquote>
-            <figcaption>Lexington S</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>This is a wonderful place to go to interact with and adopt cats. It is also great for a family outing or date night to just play with cats even if adopting is not an option for you. The staff is friendly and creates a fun environment for visitors while prioritizing the safety and wellbeing of the cats.</blockquote>
-            <figcaption>Ashley R</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. You just have to get a time slot ahead of time. Staff is always so nice. I love getting my kitten fix and watching them play. It's my happy place.</blockquote>
-            <figcaption>Laura B</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>This is probably the best cat cafe I've ever been to! Out of about a dozen cats only 1 was standoffish, which is especially crazy since several were recently spayed/neutered. Lots of playful kittens, toys, and seating. The drinks were good too.</blockquote>
-            <figcaption>David S</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>I went here to get a cat and they were so nice and helpful. It's really easy to find one because they're all just playing in one room and you can see how each of them act. It was such a good experience.</blockquote>
-            <figcaption>Audrey S</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>Highly recommend if you are looking to adopt or just need a pick me up. The coffee is good as well as the treats. Cat cafe was clean and staff was amazing. Be careful if you don't want to take a furry friend home because we almost left with a new kitty.</blockquote>
-            <figcaption>Linz W</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>Really lovely café with wonderful staff. They were very warm and receptive as soon as we walked through the door and answered any questions we had. Delicious selection of drinks and treats on their menu and adorable array of gifts/merch in the gift shop area!</blockquote>
-            <figcaption>Jessica M</figcaption>
-          </figure>
-          <figure class="review">
-            <blockquote>Our whole family spent some quality time together and with kitties last night at Kitty Brew! Great Friday night family outing. Delicious beverages and cute, playful felines. 10/10</blockquote>
-            <figcaption>Brian K</figcaption>
-          </figure>
+        <!-- To add a review, copy one <figure class="review"> block and change the
+             words and name. js/main.js turns this into a carousel that starts on a
+             random review and moves along every few seconds. Without JavaScript,
+             visitors can still swipe or scroll sideways through them. -->
+        <div class="review-carousel">
+          <div class="review-cards" data-reviews tabindex="0" role="region" aria-label="Visitor reviews">
+            <figure class="review">
+              <blockquote>If you like cats and want to play with them, this is your place! If you're looking to adopt, you can find pretty much any temperament here and see how they like you. Such a calming and cat-egorically fun place 😺</blockquote>
+              <figcaption>Lexington S</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>I've been to several cat cafes and Kitty Brew is one of the nicest ones I've seen. The space is bigger than I expected and everything is really clean and well maintained, which matters so much when you're talking about a place with cats. … They were very healthy, relaxed, and friendly which made the whole visit feel comfortable and easy. … So glad we made the trip.</blockquote>
+              <figcaption>Phil C</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>This is a wonderful place to go to interact with and adopt cats. It is also great for a family outing or date night to just play with cats even if adopting is not an option for you. The staff is friendly and creates a fun environment for visitors while prioritizing the safety and wellbeing of the cats.</blockquote>
+              <figcaption>Ashley R</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>Probably the most cat themed cat cafe I've been to, from cat shaped tissue boxes to a tic tac toe board to decorations hanging from the ceiling and cat wallpaper in the bathroom.</blockquote>
+              <figcaption>Sara R</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>I love this place. It's a great cause, they keep it immaculate and the drinks are fabulous. You just have to get a time slot ahead of time. Staff is always so nice. I love getting my kitten fix and watching them play. It's my happy place.</blockquote>
+              <figcaption>Laura B</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>This is probably the best cat cafe I've ever been to! Out of about a dozen cats only 1 was standoffish, which is especially crazy since several were recently spayed/neutered. Lots of playful kittens, toys, and seating. The drinks were good too.</blockquote>
+              <figcaption>David S</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>Kitty Brew Cat Café is a one of a kind place with really good coffee and many options to choose from. … The cats are in an entirely different room. You can enjoy viewing them through the windows or you can pay a fee to go inside the room to play with the cats. Either way it is a comfortable, clean, and relaxing atmosphere.</blockquote>
+              <figcaption>Matthew B</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>I went here to get a cat and they were so nice and helpful. It's really easy to find one because they're all just playing in one room and you can see how each of them act. It was such a good experience.</blockquote>
+              <figcaption>Audrey S</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>Highly recommend if you are looking to adopt or just need a pick me up. The coffee is good as well as the treats. Cat cafe was clean and staff was amazing. Be careful if you don't want to take a furry friend home because we almost left with a new kitty.</blockquote>
+              <figcaption>Linz W</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>My husband and I were so excited to come here to try the food and drinks, and of course to see the cats! They didn't disappoint! … The muffin was warmed up and one of the best I've ever had! … The cats all seemed very well taken care of and happy! … Spending 50 minutes with all of them wasn't enough time. We'll be coming back for sure!</blockquote>
+              <figcaption>Kassandra V</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>Really lovely café with wonderful staff. They were very warm and receptive as soon as we walked through the door and answered any questions we had. Delicious selection of drinks and treats on their menu and adorable array of gifts/merch in the gift shop area!</blockquote>
+              <figcaption>Jessica M</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>I had no idea places like this actually existed or at least this close to me but boy am I happy it does! … Even if you're not in a position to adopt, if you're having a bad day...pop in here for a dopamine boost. Super clean, reasonably priced, the most adorable friends and great coffee.</blockquote>
+              <figcaption>Candace R</figcaption>
+            </figure>
+            <figure class="review">
+              <blockquote>Our whole family spent some quality time together and with kitties last night at Kitty Brew! Great Friday night family outing. Delicious beverages and cute, playful felines. 10/10</blockquote>
+              <figcaption>Brian K</figcaption>
+            </figure>
+          </div>
+          <div class="carousel-controls" hidden>
+            <button class="carousel-btn" type="button" data-prev aria-label="Previous review"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+            <div class="carousel-dots" data-dots></div>
+            <button class="carousel-btn" type="button" data-pause aria-label="Pause the reviews"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+            <button class="carousel-btn" type="button" data-next aria-label="Next review"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+          </div>
         </div>
       </div>
     </section>
@@ -233,6 +267,8 @@
     <!-- For now these are fixed photos. Once a Behold feed is set up, js/main.js
          can fill this grid with the latest posts automatically. -->
     <section class="insta" aria-labelledby="insta-title">
+      <img class="deco deco-insta-left" src="images/art/leaves-03.svg" alt="">
+      <img class="deco deco-insta-right" src="images/art/flower-05.svg" alt="">
       <div class="container">
         <div class="insta-card">
           <img class="art cat-insta" src="images/art/cat-british-shorthair.webp" alt="">
@@ -255,7 +291,7 @@
     <!-- ===================== FIND US ===================== -->
     <section class="location" id="find-us" aria-labelledby="find-us-title">
       <img class="deco deco-loc-left" src="images/art/leaves-04.svg" alt="">
-      <img class="deco deco-loc-right" src="images/art/leaves-02.svg" alt="">
+      <img class="deco deco-loc-right" src="images/art/leaves-03.svg" alt="">
       <div class="container">
         <img class="art cat-location" src="images/art/cat-bed.webp" alt="">
         <div class="loc-card">

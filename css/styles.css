@@ -453,25 +453,8 @@ section {
   font-size: clamp(3.2rem, 6vw, 5.4rem);
 }
 
-.hero h1 {
-  position: relative;
-}
-
 .hero h1 span {
   display: block;
-}
-
-/* Will Feral, Kitty Brew's most famous cat, sits at the bottom-right of the
-   headline, beside the shorter "Happy cats. / Cozy space." lines, so he never
-   covers the photo. Size is set in section 12. */
-.hero h1::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  aspect-ratio: 478 / 395;
-  background: url("../images/art/cat-will-feral.webp") center / contain no-repeat;
-  filter: drop-shadow(0 10px 16px rgba(20, 20, 60, 0.18));
 }
 
 .hero h1 .c1 { color: var(--tangerine); }
@@ -666,25 +649,45 @@ section {
   font-size: 1.05rem;
 }
 
-/* ---- Reviews (main.js shows 3 at random; without JavaScript the first 3 show) ---- */
+/* ---- Reviews carousel (main.js adds the buttons, dots and auto-advance) ---- */
 .reviews {
   padding: 0.625rem 0 4.375rem;
   overflow: hidden;
 }
 
-.review-cards {
+/* The reviews sit side by side in a row that scrolls sideways, 3 at a time
+   (2 on tablets, 1 on phones). scroll-snap makes each swipe or scroll stop
+   neatly on a card. main.js adds the buttons, dots and auto-advance. */
+.review-carousel {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
 }
 
-.review-cards > :nth-child(n + 4) {
-  display: none;
+.review-cards {
+  --visible: 3;
+  --gap: 1.5rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--visible) - 1) * var(--gap)) / var(--visible));
+  gap: var(--gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;            /* hide the scrollbar (Firefox) */
+  padding: 0.75rem 0 2rem;          /* room for the card shadows… */
+  margin: -0.75rem 0 -1.25rem;      /* …without adding space around the row */
+}
+
+.review-cards::-webkit-scrollbar {
+  display: none;                    /* hide the scrollbar (Chrome, Safari) */
+}
+
+.review-cards:focus-visible {
+  outline: 3px solid var(--terracotta);
+  outline-offset: 4px;
 }
 
 .review {
+  scroll-snap-align: start;
   margin: 0;
   background: var(--white);
   border-radius: var(--radius);
@@ -704,9 +707,69 @@ section {
   margin-top: 0.625rem;
 }
 
+/* Previous / pause / next buttons and the dots under the reviews */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.carousel-controls[hidden] {
+  display: none;
+}
+
+.carousel-btn {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--periwinkle-deep);
+  color: var(--white);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.carousel-btn:hover {
+  background: var(--night);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Each dot is a 24px button (easy to tap) with a small circle drawn inside */
+.carousel-dots button {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.carousel-dots button::before {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--lavender);
+}
+
+.carousel-dots [aria-current="true"]::before {
+  background: var(--terracotta);
+}
+
 /* ---- Instagram ---- */
 .insta {
   padding: 5.625rem 0 4.375rem;
+  overflow-x: clip;
 }
 
 .insta-card {
@@ -871,6 +934,7 @@ section {
 
 .section {
   padding: 1.875rem 0 4.375rem;
+  overflow-x: clip;   /* side decorations can hang off the edge without a sideways scrollbar */
 }
 
 .section-flush-top {
@@ -1561,7 +1625,6 @@ section {
   position: relative;
   height: 290px;
   overflow: hidden;
-  margin-bottom: -2px;
 }
 
 .band-inner {
@@ -1747,6 +1810,10 @@ section {
    ========================================================================== */
 
 @media (max-width: 64em) { /* 1024px at default text size */
+  .review-cards {
+    --visible: 2;
+  }
+
   .nav,
   .nav-list {
     gap: 1.125rem;
@@ -1851,9 +1918,12 @@ section {
     padding: 3.25rem 24px;
   }
 
-  .how-grid,
-  .review-cards {
+  .how-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .review-cards {
+    --visible: 1;
   }
 
   .gallery {
@@ -1974,6 +2044,10 @@ section {
 }
 
 @media (max-width: 35em) { /* 560px */
+  .carousel-dots {
+    display: none;   /* too many to fit on a phone; the arrow buttons and swiping still work */
+  }
+
   .container {
     padding: 0 16px;
   }
@@ -2093,8 +2167,6 @@ section {
    values live to try them out before editing this file.
    ========================================================================== */
 
-/* ---- Homepage hero: Will Feral beside the headline (cat-will-feral.webp) ---- */
-.hero h1::after { width: 150px; }
 
 /* ---- "How it works" step drawings ----
    Each drawing fills a 200px-tall box (see .step-art). Use height to shrink
@@ -2127,17 +2199,51 @@ section {
 .deco-hero-leaf   { width: 300px; left: -80px; bottom: -60px; transform: rotate(-20deg); }  /* leaves-03.svg */
 .deco-hero-flower { width: 110px; left: 40%; top: 36px; }                                     /* flower-06.svg */
 .deco-how-right   { width: 260px; right: -60px; top: 0; transform: rotate(25deg); }          /* leaves-03.svg */
-.deco-how-left    { width: 180px; left: -40px; bottom: 10px; }                                /* leaves-06.svg */
+.deco-how-left    { width: 170px; left: -50px; bottom: 20px; }                                /* leaves-05.svg */
+.deco-how-flower  { width: 64px; left: 9%; top: 56px; }                                       /* flower-04.svg */
 .deco-impact      { width: 240px; right: -50px; top: -40px; }                                 /* flower-01.svg (dimmed) */
-.deco-gallery-leaf   { width: 280px; right: -60px; top: 60px; transform: rotate(-30deg); }    /* leaves-01.svg */
+.deco-gallery-leaf   { width: 300px; right: -90px; top: 70px; transform: rotate(-70deg); }    /* leaves-04.svg */
 .deco-gallery-flower { width: 80px; left: 15%; top: 40px; }                                    /* flower-03.svg */
+.deco-reviews-flower { width: 60px; left: 5%; top: 20px; }                                      /* flower-02.svg */
+.deco-insta-left     { width: 240px; left: -90px; top: 46%; transform: rotate(-35deg); }        /* leaves-03.svg */
+.deco-insta-right    { width: 70px; right: 6%; bottom: 10px; }                                  /* flower-05.svg */
+/* Will Feral (cat-will-feral.webp), in memory of our most famous lounge cat.
+   Wide screens: in the margin left of the photos. Narrower: perched on top of
+   the big photo's corner (see the 88em block below). */
+.gallery .cat-gallery { width: 150px; height: auto; right: calc(100% + 12px); bottom: 24px; }
+
+@media (max-width: 88em) { /* 1408px: too narrow for the margin */
+  .gallery .cat-gallery { width: 130px; right: auto; left: 1rem; bottom: calc(100% - 14px); }
+}
 .deco-loc-left    { width: 230px; left: -50px; top: 30px; }                                    /* leaves-04.svg */
-.deco-loc-right   { width: 190px; right: -40px; bottom: 30px; transform: rotate(160deg); }    /* leaves-02.svg */
+.deco-loc-right   { width: 220px; right: -60px; bottom: 40px; transform: rotate(150deg); }    /* leaves-03.svg */
 .deco-loc-card    { width: 190px; right: -50px; bottom: -60px; }                               /* flower-06.svg (dimmed) */
 .deco-page-left   { width: 260px; left: -70px; bottom: -40px; transform: rotate(-15deg); }    /* inner page headers: leaves-04.svg (dimmed) */
 .deco-page-right  { width: 110px; left: 12%; top: 30px; }                                      /* inner page headers: flower-06.svg (dimmed) */
-.deco-night-left  { width: 280px; left: -80px; top: 40px; }                                    /* indigo sections: leaves-01.svg (dimmed) */
+.deco-night-left  { width: 280px; left: -80px; top: 40px; }                                    /* indigo sections: leaves-04.svg (dimmed) */
 .deco-night-right { width: 220px; right: -60px; bottom: 40px; transform: rotate(150deg); }    /* indigo sections: leaves-05.svg (dimmed) */
+
+/* ---- Café Menu & FAQ: leaves and flowers in the side margins, spaced down the page ----
+   top is a % of the page's main section, so they spread out however long the page is.
+   They're hidden on narrower screens (see the media queries below) so they never sit behind text. */
+.deco-menu-1 { width: 230px; left: -80px; top: 2%; transform: rotate(80deg); }     /* leaves-04.svg */
+.deco-menu-2 { width: 70px; right: 4%; top: 22%; }                                  /* flower-02.svg */
+.deco-menu-3 { width: 180px; left: -70px; top: 46%; }                               /* leaves-05.svg */
+.deco-menu-4 { width: 240px; right: -90px; top: 66%; transform: rotate(-120deg); }  /* leaves-03.svg */
+.deco-menu-5 { width: 64px; left: 3.5%; top: 86%; }                                 /* flower-06.svg */
+
+.deco-faq-1 { width: 260px; left: -80px; top: 4%; transform: rotate(60deg); }       /* leaves-03.svg */
+.deco-faq-2 { width: 74px; right: 8%; top: 24%; }                                    /* flower-04.svg */
+.deco-faq-3 { width: 190px; left: -60px; top: 56%; }                                 /* leaves-05.svg */
+.deco-faq-4 { width: 250px; right: -80px; top: 78%; transform: rotate(-80deg); }    /* leaves-04.svg */
+
+@media (max-width: 88em) { /* 1408px: the menu fills most of the width, so the margins are too narrow */
+  .deco-menu-1, .deco-menu-2, .deco-menu-3, .deco-menu-4, .deco-menu-5 { display: none; }
+}
+
+@media (max-width: 75em) { /* 1200px: same for the FAQ's narrower column */
+  .deco-faq-1, .deco-faq-2, .deco-faq-3, .deco-faq-4 { display: none; }
+}
 
 /* ---- Mural band above the footer ----
    left is a % of the band's width, so things stay spread out on any screen.
@@ -2160,7 +2266,7 @@ section {
 .band .band-cat-napping       { left: 68.4%; width: 112px; bottom: 148px; }
 .band .band-cat-morticia      { left: 78.2%; width: 100px; bottom: 0; }
 .band .band-cat-spilling-mug  { left: 84%;   width: 112px; bottom: 148px; }
-.band .band-cat-in-box        { left: 89.3%; width: 108px; bottom: 0; }
+.band .band-cat-sleepy        { left: 89.3%; width: 150px; bottom: -22px; transform: rotate(20deg); }  /* tilted so the cut-off edge sits flat on the bottom, like he's peeking up */
 
 /* Little props tucked between the cats */
 .band .band-toy-ball-1    { left: 20.6%; width: 22px; bottom: 0; }
@@ -2172,13 +2278,13 @@ section {
 /* Lavender leaves (behind everything). Kept smaller and spaced out, alternating
    high and low, so each one reads as its own shape instead of a solid mass. */
 .band .band-leaf-01 { left: -1%; width: 170px; bottom: -14px; }                         /* leaves-01.svg */
-.band .band-leaf-02 { left: 9%;  width: 130px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-06.svg */
+.band .band-leaf-02 { left: 9%;  width: 130px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-04.svg */
 .band .band-leaf-03 { left: 18%; width: 180px; bottom: -6px; }                          /* leaves-03.svg */
-.band .band-leaf-04 { left: 28%; width: 120px; bottom: 110px; }                         /* leaves-02.svg */
+.band .band-leaf-04 { left: 28%; width: 150px; bottom: 110px; }                         /* leaves-03.svg */
 .band .band-leaf-05 { left: 37%; width: 200px; bottom: -12px; transform: scaleX(-1); }  /* leaves-04.svg */
-.band .band-leaf-06 { left: 48%; width: 130px; bottom: 104px; }                         /* leaves-06.svg */
+.band .band-leaf-06 { left: 48%; width: 130px; bottom: 104px; }                         /* leaves-04.svg */
 .band .band-leaf-07 { left: 57%; width: 170px; bottom: -14px; transform: scaleX(-1); }  /* leaves-01.svg */
-.band .band-leaf-08 { left: 67%; width: 120px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-02.svg */
+.band .band-leaf-08 { left: 67%; width: 150px; bottom: 96px;  transform: scaleX(-1); }  /* leaves-03.svg */
 .band .band-leaf-09 { left: 76%; width: 180px; bottom: -6px;  transform: scaleX(-1); }  /* leaves-03.svg */
 .band .band-leaf-10 { left: 87%; width: 200px; bottom: -12px; }                         /* leaves-04.svg */
 
@@ -2217,16 +2323,19 @@ section {
   .cat-page-menu  { width: 130px; }
   .cat-page-cam   { width: 110px; }
   .cat-page-faq   { width: 80px; }
-  .hero h1::after { width: 120px; }
 }
 
 /* ---- Phone-size versions (screens narrower than 860px) ----
    Anything not listed here keeps the setting from above. */
 @media (max-width: 53.75em) {
-  .hero h1::after    { width: 100px; }
   .cat-impact        { width: 26%; right: 4%; top: auto; bottom: -10%; }
   .cat-reviews-left,
-  .cat-reviews-right { display: none; }   /* hidden on phones: not enough room beside the cards */
+  .cat-reviews-right,
+  .cat-gallery       { display: none; }   /* hidden on phones: not enough room beside the cards */
+  .deco-how-flower,
+  .deco-reviews-flower,
+  .deco-insta-left,
+  .deco-insta-right  { display: none; }   /* side decorations would sit behind text on phones */
   .cat-insta         { width: 104px; right: 16px; top: -72px; }
   .cat-location      { width: 120px; right: 30px; top: -80px; }
 }
