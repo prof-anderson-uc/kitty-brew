@@ -570,7 +570,8 @@ const MURAL_BAND = [
   ["band-cat-vlad", "cat-vlad.webp", "ct"],
   ["band-cat-string", "cat-string.webp", "ct up"],
   ["band-cat-behind-plant", "cat-behind-plant.webp", "ct"],
-  ["band-cat-ivan", "cat-ivan.webp", "ct up"],
+  ["band-cat-ivan-blanket", "cat-ivan-blanket.webp", "ct up"],
+  ["band-tuxedo-box", "tuxedo-deliver-box.webp", "ct"],
   ["band-cat-josie", "cat-josie.webp", "ct"],
   ["band-cat-napping", "cat-napping.webp", "ct up"],
   ["band-cat-treat-bag", "cat-treat-bag.webp", "ct"],
@@ -580,7 +581,7 @@ const MURAL_BAND = [
 
   ["band-toy-ball-1", "cat-toy-ball.svg", "ct"], ["band-fishbone-01", "fishbone-01.svg", "ct"],
   ["band-toy-fish-1", "cat-toy-fish.svg", "ct"], ["band-fishbone-02", "fishbone-02.svg", "ct"],
-  ["band-toy-ball-2", "cat-toy-ball.svg", "ct"], ["band-toy-fish-2", "cat-toy-fish.svg", "ct"]
+  ["band-toy-ball-2", "cat-toy-ball.svg", "ct"]
 ];
 
 function initMuralBand() {
