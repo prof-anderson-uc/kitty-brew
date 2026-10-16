@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tells search engines which pages exist. Add a <url> block here
+     whenever a new page is added to the site. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://kittybrew.com/</loc></url>
+  <url><loc>https://kittybrew.com/visit/</loc></url>
+  <url><loc>https://kittybrew.com/cafe-menu/</loc></url>
+  <url><loc>https://kittybrew.com/live/</loc></url>
+  <url><loc>https://kittybrew.com/faq/</loc></url>
+</urlset>

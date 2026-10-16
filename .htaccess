@@ -1,0 +1,34 @@
+# Apache settings for the static Kitty Brew site on InMotion.
+# This file replaces the WordPress .htaccess when the static site goes live.
+
+# Show our own page for addresses that don't exist.
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # One address for the whole site: https://kittybrew.com (no www, no http).
+  # The WordPress site did the same, so existing links and search results keep working.
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://kittybrew.com%{REQUEST_URI} [R=301,L]
+
+  # Old WordPress (Yoast) sitemap addresses point to the new sitemap.
+  RewriteRule ^(sitemap_index|page-sitemap|header-sitemap|footer-sitemap|megamenu-sitemap)\.xml$ /sitemap.xml [R=301,L]
+
+  # The rescues and shelters PDF used to live in the WordPress uploads folder.
+  RewriteRule ^wp-content/uploads/2026/05/Cat-Rescues-Shelters\.pdf$ /files/cat-rescues-shelters.pdf [R=301,L,NC]
+</IfModule>
+
+# Let browsers keep images, fonts, CSS and JS for a while so repeat visits load faster.
+# HTML is left out so changes to the pages show up right away.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/javascript "access plus 1 week"
+</IfModule>

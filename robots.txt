@@ -1,0 +1,5 @@
+# Let all search engines crawl the whole site.
+User-agent: *
+Disallow:
+
+Sitemap: https://kittybrew.com/sitemap.xml

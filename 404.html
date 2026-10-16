@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Not Found | Kitty Brew, Cincinnati's Original Cat Café</title>
+  <!-- Keep this page out of search results -->
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" href="/images/icon-32x32.png" sizes="32x32">
+  <link rel="icon" href="/images/icon-192x192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/images/icon-180x180.png">
+
+  <!-- Google Analytics (same Google tag ID the WordPress site used through Site Kit) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GT-WKPPGPSD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "GT-WKPPGPSD");
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat+Alternates:wght@600&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a class="brand" href="/index.html" aria-label="Kitty Brew Cat Café home">
+        <img class="brand-logo" src="/images/logo.png" alt="Kitty Brew Cat Café" width="198" height="96">
+        <span class="brand-word" aria-hidden="true">Kitty Brew</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list" aria-label="Menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+        <ul class="nav-list" id="nav-list">
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/visit/index.html">Visit Us</a></li>
+          <li><a href="/cafe-menu/index.html">Menu</a></li>
+          <li><a href="/live/index.html">Kitty Cam</a></li>
+          <li><a href="/faq/index.html">FAQ</a></li>
+        </ul>
+        <a class="btn btn-small" href="/visit/index.html#book"><i class="fa-regular fa-calendar" aria-hidden="true"></i><span>Book a Visit or Event</span></a>
+      </nav>
+    </div>
+    <div class="today-bar">
+      <div class="today-bar-inner">
+        <span data-today-status>Open every day except Tuesday</span>
+        <span class="today-bar-addr"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <a href="/visit/index.html#find-us">721 Reading Rd, Mason</a></span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero on-night">
+      <img class="deco deco-dim deco-page-left" src="/images/art/leaves-04.svg" alt="">
+      <img class="deco deco-dim deco-page-right" src="/images/art/flower-06.svg" alt="">
+      <img class="art cat-page-cam" src="/images/art/cat-string.webp" alt="">
+      <div class="container">
+        <h1>Page Not Found</h1>
+        <p>Looks like a cat knocked this page off the table. The address may be mistyped, or the page may have moved.</p>
+      </div>
+    </section>
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0 H1440 V22 C1240 70 1080 10 900 38 C720 66 560 14 380 40 C220 62 100 30 0 46Z" fill="#2b2a55"/>
+      <path d="M0 46 C100 30 220 62 380 40 C560 14 720 66 900 38 C1080 10 1240 70 1440 22 V34 C1250 76 1080 24 900 50 C720 76 560 28 380 52 C220 72 100 44 0 58Z" fill="#bac6e4"/>
+    </svg>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Try one of these instead</h2>
+        <div class="hero-actions">
+          <a class="btn" href="/index.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Home</span></a>
+          <a class="btn btn-ghost" href="/visit/index.html#book"><i class="fa-regular fa-calendar" aria-hidden="true"></i><span>Book a Visit</span></a>
+          <a class="btn btn-ghost" href="/cafe-menu/index.html"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i><span>Café Menu</span></a>
+          <a class="btn btn-ghost" href="/faq/index.html"><i class="fa-solid fa-circle-question" aria-hidden="true"></i><span>FAQ</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mural band: the painted cats are added by js/main.js (see MURAL_BAND there) -->
+  <div class="band" data-mural-band data-art-path="/images/art/" role="img" aria-label="Painted cats, leaves and flowers from the lounge mural"></div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-cols">
+        <div>
+          <h2>Café Hours</h2>
+          <!-- Filled in by js/main.js from KB_HOURS, with today highlighted -->
+          <ul class="hours" data-hours="cafe"></ul>
+        </div>
+        <div>
+          <h2>Cat Lounge Hours</h2>
+          <ul class="hours" data-hours="lounge"></ul>
+        </div>
+        <div>
+          <h2>Contact Us</h2>
+          <ul class="contact-list">
+            <li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:+15137019001">(513) 701-9001</a></li>
+            <li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:info@kittybrew.com">info@kittybrew.com</a></li>
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><a href="/visit/index.html#find-us">721 Reading Rd, Mason, OH</a></li>
+          </ul>
+          <div class="footer-btns">
+            <a class="btn btn-small" href="https://app.squareup.com/gift/MLB44VR83Z10T/order"><i class="fa-solid fa-gift" aria-hidden="true"></i>Gift Cards</a>
+            <a class="btn btn-small btn-outline" href="https://checkout.square.site/merchant/MLB44VR83Z10T/checkout/RAZJIN7GGJ6OONFYAF7IUV25"><i class="fa-solid fa-star" aria-hidden="true"></i>Cat Club</a>
+            <a class="btn btn-small btn-outline" href="https://www.amazon.com/hz/wishlist/ls/1PSV29RUEBY1I?type=wishlist"><i class="fa-solid fa-box-open" aria-hidden="true"></i>Wish List</a>
+          </div>
+          <div class="follow">
+            <h2>Follow Us!</h2>
+            <a href="https://www.facebook.com/kittybrewcafe" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+            <a href="https://www.instagram.com/kittybrewcafe/" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://www.yelp.com/biz/kitty-brew-cat-cafe-mason" aria-label="Yelp"><i class="fa-brands fa-yelp" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <span>© <span data-year>2026</span> Kitty Brew Cat Café · 721 Reading Road, Mason, OH 45040</span>
+        <span>Lounge murals by <a href="https://www.brightwallcollective.com/">Brightwall Collective</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Phones only: quick actions pinned to the bottom of the screen -->
+  <nav class="action-bar" aria-label="Quick actions">
+    <a href="tel:+15137019001"><i class="fa-solid fa-phone" aria-hidden="true"></i>Call</a>
+    <a href="https://maps.google.com/?q=Kitty+Brew+Cat+Cafe+721+Reading+Road+Mason+OH"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Directions</a>
+    <a class="action-bar-book" href="/visit/index.html#book"><i class="fa-regular fa-calendar" aria-hidden="true"></i>Book a Visit</a>
+  </nav>
+</body>
+</html>
