@@ -1057,6 +1057,22 @@ section {
   object-fit: cover;
 }
 
+/* A photo at the bottom of a regular card. It grows to fill any empty space
+   when the card beside it is taller. */
+.card:has(.card-photo) {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-photo {
+  flex-grow: 1;
+  width: 100%;
+  height: 12rem;   /* starting height; flex-grow stretches it to fill the card */
+  margin-top: 0.5rem;
+  border-radius: calc(var(--radius) / 2);
+  object-fit: cover;
+}
+
 .card-note {
   font-size: 0.875rem;
   color: #aaa9c8;
@@ -1143,7 +1159,7 @@ section {
 
 .menu-section > header {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
   border-bottom: 3px solid var(--periwinkle-deep);
@@ -1152,9 +1168,23 @@ section {
 }
 
 .menu-section > header h2 {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
   font-size: 2.875rem;
   color: var(--terracotta);
   margin: 0;
+}
+
+/* A cat mug from the Kitty Brew logo sits after each heading, on its
+   underline like a mug on a shelf. Which mug goes with which section is set in section 12. */
+.menu-section > header h2::after {
+  content: "";
+  flex-shrink: 0;
+  height: 1.6em;
+  aspect-ratio: 95 / 98;
+  margin-bottom: -0.15em;   /* down onto the line (cancels the header's padding) */
+  background: var(--mug) bottom / contain no-repeat;
 }
 
 .menu-section > header p {
@@ -1163,6 +1193,7 @@ section {
   font-size: 1.375rem;
   letter-spacing: 1px;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .menu-grid {
@@ -1180,6 +1211,7 @@ section {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
+  align-content: start;   /* stay at the top when the item beside it is taller */
   column-gap: 0.625rem;
 }
 
@@ -1288,7 +1320,7 @@ section {
   place-items: center;
   text-align: center;
   padding: 1.5rem;
-  background: linear-gradient(rgba(43, 42, 85, 0.82), rgba(43, 42, 85, 0.82)), url("../images/photos/hero-cat-drink.jpg") center / cover;
+  background: linear-gradient(rgba(43, 42, 85, 0.82), rgba(43, 42, 85, 0.82)), url("../images/photos/grey-kitten-toy.jpg") center / cover;
   color: var(--white);
 }
 
@@ -1485,6 +1517,14 @@ section {
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+.faq-cta > img {
+  width: 8rem;
+  aspect-ratio: 1;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .faq-cta h2 {
@@ -1937,7 +1977,12 @@ section {
   }
 
   .menu-section > header h2 {
+    gap: 0.5rem;
     font-size: 2.375rem;
+  }
+
+  .menu-section > header h2::after {
+    height: 1.3em;
   }
 
   .menu-grid h3 {
@@ -2103,6 +2148,18 @@ section {
 .band .band-flower-10 { left: 82%; width: 56px; bottom: 112px; }  /* flower-06.svg */
 .band .band-flower-11 { left: 91%; width: 46px; bottom: 196px; }  /* flower-04.svg */
 .band .band-flower-12 { left: 98%; width: 52px; bottom: 104px; }  /* flower-01.svg */
+
+/* ---- Café Menu: which cat mug sits beside each section heading ----
+   Mug drawings: mug-grey (the logo mug), mug-calico, mug-tuxedo, mug-cream,
+   mug-white. Change the file name to swap a mug; size is set in section 7. */
+#coffee { --mug: url("../images/art/mug-grey.svg"); }
+#lattes { --mug: url("../images/art/mug-calico.svg"); }
+#tea    { --mug: url("../images/art/mug-tuxedo.svg"); }
+#addons { --mug: url("../images/art/mug-cream.svg"); }
+#frozen { --mug: url("../images/art/mug-white.svg"); }
+#cold   { --mug: url("../images/art/mug-calico.svg"); }
+#snacks { --mug: url("../images/art/mug-tuxedo.svg"); }
+#merch  { --mug: url("../images/art/mug-grey.svg"); }
 
 /* ---- Smaller laptops & tablets (narrower than about 1220px) ----
    Page-header cats move from the corner to centered above the title, so they

@@ -481,7 +481,11 @@ const HERO_PHOTOS = [
   "hero-tabby.jpg",
   "hero-calico.jpg",
   "hero-cat-table.jpg",
-  "hero-cat-drink.jpg"
+  "hero-cat-drink.jpg",
+  "tuxedos-curved-tree.jpg",
+  "kittens-bed.jpg",
+  "tortie-blanket.jpg",
+  "cat-house.jpg"
 ];
 
 function initHeroPhoto() {
