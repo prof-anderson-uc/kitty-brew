@@ -44,7 +44,12 @@
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-hand: "Patrick Hand SC", "Comic Sans MS", cursive;   /* like the mural lettering */
   --font-body: "Roboto", system-ui, sans-serif;
-  --font-brand: "Montserrat Alternates", "Montserrat", sans-serif;
+  /* Kitty Brew's brand lettering is Montserrat Alternates with five letters
+     (a, E, Q, T, Z/z) swapped in from regular Montserrat. Each page loads a
+     tiny Montserrat file with only those letters, and it's listed first: the
+     browser takes each letter from the first font that has it, so those six
+     come from Montserrat and every other letter falls back to Alternates. */
+  --font-brand: "Montserrat", "Montserrat Alternates", sans-serif;
 
   --container: 1140px;
   /* Header heights stay in px: js/main.js reads these to know when to shrink the header. */
@@ -871,6 +876,14 @@ section {
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 0.75rem;
+}
+
+/* the café's name, in the brand lettering */
+.loc-text address strong {
+  font-family: var(--font-brand);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.3;
 }
 
 .loc-text .landmarks {
@@ -1760,6 +1773,13 @@ section {
 }
 
 .footer-legal a {
+  color: var(--on-night);
+}
+
+/* the café's name in the copyright line, in the brand lettering */
+.footer-legal .brand-name {
+  font-family: var(--font-brand);
+  font-weight: 600;
   color: var(--on-night);
 }
 
