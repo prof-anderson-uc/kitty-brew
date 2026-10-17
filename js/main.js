@@ -600,7 +600,9 @@ function initReviews() {
   // change to match.
   function showPauseState() {
     pauseBtn.setAttribute("aria-label", paused ? "Play the reviews" : "Pause the reviews");
-    pauseBtn.querySelector("i").className = paused ? "fa-solid fa-play" : "fa-solid fa-pause";
+    // The icon is <use href="…icons.svg#pause">; swap the part after the #.
+    const use = pauseBtn.querySelector("use");
+    use.setAttribute("href", use.getAttribute("href").replace(/#.*/, paused ? "#play" : "#pause"));
   }
   pauseBtn.addEventListener("click", () => {
     paused = !paused;

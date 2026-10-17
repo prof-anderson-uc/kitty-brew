@@ -144,6 +144,19 @@ section > .container {
   z-index: 1;
 }
 
+/* Icons: each is an <svg> that draws one shape from images/icons.svg, e.g.
+   <svg class="icon" aria-hidden="true"><use href="images/icons.svg#phone"></use></svg>
+   They're sized in em, so they scale with the text around them, and
+   currentColor makes them the same color as that text. */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;   /* sit on the text's baseline like a letter */
+  fill: currentColor;
+}
+
 /* Hides text visually but keeps it for screen readers (e.g. the menu
    button's "Main menu" label) */
 .visually-hidden {
@@ -429,12 +442,12 @@ section > .container {
 
 /* The button holds both icons; CSS shows one based on aria-expanded, which
    main.js sets to "true" when the menu opens: ☰ when closed, ✕ when open. */
-.nav-toggle .fa-xmark,
-.nav-toggle[aria-expanded="true"] .fa-bars {
+.nav-toggle .icon-xmark,
+.nav-toggle[aria-expanded="true"] .icon-bars {
   display: none;
 }
 
-.nav-toggle[aria-expanded="true"] .fa-xmark {
+.nav-toggle[aria-expanded="true"] .icon-xmark {
   display: inline-block;
 }
 
@@ -1269,15 +1282,17 @@ section > .container {
   line-height: 1.55;
 }
 
+/* a paw print before each rule: the shape comes from paw.svg (as a mask),
+   the color from the token */
 .rules li::before {
-  content: "\f1b0";   /* Font Awesome paw print */
+  content: "";
   position: absolute;
   left: 0;
-  top: 2px;
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  font-size: 1rem;
-  color: var(--tangerine);
+  top: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  background: var(--tangerine);
+  mask: url("../images/paw.svg") center / contain no-repeat;
 }
 
 .rules strong {
@@ -1307,7 +1322,7 @@ section > .container {
   line-height: 1.45;
 }
 
-.included i {
+.included .icon {
   color: var(--tangerine);
 }
 
@@ -1537,7 +1552,7 @@ section > .container {
   box-shadow: 0 0.875rem 1.875rem rgba(40, 40, 90, 0.12);
 }
 
-.support i {
+.support .icon {
   display: block;
   margin-bottom: 0.625rem;
   font-size: 2.125rem;
@@ -1653,7 +1668,7 @@ section > .container {
   border-color: var(--terracotta);
 }
 
-.faq-links i {
+.faq-links .icon {
   margin-top: 0.1875rem;
   font-size: 1.375rem;
   color: var(--terracotta);
@@ -1792,8 +1807,8 @@ section > .container {
   color: var(--tangerine);
 }
 
-.contact-list i {
-  width: 1.4em;
+.contact-list .icon {
+  margin-right: 0.45em;
   color: var(--lavender);
 }
 
@@ -2152,7 +2167,7 @@ section > .container {
     text-decoration: none;
   }
 
-  .action-bar i {
+  .action-bar .icon {
     font-size: 1.1rem;
     color: var(--lavender);
   }
@@ -2165,7 +2180,7 @@ section > .container {
     font-size: 1.2rem;
   }
 
-  .action-bar .action-bar-book i {
+  .action-bar .action-bar-book .icon {
     color: var(--white);
   }
 
