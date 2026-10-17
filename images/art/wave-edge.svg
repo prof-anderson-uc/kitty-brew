@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 70" preserveAspectRatio="none">
+  <!-- The indigo wavy edge under the page headers. Used as a CSS mask, so its
+       color comes from the night color token in styles.css, not from this file. -->
+  <path d="M0 0 H1440 V22 C1240 70 1080 10 900 38 C720 66 560 14 380 40 C220 62 100 30 0 46Z"/>
+</svg>

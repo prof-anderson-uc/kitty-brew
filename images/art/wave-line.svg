@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 70" preserveAspectRatio="none">
+  <!-- The thin lavender line under the wavy edge. Used as a CSS mask, so its
+       color comes from the lavender color token in styles.css, not from this file. -->
+  <path d="M0 46 C100 30 220 62 380 40 C560 14 720 66 900 38 C1080 10 1240 70 1440 22 V34 C1250 76 1080 24 900 50 C720 76 560 28 380 52 C220 72 100 44 0 58Z"/>
+</svg>

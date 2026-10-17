@@ -395,13 +395,8 @@ function initHeader() {
     // aria-expanded tells screen readers (software that reads the page
     // aloud for blind visitors) whether the menu is currently open.
     // setAttribute needs text, so String(true) turns it into "true".
+    // The CSS also reads it to swap the icon: ☰ when closed, ✕ when open.
     toggle.setAttribute("aria-expanded", String(open));
-
-    // Swap the icon: an ✕ when open, ☰ when closed. These are Font Awesome
-    // icons, which are drawn by giving an <i> tag the right class names.
-    toggle.innerHTML = open
-      ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>'
-      : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
   };
 
   // Tapping the button flips the menu: if it's open, close it, and if it's
@@ -489,23 +484,28 @@ const HERO_PHOTOS = [
 ];
 
 function initHeroPhoto() {
-  // The hero <img> has data-hero-photo on it. Its starting src is the photo
-  // that shows if JavaScript is off; we swap it for a random one.
-  const img = document.querySelector("[data-hero-photo]");
-  if (!img) return; // not on the homepage
+  // The box the photo goes in has data-hero-photo on it.
+  const box = document.querySelector("[data-hero-photo]");
+  if (!box) return; // not on the homepage
 
   // Math.random() gives a number from 0 up to (not including) 1. Multiplying
   // by the list length and rounding down with Math.floor gives a valid
   // position in the list: 0, 1, 2 … up to the last one.
-  let pick = Math.floor(Math.random() * HERO_PHOTOS.length);
+  const pick = Math.floor(Math.random() * HERO_PHOTOS.length);
 
-  // Handy for previewing: add ?hero=3 to the page address to always show the
-  // third photo (counting from 1). URLSearchParams reads the part of the
-  // address after the "?".
-  const forced = parseInt(new URLSearchParams(location.search).get("hero"), 10);
-  if (forced >= 1 && forced <= HERO_PHOTOS.length) pick = forced - 1;
-
+  // Build the <img>. Creating it here (instead of swapping the src of one
+  // already in the HTML) means the browser only downloads the photo we picked.
+  const img = document.createElement("img");
+  img.className = "hero-photo";
+  img.alt = box.dataset.alt;      // the alt text written in index.html
+  img.fetchPriority = "high";     // download this before other images
   img.src = "images/photos/" + HERO_PHOTOS[pick];
+
+  // The CSS starts the photo invisible; adding "is-loaded" once it has
+  // finished downloading fades it in.
+  img.addEventListener("load", () => img.classList.add("is-loaded"));
+
+  box.prepend(img); // put it in the box (before the <noscript>)
 }
 
 // ---------------------------------------------------------------------------

@@ -144,6 +144,8 @@ section > .container {
   z-index: 1;
 }
 
+/* Hides text visually but keeps it for screen readers (e.g. the menu
+   button's "Main menu" label) */
 .visually-hidden {
   position: absolute !important;
   width: 1px;
@@ -225,11 +227,32 @@ section > .container {
 }
 
 /* The wavy edge under the hero / page headers */
+/* The wavy edge under the hero and page headers: an empty <div class="wave">
+   drawn entirely here. Each layer is a shape from an SVG file used as a mask
+   (a cut-out), filled with a color token, so the colors live in one place. */
 .wave {
-  display: block;
-  width: 100%;
+  position: relative;
   height: 70px;
   margin-top: -1px;
+}
+
+.wave::before,
+.wave::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;   /* stretch the wave across the full width */
+}
+
+.wave::before {
+  background: var(--night);
+  mask-image: url("../images/art/wave-edge.svg");
+}
+
+.wave::after {
+  background: var(--lavender);
+  mask-image: url("../images/art/wave-line.svg");
 }
 
 
@@ -404,6 +427,17 @@ section > .container {
   color: var(--ink);
 }
 
+/* The button holds both icons; CSS shows one based on aria-expanded, which
+   main.js sets to "true" when the menu opens: ☰ when closed, ✕ when open. */
+.nav-toggle .fa-xmark,
+.nav-toggle[aria-expanded="true"] .fa-bars {
+  display: none;
+}
+
+.nav-toggle[aria-expanded="true"] .fa-xmark {
+  display: inline-block;
+}
+
 /* "Open now" bar under the header */
 .today-bar {
   background: var(--periwinkle-dark);
@@ -518,6 +552,17 @@ section > .container {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* main.js adds the photo; it fades in once it has downloaded. Scoped to .js
+   so the no-JavaScript photo in the <noscript> is never left invisible. */
+.js .hero-photo {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.js .hero-photo.is-loaded {
+  opacity: 1;
 }
 
 /* ---- How it works ---- */
@@ -2214,6 +2259,10 @@ section > .container {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .js .hero-photo {
+    transition: none;
   }
 
   .footer-will figcaption {
