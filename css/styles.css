@@ -1533,7 +1533,7 @@ section > .container,
   place-items: center;
   text-align: center;
   padding: 1.5rem;
-  background: linear-gradient(rgba(43, 42, 85, 0.82), rgba(43, 42, 85, 0.82)), url("../images/photos/grey-kitten-toy.jpg") center / cover;
+  background: linear-gradient(rgba(43, 42, 85, 0.82), rgba(43, 42, 85, 0.82)), url("../images/photos/grey-kitten-toy.webp") center / cover;
   color: var(--white);
 }
 

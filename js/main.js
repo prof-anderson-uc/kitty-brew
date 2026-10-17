@@ -464,27 +464,27 @@ function initReveal() {
 
 // ---------------------------------------------------------------------------
 // HERO PHOTOS — a different one each visit.
-// To add a photo: save it in images/photos/ (landscape works best, roughly
-// 1600px wide, with the subject near the middle) and add its file name here.
+// To add a photo: save it in images/photos/ as a .webp (landscape works best,
+// roughly 1600px wide, with the subject near the middle) and add its file name here.
 // ---------------------------------------------------------------------------
 const HERO_PHOTOS = [
-  "hero-mural-calico.jpg",
-  "hero-cat-tree.jpg",
-  "hero-siamese-basket.jpg",
-  "hero-fireplace-tent.jpg",
-  "hero-black-cat.jpg",
-  "hero-tabby.jpg",
-  "hero-calico.jpg",
-  "hero-cat-table.jpg",
-  "hero-cat-drink.jpg",
-  "tuxedos-curved-tree.jpg",
-  "kittens-bed.jpg",
-  "tortie-blanket.jpg",
-  "cat-house.jpg",
-  "kitten-tree.jpg",
-  "orange-cat-lobby.jpg",
-  "tabby-tree-branch.jpg",
-  "orange-kitten-couch.jpg"
+  "hero-mural-calico.webp",
+  "hero-cat-tree.webp",
+  "hero-siamese-basket.webp",
+  "hero-fireplace-tent.webp",
+  "hero-black-cat.webp",
+  "hero-tabby.webp",
+  "hero-calico.webp",
+  "hero-cat-table.webp",
+  "hero-cat-drink.webp",
+  "tuxedos-curved-tree.webp",
+  "kittens-bed.webp",
+  "tortie-blanket.webp",
+  "cat-house.webp",
+  "kitten-tree.webp",
+  "orange-cat-lobby.webp",
+  "tabby-tree-branch.webp",
+  "orange-kitten-couch.webp"
 ];
 
 function initHeroPhoto() {
