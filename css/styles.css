@@ -113,6 +113,7 @@ h3 {
   letter-spacing: 0.5px;
   line-height: 1.05;
   margin: 0 0 0.35em;
+  text-wrap: balance;   /* when a heading wraps, even out the lines so no word sits alone */
 }
 
 p {
@@ -1022,6 +1023,41 @@ section > .container {
 .page-hero .hero-actions {
   justify-content: center;
   margin-top: 1.375rem;
+}
+
+/* ---- 404 page (<main class="not-found">) ---- */
+.not-found .error-code {
+  margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--lavender);
+}
+
+.not-found h1 {
+  max-width: 14em;
+  margin-inline: auto;
+  font-size: clamp(2.5rem, 5.5vw, 4rem);
+}
+
+.not-found .error-note {
+  font-size: 0.95rem;
+  color: var(--muted-on-night);
+}
+
+.not-found .hero-actions {
+  justify-content: center;
+}
+
+/* the kitten tips its mug back and forth */
+.cat-page-404 {
+  transform-origin: bottom center;
+  animation: tip-mug 3s ease-in-out infinite;
+}
+
+@keyframes tip-mug {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
 }
 
 .section {
@@ -2280,6 +2316,10 @@ section > .container {
     transition: none;
   }
 
+  .cat-page-404 {
+    animation: none;
+  }
+
   .footer-will figcaption {
     transition: none;
   }
@@ -2346,6 +2386,7 @@ section > .container {
 .cat-page-visit { width: 150px; right: 4%; bottom: 8px; }  /* calico in the fish box (cat-in-box.webp) */
 .cat-page-menu  { width: 190px; right: 4%; bottom: 6px; }  /* kitten knocking over a mug (cat-spilling-mug.webp) */
 .cat-page-cam   { width: 160px; right: 4%; bottom: 8px; }  /* black cat peeking over the fish pillow (cat-string.webp) */
+.cat-page-404   { width: 190px; right: 4%; bottom: 6px; }  /* 404 page: kitten knocking over a mug (cat-spilling-mug.webp) */
 .cat-page-faq   { width: 120px; right: 5%; bottom: 8px; }  /* cream cat looking up, curious (cat-ivan.webp) */
 
 /* ---- Decorative leaves & flowers behind sections (Brightwall's shapes) ----
@@ -2476,6 +2517,7 @@ section > .container {
   .cat-page-visit { width: 110px; }
   .cat-page-menu  { width: 130px; }
   .cat-page-cam   { width: 110px; }
+  .cat-page-404   { width: 130px; }
   .cat-page-faq   { width: 80px; }
 }
 
