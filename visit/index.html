@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat+Alternates:wght@600&family=Patrick+Hand+SC&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Kitty Brew brand lettering: just the letters a E Q T Z z from regular Montserrat (see --font-brand in styles.css) -->
+  <!-- Kitty Brew brand lettering: just the letters a E Q T Z z from regular Montserrat (see the brand font setting in styles.css) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&amp;text=aEQTZz&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/styles.css">
   <script src="../js/main.js" defer></script>
@@ -97,9 +97,9 @@
         <div class="book-widget">
           <h2>Book a visit or event</h2>
           <p>Reserve a cat lounge visit or sign up for an upcoming event below. Need to change plans? Rescheduling is always free.</p>
-          <section class="reservation-calendar">
+          <div class="reservation-calendar">
             <script src="https://bookeo.com/widget.js?a=41577JEJLYP19612E21775"></script>
-          </section>
+          </div>
           <p class="book-help">Calendar not loading? Call us at <a href="tel:+15137019001">(513) 701-9001</a> and we'll book you in.</p>
         </div>
       </div>
@@ -203,7 +203,7 @@
   </main>
 
   <!-- Mural band: the painted cats are added by js/main.js (see MURAL_BAND there) -->
-  <div class="band" data-mural-band data-art-path="../images/art/" role="img" aria-label="Painted cats, leaves and flowers from the lounge mural"></div>
+  <div class="band" data-mural-band data-art-path="../images/art/" aria-hidden="true"></div>
 
   <!-- ===================== FOOTER ===================== -->
   <footer class="site-footer">

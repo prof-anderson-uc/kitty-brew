@@ -140,7 +140,8 @@ section {
    leaves, flowers and side cats placed directly in the section). Without this,
    those positioned decorations would paint on top of headings and text where
    they overlap, which happens on phones where the margins are narrow. */
-section > .container {
+section > .container,
+.section > .container {
   position: relative;
   z-index: 1;
 }
@@ -427,7 +428,7 @@ section > .container {
 
 .nav-list a:hover,
 .nav-list a[aria-current="page"] {
-  color: var(--terracotta);
+  color: var(--terracotta-dark);   /* darker so it passes contrast on the pale wall (5.5:1) */
 }
 
 .nav-toggle {
@@ -1061,6 +1062,7 @@ section > .container {
 }
 
 .section {
+  position: relative;   /* also set on every <section>; this covers <div class="section"> */
   padding: 1.875rem 0 4.375rem;
   overflow-x: clip;   /* side decorations can hang off the edge without a sideways scrollbar */
 }
