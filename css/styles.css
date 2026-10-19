@@ -880,6 +880,13 @@ section > .container,
   margin: 0;
 }
 
+/* the Instagram and Facebook buttons, side by side (they wrap on narrow screens) */
+.insta-follow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
 .insta-head .hand {
   display: block;
   margin-top: -0.25rem;
