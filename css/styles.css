@@ -889,8 +889,8 @@ section > .container,
 
 .insta-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.625rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
   align-items: start;
 }
 
@@ -2138,10 +2138,6 @@ section > .container,
   .gallery {
     grid-template-columns: 1fr 1fr;
     grid-auto-rows: 10.625rem;
-  }
-
-  .insta-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .loc-card {

@@ -652,9 +652,9 @@ function initReviews() {
 
 
 // ---------------------------------------------------------------------------
-// INSTAGRAM — the six latest posts from @kittybrewcafe.
+// INSTAGRAM — the latest posts from @kittybrewcafe.
 // Behold (behold.so) connects to the Instagram account and publishes the latest
-// posts at a feed address, as JSON. This code loads that feed and swaps the six
+// posts at a feed address, as JSON. This code loads that feed and swaps the
 // fixed photos in index.html for the real posts. If anything goes wrong, the
 // fixed photos simply stay.
 //
@@ -665,6 +665,7 @@ function initReviews() {
 // ---------------------------------------------------------------------------
 const INSTAGRAM_FEED = "https://feeds.behold.so/4wEnutp6rLO1UB9hr0FN"; // from the Behold dashboard
 const INSTAGRAM_CACHE_HOURS = 1; // matches Behold's hourly refresh
+const INSTAGRAM_POSTS = 4;       // how many posts to show (the grid has room for 4 in a row)
 
 function initInstagram() {
   const grid = document.querySelector("[data-insta-feed]");
@@ -691,7 +692,7 @@ function initInstagram() {
 
     const response = await fetch(INSTAGRAM_FEED);
     if (!response.ok) throw new Error("Feed unavailable");
-    const posts = (await response.json()).posts.slice(0, 6);
+    const posts = (await response.json()).posts;
 
     try {
       localStorage.setItem("kb-instagram", JSON.stringify({ feed: INSTAGRAM_FEED, time: Date.now(), posts }));
@@ -701,12 +702,12 @@ function initInstagram() {
 
   // Build each post as a link around a <figure>: the photo, then the start of
   // its caption (the CSS cuts it off after two lines). Behold provides each
-  // image in several sizes; "small" (400px) is plenty for these tiles, even on
+  // image in several sizes; "medium" (700px) keeps these tiles sharp, even on
   // high-resolution screens.
   function showPosts(posts) {
     if (!posts.length) return;
-    const links = posts.map((post) => {
-      const image = post.sizes.small;
+    const links = posts.slice(0, INSTAGRAM_POSTS).map((post) => {
+      const image = post.sizes.medium;
       const caption = (post.prunedCaption || "").replace(/\s+/g, " ").trim(); // hashtags already removed; line breaks → spaces
 
       const link = document.createElement("a");
