@@ -699,41 +699,43 @@ function initInstagram() {
     return posts;
   }
 
-  // Build a link and image for each post and swap them in for the fixed photos.
-  // Behold provides each image in several sizes; "small" (400px) is plenty for
-  // these tiles, even on high-resolution screens.
+  // Build each post as a link around a <figure>: the photo, then the start of
+  // its caption (the CSS cuts it off after two lines). Behold provides each
+  // image in several sizes; "small" (400px) is plenty for these tiles, even on
+  // high-resolution screens.
   function showPosts(posts) {
     if (!posts.length) return;
     const links = posts.map((post) => {
       const image = post.sizes.small;
+      const caption = (post.prunedCaption || "").replace(/\s+/g, " ").trim(); // hashtags already removed; line breaks → spaces
+
       const link = document.createElement("a");
       link.href = post.permalink;
       link.target = "_blank";
       link.rel = "noopener";
 
+      const figure = document.createElement("figure");
       const img = document.createElement("img");
       img.src = image.mediaUrl;
       img.width = image.width;
       img.height = image.height;
       img.loading = "lazy";
-      img.alt = describe(post);
+      // Instagram's own description of the photo if the post has one. Otherwise
+      // a short label: the caption below already says what the post is about,
+      // so repeating it here would make screen readers read it twice.
+      img.alt = (post.altText || "").trim() || (caption ? "Instagram photo" : "Instagram post from Kitty Brew Cat Café");
+      figure.append(img);
 
-      link.append(img);
+      if (caption) {
+        const figcaption = document.createElement("figcaption");
+        figcaption.textContent = caption; // textContent, not innerHTML: the caption is shown as plain text
+        figure.append(figcaption);
+      }
+
+      link.append(figure);
       return link;
     });
     grid.replaceChildren(...links);
-  }
-
-  // Alt text: Instagram's own alt text if the post has it, otherwise the start
-  // of the caption (without hashtags), otherwise a general description.
-  // Emoji are removed, since screen readers read each one aloud by name.
-  function describe(post) {
-    const text = (post.altText || post.prunedCaption || "")
-      .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, "") // emoji out
-      .replace(/\s+/g, " ")                                         // line breaks → spaces
-      .trim();
-    if (!text) return "Instagram post from Kitty Brew Cat Café";
-    return text.length > 120 ? text.slice(0, 117).trimEnd() + "…" : text;
   }
 }
 
