@@ -270,8 +270,9 @@
     </section>
 
     <!-- ===================== INSTAGRAM ===================== -->
-    <!-- For now these are fixed photos. Once a Behold feed is set up, js/main.js
-         can fill this grid with the latest posts automatically. -->
+    <!-- js/main.js replaces these six photos with the six latest Instagram posts,
+         from a Behold feed (see INSTAGRAM_FEED in main.js). These fixed photos
+         stay if JavaScript is off or the feed can't be loaded. -->
     <section class="insta" aria-labelledby="insta-title">
       <img class="deco deco-insta-left" src="images/art/leaves-03.svg" alt="">
       <img class="deco deco-insta-right" src="images/art/flower-05.svg" alt="">
@@ -282,7 +283,7 @@
             <div><h2 id="insta-title">@kittybrewcafe</h2><span class="hand">fresh from the lounge</span></div>
             <a class="btn" href="https://www.instagram.com/kittybrewcafe/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="images/icons.svg#instagram"></use></svg>Follow on Instagram</a>
           </div>
-          <div class="insta-grid">
+          <div class="insta-grid" data-insta-feed>
             <a href="https://www.instagram.com/kittybrewcafe/" target="_blank" rel="noopener"><img src="images/photos/small/kitten-basket.webp" alt="A kitten meowing in a basket" loading="lazy"></a>
             <a href="https://www.instagram.com/kittybrewcafe/" target="_blank" rel="noopener"><img src="images/photos/small/tabby-kitten-cubby.webp" alt="A tabby kitten peeking out of a cat bed" loading="lazy"></a>
             <a href="https://www.instagram.com/kittybrewcafe/" target="_blank" rel="noopener"><img src="images/photos/small/mermaid-bed.webp" alt="A kitten asleep in a mermaid-tail bed" loading="lazy"></a>

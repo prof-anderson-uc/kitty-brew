@@ -9,7 +9,7 @@
      2. Header         — shrinking the header when you scroll, and the mobile
                          (hamburger) menu
      3. Scroll reveal  — sections that fade in as you scroll down
-     4. Homepage       — a random hero photo, and the reviews carousel
+     4. Homepage       — a random hero photo, the reviews carousel, and the Instagram feed
      5. Mural band     — the strip of painted cats above the footer (every page)
      6. Kitty Cam      — the live video player (Kitty Cam page only)
 
@@ -651,6 +651,93 @@ function initReviews() {
 }
 
 
+// ---------------------------------------------------------------------------
+// INSTAGRAM — the six latest posts from @kittybrewcafe.
+// Behold (behold.so) connects to the Instagram account and publishes the latest
+// posts at a feed address, as JSON. This code loads that feed and swaps the six
+// fixed photos in index.html for the real posts. If anything goes wrong, the
+// fixed photos simply stay.
+//
+// Kitty Brew's Behold plan (Starter) allows 15,000 feed loads ("views") a month
+// and refreshes the feed every hour. To use as few views as possible, this code
+// only loads the feed when a visitor scrolls near the Instagram section, and
+// remembers the posts in their browser for an hour.
+// ---------------------------------------------------------------------------
+const INSTAGRAM_FEED = "https://feeds.behold.so/4wEnutp6rLO1UB9hr0FN"; // from the Behold dashboard
+const INSTAGRAM_CACHE_HOURS = 1; // matches Behold's hourly refresh
+
+function initInstagram() {
+  const grid = document.querySelector("[data-insta-feed]");
+  if (!grid || !INSTAGRAM_FEED) return; // not on the homepage, or no feed yet
+
+  // Wait until the grid is within about a screen of the visitor before loading
+  // anything. IntersectionObserver calls us back when that happens.
+  const watcher = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    watcher.disconnect(); // only needs to happen once
+    loadPosts().then(showPosts).catch(() => {}); // on any error, keep the fixed photos
+  }, { rootMargin: "600px" });
+  watcher.observe(grid);
+
+  // Use the copy saved in this browser if it's recent enough; otherwise fetch
+  // the feed and save it. localStorage can be switched off (private browsing),
+  // which is why reading and saving are wrapped in try/catch.
+  async function loadPosts() {
+    try {
+      const saved = JSON.parse(localStorage.getItem("kb-instagram"));
+      const ageHours = (Date.now() - saved.time) / 3600000;
+      if (saved.feed === INSTAGRAM_FEED && ageHours < INSTAGRAM_CACHE_HOURS) return saved.posts;
+    } catch (e) { /* nothing saved yet */ }
+
+    const response = await fetch(INSTAGRAM_FEED);
+    if (!response.ok) throw new Error("Feed unavailable");
+    const posts = (await response.json()).posts.slice(0, 6);
+
+    try {
+      localStorage.setItem("kb-instagram", JSON.stringify({ feed: INSTAGRAM_FEED, time: Date.now(), posts }));
+    } catch (e) { /* can't save: fine, we'll just fetch next time */ }
+    return posts;
+  }
+
+  // Build a link and image for each post and swap them in for the fixed photos.
+  // Behold provides each image in several sizes; "small" (400px) is plenty for
+  // these tiles, even on high-resolution screens.
+  function showPosts(posts) {
+    if (!posts.length) return;
+    const links = posts.map((post) => {
+      const image = post.sizes.small;
+      const link = document.createElement("a");
+      link.href = post.permalink;
+      link.target = "_blank";
+      link.rel = "noopener";
+
+      const img = document.createElement("img");
+      img.src = image.mediaUrl;
+      img.width = image.width;
+      img.height = image.height;
+      img.loading = "lazy";
+      img.alt = describe(post);
+
+      link.append(img);
+      return link;
+    });
+    grid.replaceChildren(...links);
+  }
+
+  // Alt text: Instagram's own alt text if the post has it, otherwise the start
+  // of the caption (without hashtags), otherwise a general description.
+  // Emoji are removed, since screen readers read each one aloud by name.
+  function describe(post) {
+    const text = (post.altText || post.prunedCaption || "")
+      .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, "") // emoji out
+      .replace(/\s+/g, " ")                                         // line breaks → spaces
+      .trim();
+    if (!text) return "Instagram post from Kitty Brew Cat Café";
+    return text.length > 120 ? text.slice(0, 117).trimEnd() + "…" : text;
+  }
+}
+
+
 /* ====================================
    5. MURAL BAND (above the footer, every page)
    ====================================
@@ -841,6 +928,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();   // fade-in sections
   initHeroPhoto(); // random hero photo (homepage only)
   initReviews();   // reviews carousel (homepage only)
+  initInstagram(); // latest Instagram posts (homepage only, once a feed is set)
   initMuralBand(); // painted cats above the footer
   initCam();      // live video (only does anything on the Kitty Cam page)
 
