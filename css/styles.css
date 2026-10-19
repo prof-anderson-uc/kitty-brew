@@ -21,7 +21,7 @@
    ========================================================================== */
 
 :root {
-  /* Palette taken from Brightwall Collective's original mural files */
+  /* Palette taken from Bright Wall Collective's original mural files */
   --wall: #e6eeee;            /* pale mint-grey walls: main page background */
   --lavender: #bac6e4;        /* big soft leaf shapes */
   --periwinkle: #8484c0;      /* periwinkle flower splashes */
@@ -2424,7 +2424,7 @@ section > .container,
 .cat-page-404   { width: 190px; right: 4%; bottom: 6px; }  /* 404 page: kitten knocking over a mug (cat-spilling-mug.webp) */
 .cat-page-faq   { width: 120px; right: 5%; bottom: 8px; }  /* cream cat looking up, curious (cat-ivan.webp) */
 
-/* ---- Decorative leaves & flowers behind sections (Brightwall's shapes) ----
+/* ---- Decorative leaves & flowers behind sections (Bright Wall's shapes) ----
    On indigo they use .deco-dim so they read as a subtle texture. */
 .deco-hero-leaf   { width: 300px; left: -80px; bottom: -60px; transform: rotate(-20deg); }  /* leaves-03.svg */
 .deco-hero-flower { width: 110px; left: 40%; top: 36px; }                                     /* flower-06.svg */
