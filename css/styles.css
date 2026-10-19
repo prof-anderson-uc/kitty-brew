@@ -194,12 +194,14 @@ section > .container,
 
 .hand {
   font-family: var(--font-hand);
+  font-variant-ligatures: no-common-ligatures;   /* this font's joined "ff" looks like the letters overlap */
 }
 
 /* Subheading in the mural's hand-lettered style (small, used sparingly) */
 .sub {
   text-align: center;
   font-family: var(--font-hand);
+  font-variant-ligatures: no-common-ligatures;
   font-size: 1.4rem;
   color: var(--periwinkle-deep);
   margin-bottom: 2rem;
@@ -732,6 +734,7 @@ section > .container,
   border-radius: 99px;
   padding: 0.2rem 0.75rem;
   font-family: var(--font-hand);
+  font-variant-ligatures: no-common-ligatures;
   font-size: 1.05rem;
 }
 
@@ -1962,6 +1965,7 @@ section > .container,
   box-shadow: var(--shadow);
   color: var(--ink);
   font-family: var(--font-hand);
+  font-variant-ligatures: no-common-ligatures;
   font-size: 1.05rem;
   line-height: 1.3;
   text-align: center;
